@@ -19,7 +19,7 @@ const base =
 plantLibrary[
 (index + day.artwork.size)
 %
-plantLibrary.length
+Object.keys(plantLibrary).length
 ];
 
 
