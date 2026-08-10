@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { saveReflection } from "../lib/dailyStorage";
 
 type SelfReflectionProps = {
   day: any;
