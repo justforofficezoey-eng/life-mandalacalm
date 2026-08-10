@@ -3,36 +3,47 @@
 import { useState } from "react";
 import { saveDay } from "../lib/dailyStorage";
 
+
 export default function DailyEntry({
   onSave
 }:any){
 
+
   const [text,setText]=useState("");
-  const [mood,setMood]=useState("🌱 平静");
+
+  const [mood,setMood]=useState("平静");
+
 
 
   const moods=[
-    "🌱 平静",
-    "🌙 思考",
-    "☀️ 开心",
-    "🌧 疲惫",
-    "🌊 说不清"
+
+    "平静",
+
+    "开心",
+
+    "疲惫",
+
+    "思考",
+
+    "说不清"
+
   ];
+
 
 
   function submit(){
 
+
     if(!text.trim()) return;
 
 
-    const days=saveDay({
+    const days = saveDay({
 
       text,
 
       mood,
 
-      createdAt:
-      new Date().toISOString(),
+      date:new Date().toISOString()
 
     });
 
@@ -45,6 +56,7 @@ export default function DailyEntry({
   }
 
 
+
   return (
 
     <div
@@ -53,9 +65,9 @@ export default function DailyEntry({
 
       maxWidth:600,
 
-      margin:"60px auto",
+      margin:"50px auto",
 
-      padding:35,
+      padding:30,
 
       textAlign:"center"
 
@@ -64,15 +76,20 @@ export default function DailyEntry({
     >
 
 
+
       <h1
 
       style={{
 
-        fontFamily:"Georgia,serif",
+        fontFamily:
+
+        "Georgia,'Noto Serif SC',serif",
 
         fontWeight:400,
 
-        letterSpacing:5
+        letterSpacing:6,
+
+        color:"#5f594c"
 
       }}
 
@@ -83,13 +100,17 @@ export default function DailyEntry({
       </h1>
 
 
+
+
       <p
 
       style={{
 
-        color:"#777",
+        marginTop:25,
 
         lineHeight:2,
+
+        color:"#888",
 
         fontFamily:"serif"
 
@@ -97,17 +118,18 @@ export default function DailyEntry({
 
       >
 
-        留下一句话。
+        写下一些东西。
 
         <br/>
 
-        不需要解释。
+        不必完整。
 
         <br/>
 
-        时间会替你保存。
+        它会留在这里。
 
       </p>
+
 
 
 
@@ -117,29 +139,33 @@ export default function DailyEntry({
 
       onChange={e=>setText(e.target.value)}
 
-      placeholder="今天，有什么想留下？"
+      placeholder="想到什么，就写什么"
 
       style={{
 
+        marginTop:35,
+
         width:"100%",
 
-        height:180,
+        height:170,
 
-        marginTop:30,
-
-        padding:20,
+        padding:22,
 
         borderRadius:25,
 
         border:"1px solid #ddd",
 
+        fontFamily:
+
+        "Georgia,'Noto Serif SC',serif",
+
         fontSize:16,
 
         lineHeight:2,
 
-        fontFamily:"serif",
+        resize:"none",
 
-        resize:"none"
+        background:"#fffdf7"
 
       }}
 
@@ -147,11 +173,13 @@ export default function DailyEntry({
 
 
 
+
+
       <div
 
       style={{
 
-        marginTop:20
+        marginTop:25
 
       }}
 
@@ -159,49 +187,54 @@ export default function DailyEntry({
 
       {
 
-        moods.map(item=>(
+      moods.map(item=>(
 
-          <button
 
-          key={item}
+        <button
 
-          onClick={()=>setMood(item)}
+        key={item}
 
-          style={{
+        onClick={()=>setMood(item)}
 
-            margin:5,
+        style={{
 
-            padding:"10px 18px",
+          margin:5,
 
-            borderRadius:30,
+          padding:"10px 20px",
 
-            border:"1px solid #ddd",
+          borderRadius:30,
 
-            background:
+          border:"1px solid #ddd",
 
-            mood===item
+          background:
 
-            ?
+          mood===item
 
-            "#e8eadc"
+          ?
 
-            :
+          "#e7eadc"
 
-            "#fff"
+          :
 
-          }}
+          "#fff",
 
-          >
+          color:"#666"
+
+        }}
+
+        >
 
           {item}
 
-          </button>
+        </button>
 
-        ))
+
+      ))
 
       }
 
       </div>
+
 
 
 
@@ -213,21 +246,23 @@ export default function DailyEntry({
 
         marginTop:35,
 
-        padding:"15px 55px",
+        padding:"14px 55px",
 
         borderRadius:40,
 
         border:"none",
 
-        background:"#596451",
+        background:"#5e6756",
 
-        color:"#fff"
+        color:"#fff",
+
+        letterSpacing:2
 
       }}
 
       >
 
-        留下这一刻
+        保存
 
       </button>
 
