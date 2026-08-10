@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import GardenCanvas from "./GardenCanvas";
 
+import MandalaSignature from "./MandalaSignature";
 
 export default function SevenDayStory({
   days,
