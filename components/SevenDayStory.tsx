@@ -440,83 +440,113 @@ export default function SevenDayStory({
 
 
       {
+{
+active===6 &&
 
-        active===6 &&
+<div
 
+style={{
 
-        <div
+marginTop:80,
 
-        style={{
+textAlign:"center"
 
-          marginTop:80,
+}}
 
-          textAlign:"center"
-
-        }}
-
-        >
-
-          <h2
-
-          style={{
-
-            fontFamily:"serif",
-
-            fontWeight:400
-
-          }}
-
-          >
-
-            七日之印
-
-          </h2>
+>
 
 
+<h2
 
-          <p
+style={{
 
-          style={{
+fontFamily:"Georgia,'Noto Serif SC',serif",
 
-            color:"#777",
+fontWeight:400,
 
-            lineHeight:2
+letterSpacing:5
 
-          }}
+}}
 
-          >
+>
 
-            这不是一幅生成的图像。
+时间留下的形状
 
-            <br/>
-
-            是七个时刻，
-
-            <br/>
-
-            共同留下的回声。
-
-          </p>
+</h2>
 
 
 
-          {
+<p
 
-            garden &&
+style={{
 
-            <GardenCanvas
+lineHeight:2.2,
 
-            garden={garden}
+color:"#777",
 
-            />
+fontFamily:"serif"
 
-          }
+}}
+
+>
+
+七个瞬间，
+
+<br/>
+
+慢慢形成了一种属于你的形状。
+
+<br/>
+
+它不是生成的结果，
+
+<br/>
+
+而是你经过这里的证明。
+
+</p>
 
 
 
-        </div>
+{
 
-      }
+garden &&
+
+<GardenCanvas
+
+garden={garden}
+
+/>
+
+}
+
+
+
+<MandalaSignature
+
+days={days}
+
+onSave={(work:any)=>{
+
+
+localStorage.setItem(
+
+"mandala-work",
+
+JSON.stringify(work)
+
+);
+
+
+}}
+
+/>
+
+
+
+</div>
+
+}
 
 
 
