@@ -41,15 +41,7 @@ export default function SelfReflection({
     };
 
 
-    if (day?.id) {
-
-      saveReflection(
-        day.id,
-        reflection
-      );
-
-    }
-
+  
 
     setSaved(true);
 
