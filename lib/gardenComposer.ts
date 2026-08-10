@@ -1,78 +1,101 @@
-import {
-plantLibrary
-}
-from "./plantLibrary";
+import { plantLibrary } from "./plantLibrary";
 
 
-export function composeGarden(days:any[]){
+export function composeGarden(days: any[]) {
+
+  const elements:any[] = [];
+
+  const dayCount = days.length;
 
 
-const plants=[];
+  if(dayCount >= 1){
+    elements.push({
+      ...plantLibrary.seed,
+      x:180,
+      y:180,
+      size:120
+    });
+  }
 
 
-
-days.forEach(
-(day,index)=>{
-
-
-const base =
-plantLibrary[
-(index + day.artwork.size)
-%
-Object.keys(plantLibrary).length
-];
+  if(dayCount >= 2){
+    elements.push({
+      ...plantLibrary.root,
+      x:130,
+      y:260,
+      size:180
+    });
+  }
 
 
-
-plants.push({
-
-...base,
-
-x:
-80+
-index*35,
-
-
-y:
-100+
-(index%3)*50,
+  if(dayCount >= 3){
+    elements.push({
+      ...plantLibrary.leaf,
+      x:70,
+      y:100,
+      size:180
+    });
+  }
 
 
-size:
-150+
-index*10,
+  if(dayCount >= 4){
+    elements.push({
+      ...plantLibrary.branch,
+      x:160,
+      y:80,
+      size:220
+    });
+  }
 
 
-rotate:
-index*18,
+  if(dayCount >= 5){
+    elements.push({
+      ...plantLibrary.flower,
+      x:130,
+      y:120,
+      size:260
+    });
+  }
 
 
-opacity:
-0.75+
+  if(dayCount >= 6){
 
-index*0.03
-
-
-});
-
-
-}
-
-);
+    elements.push({
+      ...plantLibrary.forest,
+      x:260,
+      y:280,
+      size:160
+    });
 
 
+    elements.push({
+      ...plantLibrary.vine,
+      x:20,
+      y:20,
+      size:430
+    });
 
-return {
+  }
 
 
-title:
-"你的七日花园",
+  if(dayCount >= 7){
+
+    elements.push({
+      ...plantLibrary.light,
+      x:190,
+      y:150,
+      size:100
+    });
+
+  }
 
 
-elements:plants
+  return {
 
+    title:"七日生命曼陀罗",
 
-};
+    elements
 
+  };
 
 }
