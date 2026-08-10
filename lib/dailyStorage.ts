@@ -8,16 +8,23 @@ export type DailyFragment = {
 
   plant:string;
 
+  reflection?:string;
+
 };
 
 
-const KEY = "life-mandala-days";
+
+const KEY =
+"life-mandala-days";
+
+
 
 
 
 export function saveDay(
   day:DailyFragment
 ){
+
 
   if(
     typeof window === "undefined"
@@ -28,15 +35,19 @@ export function saveDay(
   }
 
 
+
   const old =
 
     JSON.parse(
 
       localStorage.getItem(KEY)
+
       ||
+
       "[]"
 
     );
+
 
 
   const updated = [
@@ -61,7 +72,64 @@ export function saveDay(
 
   return updated;
 
+
 }
+
+
+
+
+
+
+export function saveReflection(
+  index:number,
+  answer:string
+){
+
+
+  if(
+    typeof window === "undefined"
+  ){
+
+    return;
+
+  }
+
+
+
+  const days =
+
+    JSON.parse(
+
+      localStorage.getItem(KEY)
+
+      ||
+
+      "[]"
+
+    );
+
+
+
+  if(days[index]){
+
+    days[index].reflection = answer;
+
+  }
+
+
+
+  localStorage.setItem(
+
+    KEY,
+
+    JSON.stringify(days)
+
+  );
+
+
+}
+
+
 
 
 
@@ -83,7 +151,9 @@ export function getDays(){
   return JSON.parse(
 
     localStorage.getItem(KEY)
+
     ||
+
     "[]"
 
   );
