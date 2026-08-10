@@ -1,77 +1,49 @@
-import {
-ArtworkElement
-}
-from "./dailyArtworkEngine";
+export type DailyFragment = {
 
+  date:string;
 
+  mood:string;
 
-export type DayArtwork={
+  text:string;
 
-date:string;
-
-text:string;
-
-artwork:ArtworkElement;
+  plant:string;
 
 };
 
 
+const KEY = "life-mandala-days";
 
-const KEY="life-garden";
+
+export function saveDay(day:DailyFragment){
+
+  const old =
+    JSON.parse(
+      localStorage.getItem(KEY) || "[]"
+    );
+
+
+  const updated = [
+    ...old,
+    day
+  ].slice(-7);
+
+
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(updated)
+  );
+
+
+  return updated;
+
+}
 
 
 
 export function getDays(){
 
-
-if(
-typeof window==="undefined"
-)
-
-return [];
-
-
-
-const data =
-localStorage.getItem(KEY);
-
-
-
-return data?
-JSON.parse(data):
-[];
-
-}
-
-
-
-
-export function saveDay(
-item:DayArtwork
-){
-
-
-const days=getDays();
-
-
-
-const result=[
-
-...days,
-
-item
-
-].slice(-7);
-
-
-
-localStorage.setItem(
-KEY,
-JSON.stringify(result)
-);
-
-
-
-return result;
+  return JSON.parse(
+    localStorage.getItem(KEY) || "[]"
+  );
 
 }
