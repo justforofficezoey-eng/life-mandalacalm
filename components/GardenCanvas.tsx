@@ -1,248 +1,334 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
-export default function GardenCanvas({ garden }: any) {
+
+export default function GardenCanvas({
+  garden
+}:any){
+
+
   const elements = garden?.elements || [];
-  const [selected, setSelected] = useState<any>(null);
 
-  const now = new Date();
+  const [selected,setSelected] =
+  useState<any>(null);
 
-  const currentTime = now.toLocaleString(undefined, {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 
-  const arranged = useMemo(() => {
-    const count = elements.length || 1;
-    const radius = 190;
 
-    return elements.map((e: any, i: number) => {
-      const angle = (Math.PI * 2 * i) / count - Math.PI / 2;
+  function moodColor(mood:string){
 
-      const size = e.size || 90;
+    if(mood?.includes("开心"))
+      return "#e8c56d";
 
-      return {
-        ...e,
-        displayX:
-          310 + Math.cos(angle) * radius - size / 2,
-        displayY:
-          310 + Math.sin(angle) * radius - size / 2,
-        delay: `${i * 0.7}s`,
-      };
-    });
-  }, [elements]);
+    if(mood?.includes("疲惫"))
+      return "#a9b7c6";
+
+    if(mood?.includes("思考"))
+      return "#8d89b8";
+
+    if(mood?.includes("说不清"))
+      return "#b8a58a";
+
+    return "#91aa7b";
+
+  }
+
+
 
   return (
-    <section
-      style={{
-        margin: "70px auto",
-        maxWidth: 760,
-        textAlign: "center",
-      }}
+
+    <div
+
+    style={{
+
+      width:620,
+
+      height:620,
+
+      maxWidth:"90vw",
+
+      maxHeight:"90vw",
+
+      margin:"60px auto",
+
+      position:"relative",
+
+      borderRadius:"50%",
+
+      background:
+
+      "radial-gradient(circle,#fff8e8,#e1e7d8)",
+
+      boxShadow:
+
+      "0 40px 100px rgba(60,50,30,.15)",
+
+      overflow:"hidden"
+
+    }}
+
     >
-      <div
-        style={{
-          marginBottom: 25,
-          fontFamily: "Georgia, 'Times New Roman', serif",
-          color: "#756d5b",
-          letterSpacing: 3,
-        }}
-      >
-        LIFE MANDALA
-      </div>
+
+
+
+      {/* 中心 */}
 
       <div
-        style={{
-          position: "relative",
-          width: 620,
-          height: 620,
-          maxWidth: "90vw",
-          maxHeight: "90vw",
-          margin: "0 auto",
-          borderRadius: "50%",
-          overflow: "hidden",
-          background:
-            "radial-gradient(circle at center, #fff9e8 0%, #edf0e4 45%, #dce2d5 100%)",
-          boxShadow:
-            "0 45px 120px rgba(65,58,43,.18), inset 0 0 90px rgba(255,255,255,.8)",
-        }}
-      >
-        {/* 中央呼吸光 */}
-        <div
-          style={{
-            position: "absolute",
-            width: 230,
-            height: 230,
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(255,239,181,.95), rgba(255,239,181,.15), transparent 72%)",
-            animation: "mandalaBreath 9s ease-in-out infinite",
-          }}
-        />
 
-        {/* 中央时间 */}
+      style={{
+
+        position:"absolute",
+
+        inset:0,
+
+        display:"flex",
+
+        justifyContent:"center",
+
+        alignItems:"center",
+
+        flexDirection:"column",
+
+        fontFamily:"Georgia,serif",
+
+        color:"#716957"
+
+      }}
+
+      >
+
         <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 3,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            pointerEvents: "none",
-            color: "#6e6756",
-            fontFamily: "Georgia, 'Times New Roman', serif",
-          }}
+
+        style={{
+
+          fontSize:28,
+
+          letterSpacing:8
+
+        }}
+
         >
-          <div
-            style={{
-              fontSize: 24,
-              letterSpacing: 7,
-            }}
-          >
-            此刻
-          </div>
 
-          <div
-            style={{
-              marginTop: 14,
-              fontSize: 13,
-              letterSpacing: 1.5,
-              opacity: 0.75,
-            }}
-          >
-            {currentTime}
-          </div>
+          此刻
+
         </div>
 
-        {/* 时间轨道 */}
+
         <div
-          style={{
-            position: "absolute",
-            inset: 85,
-            borderRadius: "50%",
-            border: "1px solid rgba(120,115,95,.13)",
-          }}
-        />
 
-        {/* 记忆节点 */}
-        {arranged.map((e: any, i: number) => (
-          <button
-            key={i}
-            onClick={() => setSelected(e)}
-            style={{
-              position: "absolute",
-              left: e.displayX,
-              top: e.displayY,
-              width: e.size || 90,
-              padding: 0,
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-              opacity: 0,
-              animation: `memoryAppear 1.8s ease ${e.delay} forwards`,
-            }}
-          >
-            <img
-              src={e.image}
-              alt="memory"
-              style={{
-                width: "100%",
-                display: "block",
-                filter:
-                  "drop-shadow(0 18px 25px rgba(60,50,30,.16))",
-                animation: `memoryFloat ${7 + i}s ease-in-out ${e.delay} infinite`,
-              }}
-            />
+        style={{
 
-            <div
-              style={{
-                marginTop: 7,
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 11,
-                color: "#77715f",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {e.localTime || ""}
-            </div>
-          </button>
-        ))}
+          marginTop:15,
 
-        {/* 回顾 */}
-        {selected && (
-          <div
-            onClick={() => setSelected(null)}
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 20,
-              background: "rgba(249,245,234,.94)",
-              backdropFilter: "blur(14px)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 45,
-              color: "#575346",
-              cursor: "pointer",
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 13,
-                letterSpacing: 3,
-              }}
-            >
-              {selected.localTime || "那一刻"}
-            </div>
+          fontSize:12,
 
-            <div
-              style={{
-                marginTop: 28,
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 25,
-                fontWeight: 400,
-              }}
-            >
-              {selected.mood || "一个瞬间"}
-            </div>
+          opacity:.7
 
-            {selected.text && (
-              <p
-                style={{
-                  maxWidth: 400,
-                  marginTop: 25,
-                  lineHeight: 2.2,
-                  fontSize: 16,
-                }}
-              >
-                「{selected.text}」
-              </p>
-            )}
+        }}
 
-            <div
-              style={{
-                marginTop: 35,
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 12,
-                color: "#999",
-              }}
-            >
-              再次经过这个时刻
-            </div>
-          </div>
-        )}
+        >
+
+          {new Date().toLocaleString()}
+
+        </div>
+
+
       </div>
-    </section>
+
+
+
+
+
+      {/* 时间节点 */}
+
+      {
+
+      elements.map(
+
+        (e:any,i:number)=>(
+
+
+          <button
+
+          key={i}
+
+          onClick={()=>setSelected(e)}
+
+          style={{
+
+            position:"absolute",
+
+            left:e.x,
+
+            top:e.y,
+
+            width:e.size,
+
+            height:e.size,
+
+            borderRadius:"50%",
+
+            border:"none",
+
+            cursor:"pointer",
+
+            background:
+
+            moodColor(e.mood),
+
+            opacity:.75,
+
+            boxShadow:
+
+            "0 15px 35px rgba(50,40,30,.15)",
+
+            transition:"all .5s"
+
+          }}
+
+          >
+
+
+          <span
+
+          style={{
+
+            fontSize:11,
+
+            color:"#fff",
+
+            fontFamily:"serif"
+
+          }}
+
+          >
+
+          {i+1}
+
+          </span>
+
+
+          </button>
+
+
+        )
+
+      )
+
+      }
+
+
+
+
+
+      {/* 回忆 */}
+
+      {
+
+      selected &&
+
+
+      <div
+
+      onClick={()=>setSelected(null)}
+
+      style={{
+
+        position:"absolute",
+
+        inset:0,
+
+        background:
+
+        "rgba(250,246,235,.94)",
+
+        zIndex:10,
+
+        display:"flex",
+
+        justifyContent:"center",
+
+        alignItems:"center",
+
+        flexDirection:"column",
+
+        padding:40,
+
+        textAlign:"center",
+
+        fontFamily:"Georgia,serif",
+
+        color:"#575143"
+
+      }}
+
+      >
+
+
+        <div
+
+        style={{
+
+          fontSize:12,
+
+          letterSpacing:3
+
+        }}
+
+        >
+
+          {selected.localTime}
+
+        </div>
+
+
+
+        <p
+
+        style={{
+
+          marginTop:35,
+
+          lineHeight:2.3,
+
+          fontSize:18
+
+        }}
+
+        >
+
+          「{selected.text}」
+
+        </p>
+
+
+
+        <small
+
+        style={{
+
+          marginTop:30,
+
+          color:"#999"
+
+        }}
+
+        >
+
+          再次经过这一刻
+
+        </small>
+
+
+      </div>
+
+
+      }
+
+
+    </div>
+
+
   );
+
 }
