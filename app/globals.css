@@ -1,8 +1,10 @@
 :root {
 
-  --background:#f7f1e7;
+  --font-brush:
+  var(--font-brush);
 
-  --foreground:#3f4438;
+  --font-serif:
+  var(--font-serif);
 
 }
 
@@ -21,104 +23,73 @@ body {
 
   padding:0;
 
-}
+  background:#faf7ef;
 
-
-body {
-
-  background:
-
-  var(--background);
-
-
-  color:
-
-  var(--foreground);
-
+  color:#5f594d;
 
   font-family:
+  var(--font-serif),
+  serif;
 
-  "Inter",
-  "PingFang SC",
-  "Microsoft YaHei",
-  sans-serif;
+}
+
+
+
+.font-brush {
+
+  font-family:
+  var(--font-brush),
+  cursive;
+
+}
+
+
+
+.font-serif {
+
+  font-family:
+  var(--font-serif),
+  serif;
 
 }
 
 
 
 
-/* 中心光晕呼吸 */
+.fade-in {
 
-@keyframes softGlow {
+  animation:
+  fadeIn 1.2s ease forwards;
 
-
-  0% {
-
-    opacity:.25;
-
-    transform:scale(.95);
-
-  }
+}
 
 
-  50% {
 
-    opacity:.7;
+.fade-up {
 
-    transform:scale(1.08);
-
-  }
-
-
-  100% {
-
-    opacity:.25;
-
-    transform:scale(.95);
-
-  }
-
+  animation:
+  fadeUp 1.4s ease forwards;
 
 }
 
 
 
 
-
-/* 植物漂浮 */
-
-@keyframes floatPlant {
+@keyframes fadeIn {
 
 
-  0% {
+from {
 
-    transform:
+  opacity:0;
 
-    translateY(0px)
-    rotate(0deg);
-
-  }
+}
 
 
-  50% {
+to {
 
-    transform:
+  opacity:1;
 
-    translateY(-12px)
-    rotate(2deg);
-
-  }
-
-
-  100% {
-
-    transform:
-
-    translateY(0px)
-    rotate(0deg);
-
-  }
+}
 
 
 }
@@ -127,31 +98,27 @@ body {
 
 
 
-/* 植物出现 */
-
-@keyframes grow {
+@keyframes fadeUp {
 
 
-  from {
+from {
 
-    opacity:0;
+  opacity:0;
 
-    transform:
+  transform:
+  translateY(20px);
 
-    scale(.7);
-
-  }
+}
 
 
-  to {
+to {
 
-    opacity:1;
+  opacity:1;
 
-    transform:
+  transform:
+  translateY(0);
 
-    scale(1);
-
-  }
+}
 
 
 }
@@ -160,112 +127,49 @@ body {
 
 
 
-/* 轻微旋转 */
+.memory-node {
+
+
+animation:
+
+  breathe 6s ease-in-out infinite;
+
+
+}
+
+
 
 @keyframes breathe {
 
 
-  0% {
+0% {
 
-    transform:
+  transform:
+  scale(1);
 
-    scale(1);
-
-  }
-
-
-  50% {
-
-    transform:
-
-    scale(1.03);
-
-  }
-
-
-  100% {
-
-    transform:
-
-    scale(1);
-
-  }
-
+  opacity:.8;
 
 }
-@keyframes mandalaFloat {
 
-0%{
-transform:translateY(0) rotate(0deg);
-}
 
-50%{
-transform:translateY(-8px) rotate(4deg);
-}
+50% {
 
-100%{
-transform:translateY(0) rotate(0deg);
-}
+  transform:
+  scale(1.06);
+
+  opacity:1;
 
 }
-@keyframes mandalaBreath {
-  0% {
-    transform: translate(-50%, -50%) scale(0.92);
-    opacity: 0.45;
-  }
 
-  50% {
-    transform: translate(-50%, -50%) scale(1.12);
-    opacity: 0.9;
-  }
 
-  100% {
-    transform: translate(-50%, -50%) scale(0.92);
-    opacity: 0.45;
-  }
+100% {
+
+  transform:
+  scale(1);
+
+  opacity:.8;
+
 }
 
-@keyframes memoryAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.72);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes memoryFloat {
-  0% {
-    transform: translateY(0) rotate(-1deg);
-  }
-
-  50% {
-    transform: translateY(-7px) rotate(1deg);
-  }
-
-  100% {
-    transform: translateY(0) rotate(-1deg);
-  }
-}
-@keyframes reflectionAppear {
-
-  from {
-
-    opacity:0;
-
-    transform:translateY(10px);
-
-  }
-
-  to {
-
-    opacity:1;
-
-    transform:translateY(0);
-
-  }
 
 }
