@@ -1,59 +1,18 @@
-import { plantLibrary } from "./plantLibrary";
+export function composeGarden(days:any[]){
 
+  if(!days || days.length===0){
 
-export function composeGarden(days:any[]) {
+    return {
 
+      elements:[]
 
-  const seed =
-    days
-      .map((d:any)=>d.text || "")
-      .join("")
-      .length;
+    };
 
-
-  const offset =
-    seed % 25;
+  }
 
 
 
-  const positions = [
-
-    {
-      x:210 + offset,
-      y:40
-    },
-
-    {
-      x:350,
-      y:130 + offset
-    },
-
-    {
-      x:330 - offset,
-      y:300
-    },
-
-    {
-      x:210,
-      y:390 - offset
-    },
-
-    {
-      x:70 + offset,
-      y:300
-    },
-
-    {
-      x:50,
-      y:130
-    },
-
-    {
-      x:210,
-      y:210
-    }
-
-  ];
+  const total = days.length;
 
 
 
@@ -62,50 +21,106 @@ export function composeGarden(days:any[]) {
     (day:any,index:number)=>{
 
 
-      const plant =
-        plantLibrary[
-          day.plant || "seed"
-        ];
+      const angle =
+
+      (Math.PI * 2 * index) / total;
+
+
+
+      const radius =
+
+      170 + index * 8;
 
 
 
       return {
 
-        ...plant,
 
+        // 保留用户真实记录
+
+        text:
+
+        day.text || "",
+
+
+        mood:
+
+        day.mood || "",
+
+
+        localTime:
+
+        day.localTime || "",
+
+
+        date:
+
+        day.date || "",
+
+
+
+        // 视觉位置
 
         x:
-        positions[index]?.x || 210,
+
+        260 +
+
+        Math.cos(angle) *
+
+        radius,
+
 
 
         y:
-        positions[index]?.y || 210,
 
+        260 +
+
+        Math.sin(angle) *
+
+        radius,
+
+
+
+        // 大小根据文字长度变化
 
         size:
-        index===6
-        ? 210
-        : 120 + (index % 3) * 10,
+
+        70 +
+
+        Math.min(
+
+          (day.text?.length || 0) * 2,
+
+          50
+
+        ),
+
+
+
+        opacity:
+
+        0.75 + index * 0.03,
+
 
 
         rotate:
-        (seed + index * 37) % 360,
+
+        index * 18,
 
 
-        opacity:.92,
 
+        // 暂时保留图片字段
 
-        day:index + 1,
+        // 后面替换成真正生命地图元素
 
+        image:
 
-        mood:day.mood,
+        day.image ||
 
-
-        text:day.text
+        "/seed.png"
 
 
       };
-
 
     }
 
@@ -116,15 +131,21 @@ export function composeGarden(days:any[]) {
   return {
 
 
-    title:
+    createdAt:
 
-    "我的七日生命曼陀罗",
+    new Date().toISOString(),
+
+
+
+    count:
+
+    total,
+
 
 
     elements
 
 
   };
-
 
 }
