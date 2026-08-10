@@ -57,23 +57,16 @@ export default function Home(){
 
 
     const plant =
-
       moods.find(
         m=>m[1]===mood
-      )?.[2]
-
-      ||
-
-      "seed";
+      )?.[2] || "seed";
 
 
 
     const days =
-
       saveDay({
 
-        date:
-        new Date().toISOString(),
+        date:new Date().toISOString(),
 
         mood,
 
@@ -85,13 +78,9 @@ export default function Home(){
 
 
 
-    if(days.length >= 1){
-
-      setGarden(
-        composeGarden(days)
-      );
-
-    }
+    setGarden(
+      composeGarden(days)
+    );
 
 
     setMood("");
@@ -107,6 +96,33 @@ export default function Home(){
 
 
 
+  function icon(plant:string){
+
+    const icons:any={
+
+      seed:"🌱",
+
+      leaf:"🌿",
+
+      flower:"🌸",
+
+      branch:"🔥",
+
+      root:"🌙",
+
+      vine:"🌊",
+
+      light:"☀️"
+
+    };
+
+
+    return icons[plant] || "🌱";
+
+  }
+
+
+
   return (
 
     <main
@@ -116,9 +132,7 @@ export default function Home(){
         minHeight:"100vh",
 
         background:
-
-        "linear-gradient(180deg,#faf5ea,#e7ede0)",
-
+        "linear-gradient(180deg,#faf5ea,#e5eadc)",
 
         padding:"60px 20px",
 
@@ -129,7 +143,6 @@ export default function Home(){
     >
 
 
-
       <h1
 
       style={{
@@ -138,9 +151,7 @@ export default function Home(){
 
         fontWeight:400,
 
-        letterSpacing:5,
-
-        color:"#3f4438"
+        letterSpacing:5
 
       }}
 
@@ -151,17 +162,13 @@ export default function Home(){
       </h1>
 
 
-
-
       <p
 
       style={{
 
         color:"#777",
 
-        marginTop:10,
-
-        marginBottom:45
+        marginBottom:40
 
       }}
 
@@ -174,182 +181,160 @@ export default function Home(){
 
 
 
-      <section>
+      <h3
 
+      style={{
 
-        <h3
+        fontWeight:400
 
-        style={{
+      }}
 
-          fontWeight:400
+      >
 
-        }}
+        今天的一个瞬间
 
-        >
+      </h3>
 
-          今天的一个瞬间
 
-        </h3>
 
+      <div>
 
+      {
 
-        <div>
+        moods.map(m=>(
 
 
-        {
+          <button
 
-          moods.map(m=>(
+          key={m[1]}
 
+          onClick={()=>setMood(m[1])}
 
-            <button
 
-            key={m[1]}
+          style={{
 
-            onClick={()=>setMood(m[1])}
+            margin:8,
 
+            padding:"14px 22px",
 
-            style={{
+            borderRadius:30,
 
-              margin:8,
 
-              padding:"14px 22px",
+            border:
 
-              borderRadius:30,
+            mood===m[1]
 
+            ?
 
-              border:
+            "2px solid #66705b"
 
-              mood===m[1]
+            :
 
-              ?
+            "1px solid #ddd",
 
-              "2px solid #69735d"
 
-              :
+            background:
 
-              "1px solid #ddd",
+            mood===m[1]
 
+            ?
 
-              background:
+            "#e4ead8"
 
-              mood===m[1]
+            :
 
-              ?
+            "rgba(255,255,255,.6)",
 
-              "#e2e8d7"
 
-              :
+            cursor:"pointer"
 
-              "rgba(255,255,255,.55)",
+          }}
 
+          >
 
-              cursor:"pointer",
+            {m[0]} {m[1]}
 
-              fontSize:15
+          </button>
 
-            }}
 
-            >
+        ))
 
-              {m[0]} {m[1]}
+      }
 
-            </button>
+      </div>
 
 
-          ))
 
-        }
 
+      <textarea
 
-        </div>
+      value={text}
 
+      onChange={
+        e=>setText(e.target.value)
+      }
 
 
+      placeholder="写下一句话，也可以什么都不写"
 
-        <textarea
 
+      style={{
 
-        value={text}
+        marginTop:30,
 
+        width:"90%",
 
-        onChange={
+        maxWidth:450,
 
-          e=>setText(e.target.value)
+        height:120,
 
-        }
+        padding:20,
 
+        borderRadius:20,
 
-        placeholder="写下一句话，也可以什么都不写"
+        border:"1px solid #ddd",
 
+        fontSize:16
 
-        style={{
+      }}
 
-          marginTop:30,
+      />
 
-          width:"90%",
 
-          maxWidth:450,
 
-          height:120,
 
-          padding:20,
+      <br/>
 
-          borderRadius:22,
 
-          border:"1px solid #ddd",
 
-          background:"rgba(255,255,255,.75)",
+      <button
 
-          fontSize:16,
+      onClick={save}
 
-          outline:"none"
 
-        }}
+      style={{
 
-        />
+        marginTop:25,
 
+        padding:"15px 50px",
 
+        borderRadius:40,
 
+        border:"none",
 
-        <br/>
+        background:"#66705b",
 
+        color:"#fff",
 
+        fontSize:16
 
+      }}
 
-        <button
+      >
 
-        onClick={save}
+        收下今天
 
-
-        style={{
-
-          marginTop:25,
-
-          padding:"15px 50px",
-
-          borderRadius:40,
-
-          border:"none",
-
-          background:"#66705b",
-
-          color:"#fff",
-
-          fontSize:16,
-
-          cursor:"pointer"
-
-        }}
-
-        >
-
-          收下今天
-
-        </button>
-
-
-
-      </section>
+      </button>
 
 
 
@@ -374,134 +359,177 @@ export default function Home(){
         ?
 
 
-        <div>
+        <>
 
+        <h2
 
-          <h2
+        style={{
 
-          style={{
+          fontWeight:400
 
-            fontWeight:400,
+        }}
 
-            color:"#555"
+        >
 
-          }}
+          曼陀罗正在形成中
 
-          >
-
-            曼陀罗正在形成中
-
-          </h2>
+        </h2>
 
 
 
-          <p
+        <p
 
-          style={{
+        style={{
 
-            color:"#888",
+          color:"#888"
 
-            lineHeight:1.8
+        }}
 
-          }}
+        >
 
-          >
+          已留下 {currentDays.length} / 7 个生命碎片
 
-            已留下
-
-            {" "}
-
-            {currentDays.length}
-
-            {" "}
-
-            / 7 个生命碎片
-
-            <br/>
-
-            每一天都会留下一个位置
-
-          </p>
+        </p>
 
 
 
-          <div
 
-          style={{
+        <div
 
-            margin:"40px auto",
+        style={{
 
-            width:230,
+          width:260,
 
-            height:230,
+          height:260,
 
-            borderRadius:"50%",
+          margin:"40px auto",
+
+          borderRadius:"50%",
+
+          position:"relative",
+
+          background:
+
+          "radial-gradient(circle,#fff4d0,#dce5d5)",
+
+          boxShadow:
+
+          "0 30px 70px rgba(70,60,40,.15)"
+
+        }}
+
+        >
 
 
-            background:
 
-            "radial-gradient(circle,#fff1c9,#dce5d6)",
+        {
+
+          currentDays.map(
+
+            (day:any,index:number)=>(
 
 
-            display:"flex",
+              <div
 
-            justifyContent:"center",
+              key={index}
 
-            alignItems:"center",
+              style={{
 
-            fontSize:50
+                position:"absolute",
 
-          }}
+                left:"50%",
 
-          >
+                top:"50%",
 
-            🌱
+                fontSize:32,
 
-          </div>
+
+                transform:
+
+                `rotate(${index*51}deg) translateY(-90px) rotate(-${index*51}deg)`
+
+              }}
+
+              >
+
+                {icon(day.plant)}
+
+              </div>
+
+
+            )
+
+          )
+
+        }
+
+
+
+
+        <div
+
+        style={{
+
+          position:"absolute",
+
+          left:"50%",
+
+          top:"50%",
+
+          transform:"translate(-50%,-50%)",
+
+          color:"#777"
+
+        }}
+
+        >
+
+          {currentDays.length}/7
+
+        </div>
 
 
 
         </div>
 
+
+        </>
 
 
         :
 
 
+        <>
 
-        <div>
+        <h2
 
+        style={{
 
-          <h2
+          fontWeight:400
 
-          style={{
+        }}
 
-            fontWeight:400
+        >
 
-          }}
+          你的七日生命曼陀罗
 
-          >
-
-            你的七日生命曼陀罗
-
-          </h2>
+        </h2>
 
 
+        <GardenCanvas
 
-          <GardenCanvas
+        garden={
 
-          garden={
+          garden ||
 
-            garden ||
+          composeGarden(currentDays)
 
-            composeGarden(currentDays)
+        }
 
-          }
-
-          />
+        />
 
 
-        </div>
+        </>
 
 
       }
@@ -509,7 +537,6 @@ export default function Home(){
 
 
       </section>
-
 
 
     </main>
