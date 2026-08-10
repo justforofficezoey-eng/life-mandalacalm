@@ -1,6 +1,8 @@
 "use client";
 
 import MemoryNode from "./MemoryNode";
+import TimeReflection from "./TimeReflection";
+
 
 
 export default function GardenCanvas({
@@ -12,38 +14,62 @@ export default function GardenCanvas({
 
 
 
+  const days =
+    garden?.days ||
+    elements.map((item: any) => ({
+
+      text: item.text || "",
+
+      mood: item.mood || "",
+
+      date:
+        item.date ||
+        item.localTime ||
+        new Date().toISOString(),
+
+    }));
+
+
+
   return (
 
     <section
 
-    style={{
+      style={{
 
-      margin:"70px auto",
+        width:"100%",
 
-      textAlign:"center"
+        margin:"70px auto",
 
-    }}
+        textAlign:"center",
+
+        color:"#625d50",
+
+      }}
 
     >
 
 
+
+      {/* 标题 */}
+
       <div
 
-      style={{
+        style={{
 
-        marginBottom:35,
+          marginBottom:12,
 
-        fontFamily:
+          fontFamily:
 
-        "Georgia,'Noto Serif SC',serif",
+            "Georgia,'Noto Serif SC',serif",
 
-        color:"#756e5d",
+          fontSize:20,
 
-        letterSpacing:3,
+          fontWeight:400,
 
-        fontSize:18
+          letterSpacing:3,
 
-      }}
+        }}
 
       >
 
@@ -53,39 +79,129 @@ export default function GardenCanvas({
 
 
 
+      <div
 
+        style={{
+
+          marginBottom:35,
+
+          fontFamily:
+
+            "Georgia,'Noto Serif SC',serif",
+
+          fontSize:13,
+
+          color:"#aaa",
+
+          lineHeight:1.9,
+
+        }}
+
+      >
+
+        不需要解释。
+
+        <br />
+
+        只是把它们放在这里。
+
+      </div>
+
+
+
+
+
+      {/* 生命地图 */}
 
       <div
 
-      style={{
+        style={{
 
-        width:620,
+          width:620,
 
-        height:620,
+          height:620,
 
-        maxWidth:"90vw",
+          maxWidth:"90vw",
 
-        maxHeight:"90vw",
+          maxHeight:"90vw",
 
-        margin:"0 auto",
+          margin:"0 auto",
 
-        position:"relative",
+          position:"relative",
 
-        borderRadius:"50%",
+          borderRadius:"50%",
 
-        overflow:"hidden",
+          overflow:"hidden",
 
-        background:
+          background:
 
-        "radial-gradient(circle,#fffaf0,#e4eadc)",
+            "radial-gradient(circle at center,#fffdf5 0%,#f4f0e3 48%,#e3e8dc 100%)",
 
-        boxShadow:
+          boxShadow:
 
-        "0 40px 100px rgba(70,60,40,.12)"
+            "0 35px 100px rgba(70,60,40,.12)",
 
-      }}
+        }}
 
       >
+
+
+
+        {/* 非常淡的内圈 */}
+
+        <div
+
+          style={{
+
+            position:"absolute",
+
+            width:"62%",
+
+            height:"62%",
+
+            left:"19%",
+
+            top:"19%",
+
+            borderRadius:"50%",
+
+            border:
+
+              "1px solid rgba(120,120,95,.10)",
+
+            pointerEvents:"none",
+
+          }}
+
+        />
+
+
+
+        <div
+
+          style={{
+
+            position:"absolute",
+
+            width:"38%",
+
+            height:"38%",
+
+            left:"31%",
+
+            top:"31%",
+
+            borderRadius:"50%",
+
+            border:
+
+              "1px solid rgba(120,120,95,.08)",
+
+            pointerEvents:"none",
+
+          }}
+
+        />
 
 
 
@@ -95,72 +211,109 @@ export default function GardenCanvas({
 
         <svg
 
-        width="620"
+          width="620"
 
-        height="620"
+          height="620"
 
-        style={{
+          viewBox="0 0 620 620"
 
-          position:"absolute",
+          style={{
 
-          inset:0,
+            position:"absolute",
 
-          opacity:.25
+            inset:0,
 
-        }}
+            width:"100%",
+
+            height:"100%",
+
+            pointerEvents:"none",
+
+            opacity:.28,
+
+          }}
 
         >
 
-        {
+          {
 
-        elements.map(
+            elements.map(
 
-          (e:any,i:number)=>{
+              (item:any,index:number)=>{
 
+                const next =
 
-            const next =
-
-            elements[i+1];
-
-
-
-            if(!next)
-
-            return null;
+                  elements[index + 1];
 
 
 
-            return (
+                if(!next) return null;
 
-              <line
 
-              key={i}
 
-              x1={e.x + e.size/2}
+                const x1 =
 
-              y1={e.y + e.size/2}
+                  (item.x || 0) +
 
-              x2={next.x + next.size/2}
+                  (item.size || 60) / 2;
 
-              y2={next.y + next.size/2}
 
-              stroke="#9c987f"
 
-              strokeWidth="1"
+                const y1 =
 
-              />
+                  (item.y || 0) +
+
+                  (item.size || 60) / 2;
+
+
+
+                const x2 =
+
+                  (next.x || 0) +
+
+                  (next.size || 60) / 2;
+
+
+
+                const y2 =
+
+                  (next.y || 0) +
+
+                  (next.size || 60) / 2;
+
+
+
+                return (
+
+                  <line
+
+                    key={index}
+
+                    x1={x1}
+
+                    y1={y1}
+
+                    x2={x2}
+
+                    y2={y2}
+
+                    stroke="#9d987f"
+
+                    strokeWidth="1"
+
+                    strokeDasharray="2 7"
+
+                  />
+
+                );
+
+              }
 
             )
 
           }
 
-        )
-
-        }
-
         </svg>
-
-
 
 
 
@@ -170,43 +323,43 @@ export default function GardenCanvas({
 
         <div
 
-        style={{
+          style={{
 
-          position:"absolute",
+            position:"absolute",
 
-          inset:0,
+            inset:0,
 
-          display:"flex",
+            display:"flex",
 
-          justifyContent:"center",
+            justifyContent:"center",
 
-          alignItems:"center",
+            alignItems:"center",
 
-          flexDirection:"column",
+            flexDirection:"column",
 
-          pointerEvents:"none",
+            pointerEvents:"none",
 
-          fontFamily:
+            fontFamily:
 
-          "Georgia,'Noto Serif SC',serif",
+              "Georgia,'Noto Serif SC',serif",
 
-          color:"#716b5c"
+            color:"#716b5c",
 
-        }}
+          }}
 
         >
 
-
-
           <div
 
-          style={{
+            style={{
 
-            fontSize:30,
+              fontSize:28,
 
-            letterSpacing:6
+              fontWeight:400,
 
-          }}
+              letterSpacing:6,
+
+            }}
 
           >
 
@@ -218,15 +371,17 @@ export default function GardenCanvas({
 
           <div
 
-          style={{
+            style={{
 
-            marginTop:15,
+              marginTop:14,
 
-            fontSize:12,
+              fontSize:12,
 
-            color:"#aaa"
+              color:"#aaa",
 
-          }}
+              letterSpacing:1,
+
+            }}
 
           >
 
@@ -238,10 +393,7 @@ export default function GardenCanvas({
 
           </div>
 
-
         </div>
-
-
 
 
 
@@ -251,25 +403,29 @@ export default function GardenCanvas({
 
         {
 
-        elements.map(
+          elements.map(
 
-          (e:any,i:number)=>(
+            (item:any,index:number)=>(
 
+              <MemoryNode
 
-            <MemoryNode
+                key={
 
-            key={i}
+                  item.id ||
 
-            item={e}
+                  `${item.date || ""}-${index}`
 
-            index={i}
+                }
 
-            />
+                item={item}
 
+                index={index}
+
+              />
+
+            )
 
           )
-
-        )
 
         }
 
@@ -278,6 +434,70 @@ export default function GardenCanvas({
       </div>
 
 
+
+
+
+      {/* 时间回顾 */}
+
+      {
+
+        days.length >= 2 && (
+
+          <div
+
+            style={{
+
+              marginTop:28,
+
+            }}
+
+          >
+
+            <TimeReflection
+
+              days={days}
+
+            />
+
+          </div>
+
+        )
+
+      }
+
+
+
+
+
+      {/* 底部说明 */}
+
+      <div
+
+        style={{
+
+          marginTop:28,
+
+          fontFamily:
+
+            "Georgia,'Noto Serif SC',serif",
+
+          fontSize:12,
+
+          color:"#aaa",
+
+          lineHeight:2,
+
+        }}
+
+      >
+
+        你不必从这里得到什么。
+
+        <br />
+
+        想回来的时候，再回来看看。
+
+      </div>
 
 
 
