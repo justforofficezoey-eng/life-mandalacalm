@@ -1,245 +1,213 @@
 "use client";
 
-import { useState } from "react";
-
-import MandalaCanvas from "../components/MandalaCanvas";
 
 import {
-  saveFragment,
-  getFragments
-} from "../lib/dailyStorage";
+useState
+} from "react";
+
 
 import {
-  createMandala
-} from "../lib/mandalaEngine";
+saveDay,
+getDays
+}
+from "../lib/dailyStorage";
+
+
+import {
+createDailyArtwork
+}
+from "../lib/dailyArtworkEngine";
+
+
+import {
+composeGarden
+}
+from "../lib/gardenComposer";
+
+
+import GardenCanvas
+from "../components/GardenCanvas";
+
 
 
 export default function Home(){
 
 
-  const [text,setText] =
-    useState("");
+const [text,setText]
+=
+useState("");
 
-  const [design,setDesign] =
-    useState<any>(null);
 
 
+const [garden,setGarden]
+=
+useState<any>(null);
 
-  function create(){
 
 
-    if(!text){
+function create(){
 
-      return;
 
-    }
+const day=
+getDays().length+1;
 
 
-    // 保存今天碎片
 
-    saveFragment(text);
+const artwork=
+createDailyArtwork(
+text,
+day
+);
 
 
 
-    // 获取7天数据
+const days=
+saveDay({
 
-    const fragments =
-      getFragments();
+date:
+new Date()
+.toISOString(),
 
 
+text,
 
-    // 生成曼陀罗设计
 
-    const result =
-      createMandala(fragments);
+artwork
 
+});
 
 
-    setDesign(result);
 
+if(days.length===7){
 
+setGarden(
+composeGarden(days)
+);
 
-    setText("");
+}
 
-  }
 
 
+setText("");
 
+}
 
 
-  return (
 
-    <main
+return (
 
-    style={{
+<main
 
-      minHeight:"100vh",
+style={{
 
-      background:"#F8F4EC",
+minHeight:"100vh",
 
-      color:"#4A4038",
+background:"#f4efe5",
 
-      display:"flex",
+padding:60,
 
-      flexDirection:"column",
+textAlign:"center"
 
-      alignItems:"center",
+}}
 
-      padding:"60px 20px"
+>
 
-    }}
 
-    >
+<h1>
 
+Life Mandala
 
+</h1>
 
-      <h1
 
-      style={{
+<p>
 
-        fontFamily:"Georgia",
+留下今天的一笔
 
-        fontWeight:400,
+</p>
 
-        fontSize:"42px"
 
-      }}
 
-      >
+<textarea
 
-        Life Mandala
+value={text}
 
-      </h1>
+onChange={
+e=>setText(e.target.value)
+}
 
+placeholder="任何东西都可以..."
 
+style={{
 
+width:350,
 
-      <p>
+height:120,
 
-        留下一点今天的生命痕迹
+borderRadius:20,
 
-      </p>
+padding:20
 
+}}
 
 
+/>
 
-      <textarea
 
-      value={text}
 
-      onChange={
-        e=>setText(e.target.value)
-      }
+<br/>
 
 
-      placeholder="任何东西都可以..."
+<button
 
-      style={{
+onClick={create}
 
-        marginTop:"40px",
+style={{
 
-        width:"90%",
+marginTop:20,
 
-        maxWidth:"500px",
+padding:"15px 40px",
 
-        height:"120px",
+borderRadius:40
 
-        borderRadius:"25px",
+}}
 
-        padding:"20px",
+>
 
-        border:
-        "1px solid #ddd",
+保存今天
 
-        fontSize:"18px"
+</button>
 
-      }}
 
-      />
 
 
+{
 
+garden &&
 
-      <button
+<>
 
-      onClick={create}
+<h2>
 
-      style={{
+{garden.title}
 
-        marginTop:"25px",
+</h2>
 
-        padding:"15px 50px",
 
-        borderRadius:"40px",
+<GardenCanvas
 
-        border:"none",
+garden={garden}
 
-        background:"#C9A96E",
+/>
 
-        color:"white"
+</>
 
-      }}
+}
 
-      >
 
-        展开我的曼陀罗
+</main>
 
-      </button>
 
-
-
-
-
-      {
-
-      design &&
-
-
-      <section
-
-      style={{
-
-        marginTop:"60px",
-
-        textAlign:"center"
-
-      }}
-
-      >
-
-
-        <MandalaCanvas
-
-        design={design}
-
-        />
-
-
-        <h2>
-
-          七日生命曼陀罗
-
-        </h2>
-
-
-        <p>
-
-          每一个输入，
-          都成为图案的一部分。
-
-        </p>
-
-
-      </section>
-
-
-      }
-
-
-
-    </main>
-
-
-  );
+)
 
 }
