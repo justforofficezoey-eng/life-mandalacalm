@@ -1,42 +1,47 @@
 import {
 ArtworkElement
-} from "./dailyArtworkEngine";
+}
+from "./dailyArtworkEngine";
+
+
+
+export type DayArtwork={
+
+date:string;
+
+text:string;
+
+artwork:ArtworkElement;
+
+};
+
 
 
 const KEY="life-garden";
 
 
 
-export type DayArtwork={
-
- date:string;
-
- text:string;
-
- artwork:ArtworkElement;
-
-};
-
-
-
 export function getDays(){
 
- if(
- typeof window==="undefined"
- )
- return [];
+
+if(
+typeof window==="undefined"
+)
+
+return [];
 
 
- const data=
- localStorage.getItem(KEY);
+
+const data =
+localStorage.getItem(KEY);
 
 
- return data?
- JSON.parse(data):
- [];
+
+return data?
+JSON.parse(data):
+[];
 
 }
-
 
 
 
@@ -46,28 +51,27 @@ item:DayArtwork
 ){
 
 
- const days=getDays();
-
-
- const updated=[
-
- ...days,
-
- item
-
- ].slice(-7);
+const days=getDays();
 
 
 
- localStorage.setItem(
+const result=[
 
- KEY,
+...days,
 
- JSON.stringify(updated)
+item
 
- );
+].slice(-7);
 
 
- return updated;
+
+localStorage.setItem(
+KEY,
+JSON.stringify(result)
+);
+
+
+
+return result;
 
 }
