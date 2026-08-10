@@ -13,6 +13,12 @@ from "../components/GardenCanvas";
 import ReflectionCard
 from "../components/ReflectionCard";
 
+import LifeTrajectory
+from "../components/LifeTrajectory";
+
+import SevenDayStory
+from "../components/SevenDayStory";
+
 import {
   composeGarden
 }
@@ -23,26 +29,17 @@ from "../lib/gardenComposer";
 export default function Home(){
 
 
-  const [mood,setMood] =
-    useState("");
+  const [mood,setMood]=useState("");
 
+  const [text,setText]=useState("");
 
-  const [text,setText] =
-    useState("");
+  const [reflection,setReflection]=useState<any>(null);
 
-
-  const [garden,setGarden] =
-    useState<any>(null);
+  const [garden,setGarden]=useState<any>(null);
 
 
 
-  const [reflection,setReflection] =
-    useState<any>(null);
-
-
-
-
-  const moods = [
+  const moods=[
 
     ["🌱","开始了","seed"],
 
@@ -63,39 +60,42 @@ export default function Home(){
 
 
 
+
   function save(){
 
 
     const plant =
 
-      moods.find(
-        m=>m[1]===mood
-      )?.[2]
+    moods.find(
+      m=>m[1]===mood
+    )?.[2]
 
-      ||
+    ||
 
-      "seed";
+    "seed";
 
 
 
     const days =
 
-      saveDay({
+    saveDay({
 
-        date:new Date().toISOString(),
+      date:new Date().toISOString(),
 
-        mood,
+      mood,
 
-        text,
+      text,
 
-        plant
+      plant
 
-      });
+    });
 
 
 
     setGarden(
+
       composeGarden(days)
+
     );
 
 
@@ -118,7 +118,10 @@ export default function Home(){
 
 
 
-  const days = getDays();
+
+  const days=getDays();
+
+
 
 
 
@@ -144,16 +147,13 @@ export default function Home(){
 
 
 
-
       <h1
 
       style={{
 
         fontWeight:400,
 
-        letterSpacing:5,
-
-        fontSize:42
+        letterSpacing:5
 
       }}
 
@@ -162,7 +162,6 @@ export default function Home(){
         Life Mandala
 
       </h1>
-
 
 
 
@@ -184,197 +183,174 @@ export default function Home(){
 
 
 
-      <h3
-
-      style={{
-
-        fontWeight:400,
-
-        marginTop:50
-
-      }}
-
-      >
-
-        今天的一个瞬间
-
-      </h3>
-
-
-
-
-      <div>
-
       {
 
-        moods.map(m=>(
+        days.length < 7 &&
 
+        <>
 
-          <button
-
-          key={m[1]}
-
-          onClick={()=>setMood(m[1])}
-
-
-          style={{
-
-            margin:8,
-
-            padding:"14px 22px",
-
-            borderRadius:30,
-
-            border:"1px solid #ddd",
-
-            background:
-
-            mood===m[1]
-
-            ?
-
-            "#e1e8d8"
-
-            :
-
-            "rgba(255,255,255,.6)"
-
-          }}
-
-          >
-
-            {m[0]} {m[1]}
-
-          </button>
-
-
-        ))
-
-      }
-
-      </div>
-
-
-
-
-
-      <textarea
-
-
-      value={text}
-
-
-      onChange={
-
-        e=>setText(e.target.value)
-
-      }
-
-
-      placeholder="写下一句话，也可以只是停留"
-
-
-      style={{
-
-        marginTop:30,
-
-        width:"90%",
-
-        maxWidth:450,
-
-        height:120,
-
-        padding:20,
-
-        borderRadius:20,
-
-        border:"1px solid #ddd"
-
-      }}
-
-      />
-
-
-
-
-
-      <br/>
-
-
-
-
-      <button
-
-      onClick={save}
-
-
-      style={{
-
-        marginTop:25,
-
-        padding:"15px 50px",
-
-        borderRadius:40,
-
-        border:"none",
-
-        background:"#66705b",
-
-        color:"#fff"
-
-      }}
-
-      >
-
-        收下今天
-
-      </button>
-
-
-
-
-
-      {
-
-        days.length < 7
-
-        &&
-
-
-        <div
+        <h3
 
         style={{
 
-          marginTop:70
+          marginTop:60,
+
+          fontWeight:400
 
         }}
 
         >
 
-          <h2
+          今天的一个瞬间
 
-          style={{
-
-            fontWeight:400
-
-          }}
-
-          >
-
-            曼陀罗正在形成中
-
-          </h2>
+        </h3>
 
 
-          <p>
 
-          已留下 {days.length}/7 个生命碎片
+        <div>
 
-          </p>
+        {
 
+          moods.map(m=>(
+
+
+            <button
+
+            key={m[1]}
+
+            onClick={()=>setMood(m[1])}
+
+            style={{
+
+              margin:8,
+
+              padding:"14px 22px",
+
+              borderRadius:30,
+
+              border:"1px solid #ddd",
+
+              background:
+
+              mood===m[1]
+
+              ?
+
+              "#e1e8d8"
+
+              :
+
+              "#fff"
+
+            }}
+
+            >
+
+              {m[0]} {m[1]}
+
+            </button>
+
+
+          ))
+
+        }
 
         </div>
 
+
+
+
+        <textarea
+
+        value={text}
+
+        onChange={
+          e=>setText(e.target.value)
+        }
+
+        placeholder="写下一句话，也可以只是停留"
+
+        style={{
+
+          marginTop:30,
+
+          width:"90%",
+
+          maxWidth:450,
+
+          height:120,
+
+          padding:20,
+
+          borderRadius:20
+
+        }}
+
+        />
+
+
+
+
+        <br/>
+
+
+
+        <button
+
+        onClick={save}
+
+        style={{
+
+          marginTop:25,
+
+          padding:"15px 50px",
+
+          borderRadius:40,
+
+          border:"none",
+
+          background:"#66705b",
+
+          color:"#fff"
+
+        }}
+
+        >
+
+          收下今天
+
+        </button>
+
+
+
+
+
+        <h2
+
+        style={{
+
+          marginTop:80,
+
+          fontWeight:400
+
+        }}
+
+        >
+
+          曼陀罗正在形成中
+
+        </h2>
+
+
+
+        <p>
+
+        已留下 {days.length}/7 个生命碎片
+
+        </p>
+
+
+        </>
 
       }
 
@@ -384,43 +360,53 @@ export default function Home(){
 
       {
 
-        days.length >=7 &&
+        days.length >= 7 &&
 
 
-        <div
-
-        style={{
-
-          marginTop:70
-
-        }}
-
-        >
-
-          <h2>
-
-          你的七日生命曼陀罗
-
-          </h2>
+        <>
 
 
-          <GardenCanvas
+        <SevenDayStory
 
-          garden={
+        days={days}
 
-            garden ||
+        garden={
 
-            composeGarden(days)
+          garden ||
 
-          }
+          composeGarden(days)
 
-          />
+        }
 
-        </div>
+        />
+
+
+
+        <LifeTrajectory
+
+        days={days}
+
+        />
+
+
+
+        <GardenCanvas
+
+        garden={
+
+          garden ||
+
+          composeGarden(days)
+
+        }
+
+        />
+
+
+        </>
 
 
       }
-
 
 
 
@@ -437,11 +423,16 @@ export default function Home(){
 
         text={reflection.text}
 
-        onClose={()=>setReflection(null)}
+        onClose={
+
+          ()=>setReflection(null)
+
+        }
 
         />
 
       }
+
 
 
 
