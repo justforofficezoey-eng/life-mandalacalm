@@ -1,196 +1,255 @@
 "use client";
 
-import { useState } from "react";
 
 import {
-  saveDay,
-  getDays
-} from "../lib/dailyStorage";
+useState
+}
+from "react";
+
 
 import {
-  createDailyArtwork
-} from "../lib/dailyArtworkEngine";
+saveDay,
+getDays
+}
+from "../lib/dailyStorage";
+
 
 import {
-  composeGarden
-} from "../lib/gardenComposer";
+createDailyArtwork
+}
+from "../lib/dailyArtworkEngine";
+
+
+import {
+composeGarden
+}
+from "../lib/gardenComposer";
+
 
 import GardenCanvas
 from "../components/GardenCanvas";
 
 
+
+
 export default function Home(){
 
 
-  const [text,setText] =
-    useState("");
+const [text,setText]=
+useState("");
 
 
-  const [garden,setGarden] =
-    useState<any>(null);
 
+const [garden,setGarden]=
+useState<any>(null);
 
 
-  function create(){
 
 
-    if(!text){
+function preview(){
 
-      return;
 
-    }
+const fake=[];
 
 
-    const day =
-      getDays().length + 1;
 
+for(
+let i=1;
+i<=7;
+i++
+){
 
 
-    const artwork =
-      createDailyArtwork(
-        text,
-        day
-      );
+fake.push({
 
+artwork:
+createDailyArtwork(
+text+i,
+i
+)
 
+});
 
-    const days =
-      saveDay({
 
-        date:
-        new Date()
-        .toISOString(),
+}
 
-        text,
 
-        artwork
 
-      });
+setGarden(
+composeGarden(fake)
+);
 
 
+}
 
-    if(days.length === 7){
 
-      setGarden(
-        composeGarden(days)
-      );
 
-    }
 
 
-    setText("");
+function save(){
 
-  }
 
 
+const day =
+getDays().length+1;
 
 
-  return (
 
-    <main
+const artwork =
+createDailyArtwork(
+text,
+day
+);
 
-    style={{
 
-      minHeight:"100vh",
 
-      background:"#f4efe5",
+const days =
+saveDay({
 
-      padding:"60px",
+date:
+new Date()
+.toISOString(),
 
-      textAlign:"center"
+text,
 
-    }}
+artwork
 
-    >
+});
 
 
-      <h1>
-        Life Mandala
-      </h1>
 
+if(days.length===7)
 
-      <p>
-        留下今天的一笔
-      </p>
+setGarden(
+composeGarden(days)
+);
 
 
 
-      <textarea
+setText("");
 
-      value={text}
 
-      onChange={
-        e=>setText(e.target.value)
-      }
 
+}
 
-      placeholder="任何东西都可以..."
 
 
-      style={{
 
-        width:"350px",
+return (
 
-        height:"120px",
+<main
 
-        padding:"20px",
+style={{
 
-        borderRadius:"20px"
+minHeight:"100vh",
 
-      }}
+background:"#f5efe3",
 
+padding:60,
 
-      />
+textAlign:"center"
 
+}}
 
+>
 
-      <br />
 
+<h1>
+Life Mandala
+</h1>
 
-      <button
 
-      onClick={create}
+<p>
+留下今天的一笔
+</p>
 
 
-      style={{
+<textarea
 
-        marginTop:"20px",
+value={text}
 
-        padding:"15px 40px",
+onChange={
+e=>setText(e.target.value)
+}
 
-        borderRadius:"40px"
 
-      }}
+placeholder="任何东西都可以"
 
-      >
 
-        保存今天
+style={{
 
-      </button>
+width:350,
 
+height:120,
 
+padding:20,
 
-      {
-        garden &&
+borderRadius:20
 
-        <>
+}}
 
-        <h2>
-          {garden.title}
-        </h2>
+/>
 
 
-        <GardenCanvas
-          garden={garden}
-        />
 
-        </>
+<br/>
 
-      }
 
+<button onClick={save}>
 
-    </main>
+保存今天
 
-  );
+</button>
+
+
+
+<br/>
+
+
+<button
+
+onClick={preview}
+
+style={{
+
+marginTop:20
+
+}}
+
+>
+
+预览七日花园
+
+</button>
+
+
+
+
+{
+garden&&
+
+<>
+
+<h2>
+{garden.title}
+</h2>
+
+
+<GardenCanvas
+
+garden={garden}
+
+/>
+
+
+</>
+
+}
+
+
+
+</main>
+
+)
 
 }
