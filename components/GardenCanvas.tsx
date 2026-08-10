@@ -1,6 +1,131 @@
 "use client";
 
 
+function Flower({
+x,
+y,
+size,
+color,
+rotation
+}:any){
+
+
+const petals =
+Array.from({length:8});
+
+
+return (
+
+<g
+
+transform={`
+rotate(${rotation}
+${x}
+${y})
+`}
+
+>
+
+
+{
+
+petals.map((_,i)=>(
+
+<ellipse
+
+key={i}
+
+cx={x}
+
+cy={y-size/2}
+
+rx={size/5}
+
+ry={size/2}
+
+fill={color}
+
+opacity="0.75"
+
+transform={`
+rotate(
+${i*45}
+${x}
+${y}
+)
+`}
+
+/>
+
+))
+
+}
+
+
+<circle
+
+cx={x}
+
+cy={y}
+
+r={size/6}
+
+fill="#F6D7A7"
+
+/>
+
+
+</g>
+
+)
+
+}
+
+
+
+
+
+function Leaf({
+x,
+y,
+size,
+color,
+rotation
+}:any){
+
+
+return (
+
+<ellipse
+
+cx={x}
+
+cy={y}
+
+rx={size/2}
+
+ry={size}
+
+fill={color}
+
+opacity="0.65"
+
+transform={`
+rotate(${rotation}
+${x}
+${y})
+`}
+
+/>
+
+)
+
+}
+
+
+
+
+
 export default function GardenCanvas({
 
 garden
@@ -19,12 +144,13 @@ width:420,
 
 height:420,
 
+borderRadius:40,
+
+overflow:"hidden",
+
 background:
-"linear-gradient(#18251f,#314437)",
 
-borderRadius:30,
-
-overflow:"hidden"
+"linear-gradient(135deg,#192820,#415545)"
 
 }}
 
@@ -43,6 +169,26 @@ viewBox="0 0 420 420"
 
 
 
+{/* 月光 */}
+
+<circle
+
+cx="210"
+
+cy="210"
+
+r="160"
+
+fill="none"
+
+stroke="#d8c8a8"
+
+opacity="0.15"
+
+/>
+
+
+
 {
 
 garden.elements.map(
@@ -51,74 +197,102 @@ garden.elements.map(
 
 
 const x=
-e.position.x*4.2;
+80+
+(e.position.x*2.5)
++
+i*8;
 
 
 const y=
-e.position.y*4.2;
+80+
+(e.position.y*2.5);
+
+
+
+const size=
+e.size/2;
+
+
+
+if(
+
+e.type==="leaf"
+||
+e.type==="fern"
+||
+e.type==="vine"
+
+){
+
+
+return (
+
+<Leaf
+
+key={i}
+
+x={x}
+
+y={y}
+
+size={size}
+
+color={e.color}
+
+rotation={e.rotation}
+
+/>
+
+)
+
+
+}
 
 
 
 return (
 
-<g key={i}>
+<Flower
 
+key={i}
 
-{/* 花 */}
+x={x}
 
-<ellipse
+y={y}
 
-cx={x}
+size={size}
 
-cy={y}
+color={e.color}
 
-rx={e.size/3}
-
-ry={e.size/1.5}
-
-fill={e.color}
-
-opacity="0.75"
-
-transform={
-
-`rotate(${e.rotation}
-${x}
-${y})`
-
-}
+rotation={e.rotation}
 
 />
 
+)
 
 
-{/* 中心 */}
+
+}
+
+)
+
+}
+
+
+
+{/* 中心光 */}
 
 <circle
 
-cx={x}
+cx="210"
 
-cy={y}
+cy="210"
 
-r="6"
+r="12"
 
-fill="#F4DFA8"
+fill="#fff1cf"
 
 />
-
-
-
-</g>
-
-
-)
-
-
-}
-
-)
-
-}
 
 
 
@@ -128,6 +302,5 @@ fill="#F4DFA8"
 </div>
 
 )
-
 
 }
