@@ -15,9 +15,8 @@ export default function SevenDayStory({
     useState<any>({});
 
 
-
   const [active,setActive] =
-    useState<number | null>(null);
+    useState(0);
 
 
 
@@ -25,88 +24,119 @@ export default function SevenDayStory({
 
     {
       title:"开始",
-      idea:"存在",
-      question:"如果今天只是属于你的时间，你想留下什么？",
+      word:"存在",
+      question:
+      "如果今天只是属于你的时间，你想留下什么？",
       options:[
         "一个新的尝试",
-        "一个小小愿望",
-        "一个想保护的东西"
+        "一个真实的感受",
+        "一个想完成的愿望",
+        "只是安静存在"
       ]
     },
 
 
     {
       title:"感受",
-      idea:"接纳",
-      question:"这个感受想告诉你什么？",
+      word:"接纳",
+      question:
+      "这个情绪正在提醒你什么？",
       options:[
         "我需要休息",
-        "我需要被理解",
-        "我需要改变"
+        "我需要表达",
+        "我需要改变",
+        "我只是想被看见"
       ]
     },
 
 
     {
       title:"连接",
-      idea:"关系",
-      question:"今天什么让你感觉和世界产生联系？",
+      word:"关系",
+      question:
+      "今天有没有一个瞬间，让你感觉和世界产生联系？",
       options:[
         "一个人",
+        "一个地方",
         "一件小事",
-        "一个瞬间"
+        "自己的内心"
       ]
     },
 
 
     {
       title:"力量",
-      idea:"选择",
-      question:"你坚持的东西，值得继续吗？",
+      word:"选择",
+      question:
+      "你正在坚持的事情，值得继续吗？",
       options:[
         "值得",
         "需要调整",
-        "我要重新选择"
+        "我还不知道",
+        "我想放下"
       ]
     },
 
 
     {
       title:"变化",
-      idea:"流动",
-      question:"如果允许自己改变，你想放下什么？",
+      word:"流动",
+      question:
+      "如果允许自己改变，你想放下什么？",
       options:[
         "压力",
+        "害怕",
         "过去",
-        "别人的期待"
+        "别人期待"
       ]
     },
 
 
     {
-      title:"理解",
-      idea:"回望",
-      question:"你想对这几天的自己说什么？",
+      title:"回望",
+      word:"理解",
+      question:
+      "你想对七天前的自己说什么？",
       options:[
         "谢谢你坚持",
-        "慢一点也可以",
-        "继续相信自己"
+        "慢一点也没关系",
+        "你已经很好",
+        "继续探索"
       ]
     },
 
 
     {
-      title:"成为",
-      idea:"整合",
-      question:"这七天，你看见了自己的哪一部分？",
+      title:"整合",
+      word:"成为",
+      question:
+      "这七天，你看见了自己的哪一部分？",
       options:[
+        "力量",
+        "温柔",
         "勇气",
-        "柔软",
         "新的方向"
       ]
     }
 
   ];
+
+
+
+
+  function choose(value:string){
+
+    setAnswers({
+
+      ...answers,
+
+      [active]:value
+
+    });
+
+
+  }
+
 
 
 
@@ -121,7 +151,7 @@ export default function SevenDayStory({
 
       margin:"80px auto",
 
-      padding:20,
+      padding:"20px",
 
       color:"#3f4438"
 
@@ -151,7 +181,6 @@ export default function SevenDayStory({
 
 
 
-
       <p
 
       style={{
@@ -166,11 +195,11 @@ export default function SevenDayStory({
 
       >
 
-        不是寻找答案。
+        七天不是改变自己。
 
         <br/>
 
-        而是在七天里，更了解自己。
+        是重新认识自己。
 
       </p>
 
@@ -178,192 +207,158 @@ export default function SevenDayStory({
 
 
 
+      <div
+
+      style={{
+
+        marginTop:50,
+
+        background:"rgba(255,252,243,.8)",
+
+        borderRadius:35,
+
+        padding:35
+
+      }}
+
+      >
+
+
+
+      <div
+
+      style={{
+
+        color:"#999",
+
+        letterSpacing:3
+
+      }}
+
+      >
+
+        DAY {active+1}
+
+      </div>
+
+
+
+
+      <h2
+
+      style={{
+
+        fontWeight:400
+
+      }}
+
+      >
+
+        {themes[active].title}
+
+      </h2>
+
+
+
+
+      <p
+
+      style={{
+
+        color:"#66705b"
+
+      }}
+
+      >
+
+        {themes[active].word}
+
+      </p>
+
+
+
+
+
+      <h3
+
+      style={{
+
+        fontWeight:400,
+
+        lineHeight:1.8
+
+      }}
+
+      >
+
+        {themes[active].question}
+
+      </h3>
+
+
+
+
       {
 
-        days.map(
+        themes[active].options.map(
 
-          (day:any,index:number)=>{
+          (item:string)=>(
 
 
-            const theme =
-            themes[index];
+          <button
 
+          key={item}
 
+          onClick={()=>choose(item)}
 
-            return (
+          style={{
 
-            <div
+            display:"block",
 
-            key={index}
+            width:"100%",
 
-            style={{
+            margin:"12px 0",
 
-              marginTop:40,
+            padding:15,
 
-              padding:30,
+            borderRadius:25,
 
-              borderRadius:30,
 
-              background:
+            border:
 
-              "rgba(255,252,243,.8)",
+            answers[active]===item
 
-              boxShadow:
+            ?
 
-              "0 20px 60px rgba(70,60,40,.08)"
+            "2px solid #66705b"
 
-            }}
+            :
 
-            >
+            "1px solid #ddd",
 
 
+            background:
 
-              <small
+            answers[active]===item
 
-              style={{
+            ?
 
-                color:"#999",
+            "#e4ead8"
 
-                letterSpacing:3
+            :
 
-              }}
+            "#fff"
 
-              >
+          }}
 
-                DAY {index+1}
+          >
 
-              </small>
+            {item}
 
+          </button>
 
 
-
-              <h2
-
-              style={{
-
-                fontWeight:400
-
-              }}
-
-              >
-
-                {day.mood}
-
-              </h2>
-
-
-
-              <h3
-
-              style={{
-
-                color:"#78806c",
-
-                fontWeight:400
-
-              }}
-
-              >
-
-                {theme.idea}
-
-              </h3>
-
-
-
-
-              <p
-
-              style={{
-
-                lineHeight:2
-
-              }}
-
-              >
-
-                {theme.question}
-
-              </p>
-
-
-
-
-
-              <div>
-
-              {
-
-                theme.options.map(
-
-                  (option:string)=>(
-
-
-                    <button
-
-                    key={option}
-
-                    onClick={()=>{
-
-                      setAnswers({
-
-                        ...answers,
-
-                        [index]:option
-
-                      });
-
-                      setActive(index);
-
-                    }}
-
-
-                    style={{
-
-                      margin:6,
-
-                      padding:"10px 18px",
-
-                      borderRadius:25,
-
-                      border:"1px solid #ddd",
-
-                      background:
-
-                      answers[index]===option
-
-                      ?
-
-                      "#dfe8d5"
-
-                      :
-
-                      "white"
-
-                    }}
-
-                    >
-
-                      {option}
-
-                    </button>
-
-
-                  )
-
-                )
-
-              }
-
-              </div>
-
-
-
-            </div>
-
-            )
-
-          }
+          )
 
         )
 
@@ -372,24 +367,76 @@ export default function SevenDayStory({
 
 
 
+      <div
+
+      style={{
+
+        marginTop:35,
+
+        display:"flex",
+
+        justifyContent:"space-between"
+
+      }}
+
+      >
+
+
+      <button
+
+      disabled={active===0}
+
+      onClick={()=>setActive(active-1)}
+
+      >
+
+        上一天
+
+      </button>
+
+
+
+
+      <button
+
+      disabled={active===6}
+
+      onClick={()=>setActive(active+1)}
+
+      >
+
+        下一天
+
+      </button>
+
+
+      </div>
+
+
+
+      </div>
+
+
+
+
+
 
       {
 
-        days.length===7 &&
+        active===6 &&
 
 
         <div
 
         style={{
 
-          marginTop:80,
+          marginTop:70,
 
           textAlign:"center"
 
         }}
 
         >
-
 
           <h2
 
@@ -401,7 +448,7 @@ export default function SevenDayStory({
 
           >
 
-            你的七日生命曼陀罗
+            你的七日曼陀罗
 
           </h2>
 
@@ -419,14 +466,17 @@ export default function SevenDayStory({
 
           >
 
-            七个瞬间，
+            七天留下的，
 
             <br/>
 
-            七次与你自己的相遇。
+            不只是记录。
+
+            <br/>
+
+            是你与自己相遇的轨迹。
 
           </p>
-
 
 
 
@@ -451,6 +501,7 @@ export default function SevenDayStory({
 
 
     </div>
+
 
   );
 
