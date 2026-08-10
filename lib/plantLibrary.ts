@@ -1,45 +1,43 @@
-export const plantLibrary = [
+export const plantLibrary = {
 
-{
-type:"cherry",
-name:"樱花枝",
-image:"/plants/cherry.png",
-role:"main"
-},
+  seed: {
+    image: "/plants/seed.png",
+    stage: 1
+  },
 
-{
-type:"lotus",
-name:"莲花",
-image:"/plants/lotus.png",
-role:"main"
-},
+  root: {
+    image: "/plants/root.png",
+    stage: 2
+  },
 
-{
-type:"orchid",
-name:"兰花",
-image:"/plants/orchid.png",
-role:"main"
-},
+  leaf: {
+    image: "/plants/leaf_cluster.png",
+    stage: 3
+  },
 
-{
-type:"fern",
-name:"蕨叶",
-image:"/plants/fern.png",
-role:"support"
-},
+  branch: {
+    image: "/plants/branch.png",
+    stage: 4
+  },
 
-{
-type:"vine",
-name:"藤蔓",
-image:"/plants/vine.png",
-role:"connect"
-},
+  flower: {
+    image: "/plants/lotus.png",
+    stage: 5
+  },
 
-{
-type:"wildflower",
-name:"野花",
-image:"/plants/wildflower.png",
-role:"detail"
-}
+  forest: {
+    image: "/plants/forest_patch.png",
+    stage: 6
+  },
 
-];
+  vine: {
+    image: "/plants/vine_circle.png",
+    stage: 6
+  },
+
+  light: {
+    image: "/plants/light_orb.png",
+    stage: 7
+  }
+
+};
