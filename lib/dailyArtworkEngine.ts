@@ -1,105 +1,110 @@
 export type ArtworkElement = {
 
-  type:string;
+type:
+"lotus" |
+"orchid" |
+"fern" |
+"vine" |
+"wildflower" |
+"cherry";
 
-  color:string;
+color:string;
 
-  position:{
-    x:number;
-    y:number;
-  };
+position:{
+x:number;
+y:number;
+};
 
-  size:number;
+size:number;
 
-  rotation:number;
+rotation:number;
 
 };
 
 
 
 export function createDailyArtwork(
- text:string,
- day:number
+text:string,
+day:number
 ):ArtworkElement{
 
 
- const seed =
- text.split("")
- .reduce(
- (a,c)=>a+c.charCodeAt(0),
- 0
- )
- +
- day * 97;
+const seed =
+[...text]
+.reduce(
+(a,c)=>a+c.charCodeAt(0),
+0
+)
++
+day*113;
 
 
 
- const plants=[
+const plants=[
 
- "lotus",
- "orchid",
- "fern",
- "cherry",
- "vine",
- "wildflower",
- "leaf"
+"lotus",
+"orchid",
+"fern",
+"vine",
+"wildflower",
+"cherry"
 
- ];
-
-
-
- const colors=[
-
- "#D8C7B0",
- "#A7BFA3",
- "#D7A6A0",
- "#B8C8D8",
- "#C8B07A",
- "#879B76"
-
- ];
+] as const;
 
 
 
- return {
+const colors=[
 
-  type:
-  plants[
-   seed %
-   plants.length
-  ],
+"#E7C7C5",
+"#A8C3A0",
+"#D8B27A",
+"#B8C8D8",
+"#D9A6A0",
+"#9AAE8A"
 
-
-  color:
-  colors[
-   seed %
-   colors.length
-  ],
+];
 
 
-  position:{
 
-   x:
-   20+
-   seed%60,
+return {
 
 
-   y:
-   20+
-   (seed*3)%60
-
-  },
-
-
-  size:
-  40+
-  seed%60,
+type:
+plants[
+seed % plants.length
+],
 
 
-  rotation:
-  seed%360
+color:
+colors[
+seed % colors.length
+],
 
 
- };
+position:{
+
+x:
+25+
+(seed*7)%50,
+
+
+y:
+25+
+(seed*11)%50
+
+},
+
+
+size:
+50+
+(seed%40),
+
+
+rotation:
+seed%360
+
+
+};
+
 
 }
