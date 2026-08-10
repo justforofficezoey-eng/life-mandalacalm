@@ -1,49 +1,51 @@
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 
 export default function CreateMandala() {
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
 
   const [listening, setListening] = useState(false);
   const [energy, setEnergy] = useState(20);
-  const [message, setMessage] = useState(
-    "欢迎回来，让你的声音创造属于你的生命曼陀罗。"
-  );
+  const [text, setText] = useState("");
 
-  // 女性声音引导
-  function speak(text: string) {
-    const speech = new SpeechSynthesisUtterance(text);
-
-    speech.lang = "zh-CN";
-    speech.rate = 0.85;
-    speech.pitch = 1.25;
-
-    const voices = window.speechSynthesis.getVoices();
-
-    const female =
-      voices.find(v =>
-        v.name.includes("Female")
-      ) || voices.find(v =>
-        v.lang.includes("zh")
-      );
-
-    if (female) {
-      speech.voice = female;
-    }
-
-    window.speechSynthesis.speak(speech);
-  }
+  const messages = [
+    "欢迎回来。",
+    "给自己一点安静的时间。",
+    "感受你的呼吸。",
+    "你的声音正在创造属于你的生命曼陀罗。"
+  ];
 
 
-  async function startListening() {
+  // 打字效果
+  useEffect(()=>{
 
-    speak(
-      "欢迎回来。请慢慢呼吸。当你准备好，让你的声音创造属于你的曼陀罗。"
-    );
+    let index = 0;
+    let word = "";
 
+    const timer =
+      setInterval(()=>{
+
+        if(index < messages.length){
+
+          word += messages[index] + "\n\n";
+          setText(word);
+          index++;
+
+        }
+
+      },1500);
+
+
+    return()=>clearInterval(timer);
+
+  },[]);
+
+
+
+  async function startListening(){
 
     const stream =
       await navigator.mediaDevices.getUserMedia({
@@ -68,15 +70,23 @@ export default function CreateMandala() {
 
     source.connect(analyser);
 
-
     analyserRef.current = analyser;
 
 
     setListening(true);
 
-    setMessage(
-      "正在感受你的声音频率..."
+  }
+
+
+
+  function stopListening(){
+
+    setListening(false);
+
+    setText(
+      "今天先到这里。\n\n你的声音已经留下了一道生命轨迹。"
     );
+
   }
 
 
@@ -104,6 +114,7 @@ export default function CreateMandala() {
 
     function draw(){
 
+
       ctx.clearRect(
         0,
         0,
@@ -114,46 +125,42 @@ export default function CreateMandala() {
 
       ctx.save();
 
-      ctx.translate(
-        300,
-        300
-      );
+      ctx.translate(300,300);
 
 
-      const size =
-        90 + energy * 1.5;
+      const radius =
+        100 + energy;
 
 
-      for(let i=0;i<36;i++){
+      for(let i=0;i<48;i++){
 
         ctx.rotate(
-          Math.PI / 18
+          Math.PI/24
         );
 
 
         ctx.beginPath();
 
+
         ctx.arc(
           0,
           0,
-          size,
+          radius,
           0,
           Math.PI*2
         );
 
 
         ctx.strokeStyle =
-        `hsla(
-          ${40+i*5},
-          70%,
-          70%,
-          0.35
+        `rgba(
+          210,
+          170,
+          100,
+          0.25
         )`;
 
 
-        ctx.lineWidth =
-          2;
-
+        ctx.lineWidth=2;
 
         ctx.stroke();
 
@@ -179,23 +186,22 @@ export default function CreateMandala() {
         let total=0;
 
         data.forEach(
-          n=>total+=n
+          x=>total+=x
         );
 
 
-        const value =
-          total/data.length;
-
-
         setEnergy(
-          Math.min(value,100)
+          Math.min(
+            total/data.length,
+            100
+          )
         );
 
       }
 
 
       animation =
-        requestAnimationFrame(draw);
+      requestAnimationFrame(draw);
 
     }
 
@@ -212,6 +218,7 @@ export default function CreateMandala() {
 
 
 
+
   return (
 
     <main
@@ -219,87 +226,80 @@ export default function CreateMandala() {
       minHeight:"100vh",
       padding:"40px",
       textAlign:"center",
-      color:"#5b4566",
       background:
-      "linear-gradient(#fff8f0,#eadcf5)"
+      "linear-gradient(#fff9f0,#eee0f5)",
+      color:"#5d4865"
     }}
     >
 
 
       <h1>
-        🌸 Voice Mandala
+        ✨ Life Mandala
       </h1>
-
-
-      <p>
-        你的声音，是生命创造的第一道光。
-      </p>
 
 
       <p
       style={{
-        fontSize:"14px",
-        opacity:.7
+        whiteSpace:"pre-line",
+        fontSize:"20px"
       }}
       >
-        🔒 声音只用于实时生成，不会保存或上传。
+        {text}
       </p>
-
 
 
       <canvas
       ref={canvasRef}
       style={{
         borderRadius:"50%",
-        margin:"30px auto",
-        background:
-        "rgba(255,255,255,.25)"
+        margin:"30px auto"
       }}
       />
 
 
-
-      <h3>
-        {message}
-      </h3>
-
+      <p>
+        🔒 声音只用于实时创造，不会保存。
+      </p>
 
 
-      {!listening &&
+
+      {!listening ?
 
       <button
       onClick={startListening}
       style={{
         padding:"16px 40px",
         borderRadius:"40px",
-        border:"none",
         background:"#d8b56a",
         color:"white",
+        border:"none",
         fontSize:"18px"
       }}
       >
-        🎤 开始聆听
+        🎤 开始创造
       </button>
 
-      }
+      :
 
+      <button
+      onClick={stopListening}
+      style={{
+        padding:"16px 40px",
+        borderRadius:"40px",
+        background:"#9b7aa8",
+        color:"white",
+        border:"none",
+        fontSize:"18px"
+      }}
+      >
+        🌙 停止创造
+      </button>
 
-      {listening &&
-      <div>
-
-        <h2>
-          🌬 请跟随呼吸
-        </h2>
-
-        <p>
-          吸气 4 秒 · 停留 4 秒 · 呼气 6 秒
-        </p>
-
-      </div>
       }
 
 
     </main>
 
   );
+
 }
