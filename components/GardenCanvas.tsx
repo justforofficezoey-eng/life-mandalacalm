@@ -19,16 +19,15 @@ export default function GardenCanvas({
 
   return (
 
-
     <div
 
       style={{
 
-        width:580,
+        width:600,
 
-        height:580,
+        height:600,
 
-        margin:"60px auto",
+        margin:"50px auto",
 
         position:"relative",
 
@@ -41,10 +40,10 @@ export default function GardenCanvas({
 
         `
         radial-gradient(
-          circle at center,
+          circle,
           #fff9e8 0%,
-          #f2ead8 42%,
-          #dfe6d8 100%
+          #f1ead8 45%,
+          #d8e2d3 100%
         )
         `,
 
@@ -52,14 +51,10 @@ export default function GardenCanvas({
         boxShadow:
 
         `
-        0 60px 140px rgba(70,60,40,.16),
-        inset 0 0 100px rgba(255,255,255,.7)
+        0 60px 120px rgba(70,60,40,.18),
+        inset 0 0 100px rgba(255,255,255,.8)
         `,
 
-
-        border:
-
-        "1px solid rgba(120,100,70,.12)"
 
       }}
 
@@ -67,42 +62,7 @@ export default function GardenCanvas({
 
 
 
-      {/* 内在空间 */}
-
-      <div
-
-        style={{
-
-          position:"absolute",
-
-          inset:90,
-
-          borderRadius:"50%",
-
-
-          background:
-
-          `
-          radial-gradient(
-          circle,
-          rgba(255,240,190,.55),
-          transparent 70%
-          )
-          `,
-
-
-          animation:
-
-          "softGlow 9s ease-in-out infinite"
-
-        }}
-
-      />
-
-
-
-
-      {/* 曼陀罗中心 */}
+      {/* 中心生命光 */}
 
       <div
 
@@ -114,48 +74,44 @@ export default function GardenCanvas({
 
           top:"50%",
 
-          transform:"translate(-50%,-50%)",
+          width:260,
+
+          height:260,
 
 
-          width:70,
+          transform:
 
-          height:70,
+          "translate(-50%,-50%)",
+
 
           borderRadius:"50%",
 
 
           background:
 
-          "rgba(255,250,220,.7)",
+          `
+          radial-gradient(
+          circle,
+          rgba(255,240,190,.8),
+          transparent 70%
+          )
+          `,
 
 
-          display:"flex",
+          animation:
 
-          alignItems:"center",
-
-          justifyContent:"center",
-
-
-          fontSize:28,
-
-
-          boxShadow:
-
-          "0 10px 30px rgba(80,70,40,.12)"
+          "softGlow 7s ease-in-out infinite"
 
         }}
 
-      >
-
-        ✦
-
-      </div>
+      />
 
 
 
+
+      {/* 曼陀罗碎片 */}
 
       {
-
 
         elements.map(
 
@@ -164,27 +120,37 @@ export default function GardenCanvas({
 
             <div
 
-            key={i}
-
-            onClick={()=>setSelected(e)}
-
-            style={{
-
-              position:"absolute",
-
-              left:e.x,
-
-              top:e.y,
+              key={i}
 
 
-              cursor:"pointer",
+              onClick={()=>setSelected(e)}
 
 
-              animation:
+              style={{
 
-              `floatPlant ${6+i}s ease-in-out infinite`
+                position:"absolute",
 
-            }}
+
+                left:e.x,
+
+
+                top:e.y,
+
+
+                animation:
+
+                `
+                floatPlant 
+                ${7+i}s 
+                ease-in-out 
+                infinite
+                `,
+
+
+                cursor:"pointer"
+
+
+              }}
 
             >
 
@@ -192,38 +158,42 @@ export default function GardenCanvas({
 
               <img
 
-
-              src={e.image}
-
-
-              alt="life fragment"
+                src={e.image}
 
 
-              style={{
-
-                width:e.size,
+                alt="mandala"
 
 
-                opacity:e.opacity || .9,
+                style={{
+
+                  width:e.size || 130,
 
 
-                transform:
-
-                `rotate(${e.rotate || 0}deg)`,
+                  opacity:.92,
 
 
-                filter:
+                  transform:
 
-                `
-                drop-shadow(
-                0 30px 40px
-                rgba(60,50,30,.16)
-                )
-                `
+                  `
+                  rotate(${e.rotate || 0}deg)
+                  `,
 
 
-              }}
+                  filter:
 
+                  `
+                  drop-shadow(
+                  0 35px 45px
+                  rgba(60,50,30,.2)
+                  )
+                  `,
+
+
+                  transition:
+
+                  "all 1s ease"
+
+                }}
 
               />
 
@@ -235,61 +205,59 @@ export default function GardenCanvas({
 
         )
 
-
       }
 
 
 
 
+      {/* 点击查看 */}
 
       {
-
 
       selected &&
 
 
       <div
 
-      onClick={()=>setSelected(null)}
+        onClick={()=>setSelected(null)}
 
 
-      style={{
+        style={{
 
-        position:"absolute",
+          position:"absolute",
 
-        inset:0,
-
-
-        zIndex:20,
+          inset:0,
 
 
-        background:
-
-        "rgba(250,246,235,.92)",
+          zIndex:20,
 
 
-        backdropFilter:
+          background:
 
-        "blur(15px)",
-
-
-        display:"flex",
-
-        flexDirection:"column",
-
-        justifyContent:"center",
-
-        alignItems:"center",
+          "rgba(250,245,230,.94)",
 
 
-        padding:50,
+          backdropFilter:
+
+          "blur(15px)",
 
 
-        textAlign:"center"
+          display:"flex",
+
+          flexDirection:"column",
+
+          justifyContent:"center",
+
+          alignItems:"center",
 
 
-      }}
+          padding:50,
 
+
+          textAlign:"center"
+
+
+        }}
 
       >
 
@@ -299,30 +267,27 @@ export default function GardenCanvas({
 
         style={{
 
-          color:"#888",
+          fontSize:12,
 
-          letterSpacing:3,
+          letterSpacing:4,
 
-          fontSize:14
+          color:"#999"
 
         }}
 
         >
 
-          LIFE FRAGMENT
+          DAY {selected.day}
 
         </div>
 
 
 
-
-        <h1
+        <h2
 
         style={{
 
           fontWeight:400,
-
-          marginTop:20,
 
           color:"#3f4438"
 
@@ -330,29 +295,9 @@ export default function GardenCanvas({
 
         >
 
-          Day {selected.day}
-
-        </h1>
-
-
-
-
-        <h3
-
-        style={{
-
-          fontWeight:400,
-
-          color:"#66705b"
-
-        }}
-
-        >
-
           {selected.mood}
 
-        </h3>
-
+        </h2>
 
 
 
@@ -360,60 +305,21 @@ export default function GardenCanvas({
 
         style={{
 
-          maxWidth:320,
+          maxWidth:300,
 
           lineHeight:2,
 
-          color:"#555",
-
-          fontSize:16
+          color:"#555"
 
         }}
 
         >
 
-          {selected.text || "这一刻，被轻轻留下。"}
+          {selected.text ||
+
+          "这一刻，被轻轻留下。"}
 
         </p>
-
-
-
-
-        <div
-
-        style={{
-
-          marginTop:25,
-
-          color:"#999",
-
-          fontSize:13
-
-        }}
-
-        >
-
-          每一个片刻，都会成为生命的一部分
-
-        </div>
-
-
-
-        <small
-
-        style={{
-
-          marginTop:35,
-
-          color:"#aaa"
-
-        }}
-
-        >
-
-          点击回到曼陀罗
-
-        </small>
 
 
 
@@ -426,8 +332,6 @@ export default function GardenCanvas({
 
     </div>
 
-
   );
-
 
 }
