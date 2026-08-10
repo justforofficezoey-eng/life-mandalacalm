@@ -10,6 +10,9 @@ import {
 import GardenCanvas
 from "../components/GardenCanvas";
 
+import ReflectionCard
+from "../components/ReflectionCard";
+
 import {
   composeGarden
 }
@@ -33,6 +36,12 @@ export default function Home(){
 
 
 
+  const [reflection,setReflection] =
+    useState<any>(null);
+
+
+
+
   const moods = [
 
     ["🌱","开始了","seed"],
@@ -53,17 +62,24 @@ export default function Home(){
 
 
 
+
   function save(){
 
 
     const plant =
+
       moods.find(
         m=>m[1]===mood
-      )?.[2] || "seed";
+      )?.[2]
+
+      ||
+
+      "seed";
 
 
 
     const days =
+
       saveDay({
 
         date:new Date().toISOString(),
@@ -83,6 +99,17 @@ export default function Home(){
     );
 
 
+
+    setReflection({
+
+      mood,
+
+      text
+
+    });
+
+
+
     setMood("");
 
     setText("");
@@ -91,35 +118,7 @@ export default function Home(){
 
 
 
-  const currentDays =
-    getDays();
-
-
-
-  function icon(plant:string){
-
-    const icons:any={
-
-      seed:"🌱",
-
-      leaf:"🌿",
-
-      flower:"🌸",
-
-      branch:"🔥",
-
-      root:"🌙",
-
-      vine:"🌊",
-
-      light:"☀️"
-
-    };
-
-
-    return icons[plant] || "🌱";
-
-  }
+  const days = getDays();
 
 
 
@@ -127,31 +126,34 @@ export default function Home(){
 
     <main
 
-      style={{
+    style={{
 
-        minHeight:"100vh",
+      minHeight:"100vh",
 
-        background:
-        "linear-gradient(180deg,#faf5ea,#e5eadc)",
+      background:
 
-        padding:"60px 20px",
+      "linear-gradient(180deg,#faf5ea,#e4eadc)",
 
-        textAlign:"center"
+      padding:"60px 20px",
 
-      }}
+      textAlign:"center"
+
+    }}
 
     >
+
+
 
 
       <h1
 
       style={{
 
-        fontSize:42,
-
         fontWeight:400,
 
-        letterSpacing:5
+        letterSpacing:5,
+
+        fontSize:42
 
       }}
 
@@ -162,13 +164,13 @@ export default function Home(){
       </h1>
 
 
+
+
       <p
 
       style={{
 
-        color:"#777",
-
-        marginBottom:40
+        color:"#777"
 
       }}
 
@@ -181,11 +183,14 @@ export default function Home(){
 
 
 
+
       <h3
 
       style={{
 
-        fontWeight:400
+        fontWeight:400,
+
+        marginTop:50
 
       }}
 
@@ -194,6 +199,7 @@ export default function Home(){
         今天的一个瞬间
 
       </h3>
+
 
 
 
@@ -219,19 +225,7 @@ export default function Home(){
 
             borderRadius:30,
 
-
-            border:
-
-            mood===m[1]
-
-            ?
-
-            "2px solid #66705b"
-
-            :
-
-            "1px solid #ddd",
-
+            border:"1px solid #ddd",
 
             background:
 
@@ -239,14 +233,11 @@ export default function Home(){
 
             ?
 
-            "#e4ead8"
+            "#e1e8d8"
 
             :
 
-            "rgba(255,255,255,.6)",
-
-
-            cursor:"pointer"
+            "rgba(255,255,255,.6)"
 
           }}
 
@@ -266,16 +257,21 @@ export default function Home(){
 
 
 
+
       <textarea
+
 
       value={text}
 
+
       onChange={
+
         e=>setText(e.target.value)
+
       }
 
 
-      placeholder="写下一句话，也可以什么都不写"
+      placeholder="写下一句话，也可以只是停留"
 
 
       style={{
@@ -292,9 +288,7 @@ export default function Home(){
 
         borderRadius:20,
 
-        border:"1px solid #ddd",
-
-        fontSize:16
+        border:"1px solid #ddd"
 
       }}
 
@@ -303,7 +297,9 @@ export default function Home(){
 
 
 
+
       <br/>
+
 
 
 
@@ -324,9 +320,7 @@ export default function Home(){
 
         background:"#66705b",
 
-        color:"#fff",
-
-        fontSize:16
+        color:"#fff"
 
       }}
 
@@ -340,203 +334,115 @@ export default function Home(){
 
 
 
-      <section
-
-      style={{
-
-        marginTop:80
-
-      }}
-
-      >
-
-
-
       {
 
-        currentDays.length < 7
+        days.length < 7
 
-        ?
-
-
-        <>
-
-        <h2
-
-        style={{
-
-          fontWeight:400
-
-        }}
-
-        >
-
-          曼陀罗正在形成中
-
-        </h2>
-
-
-
-        <p
-
-        style={{
-
-          color:"#888"
-
-        }}
-
-        >
-
-          已留下 {currentDays.length} / 7 个生命碎片
-
-        </p>
-
-
+        &&
 
 
         <div
 
         style={{
 
-          width:260,
-
-          height:260,
-
-          margin:"40px auto",
-
-          borderRadius:"50%",
-
-          position:"relative",
-
-          background:
-
-          "radial-gradient(circle,#fff4d0,#dce5d5)",
-
-          boxShadow:
-
-          "0 30px 70px rgba(70,60,40,.15)"
+          marginTop:70
 
         }}
 
         >
 
+          <h2
+
+          style={{
+
+            fontWeight:400
+
+          }}
+
+          >
+
+            曼陀罗正在形成中
+
+          </h2>
 
 
-        {
+          <p>
 
-          currentDays.map(
+          已留下 {days.length}/7 个生命碎片
 
-            (day:any,index:number)=>(
-
-
-              <div
-
-              key={index}
-
-              style={{
-
-                position:"absolute",
-
-                left:"50%",
-
-                top:"50%",
-
-                fontSize:32,
-
-
-                transform:
-
-                `rotate(${index*51}deg) translateY(-90px) rotate(-${index*51}deg)`
-
-              }}
-
-              >
-
-                {icon(day.plant)}
-
-              </div>
-
-
-            )
-
-          )
-
-        }
-
-
-
-
-        <div
-
-        style={{
-
-          position:"absolute",
-
-          left:"50%",
-
-          top:"50%",
-
-          transform:"translate(-50%,-50%)",
-
-          color:"#777"
-
-        }}
-
-        >
-
-          {currentDays.length}/7
-
-        </div>
-
+          </p>
 
 
         </div>
-
-
-        </>
-
-
-        :
-
-
-        <>
-
-        <h2
-
-        style={{
-
-          fontWeight:400
-
-        }}
-
-        >
-
-          你的七日生命曼陀罗
-
-        </h2>
-
-
-        <GardenCanvas
-
-        garden={
-
-          garden ||
-
-          composeGarden(currentDays)
-
-        }
-
-        />
-
-
-        </>
 
 
       }
 
 
 
-      </section>
+
+
+      {
+
+        days.length >=7 &&
+
+
+        <div
+
+        style={{
+
+          marginTop:70
+
+        }}
+
+        >
+
+          <h2>
+
+          你的七日生命曼陀罗
+
+          </h2>
+
+
+          <GardenCanvas
+
+          garden={
+
+            garden ||
+
+            composeGarden(days)
+
+          }
+
+          />
+
+        </div>
+
+
+      }
+
+
+
+
+
+
+      {
+
+        reflection &&
+
+
+        <ReflectionCard
+
+        mood={reflection.mood}
+
+        text={reflection.text}
+
+        onClose={()=>setReflection(null)}
+
+        />
+
+      }
+
 
 
     </main>
