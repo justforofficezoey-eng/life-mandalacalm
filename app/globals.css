@@ -250,3 +250,22 @@ transform:translateY(0) rotate(0deg);
     transform: translateY(0) rotate(-1deg);
   }
 }
+@keyframes reflectionAppear {
+
+  from {
+
+    opacity:0;
+
+    transform:translateY(10px);
+
+  }
+
+  to {
+
+    opacity:1;
+
+    transform:translateY(0);
+
+  }
+
+}
