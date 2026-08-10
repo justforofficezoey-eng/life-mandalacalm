@@ -1,136 +1,124 @@
 "use client";
 
 import { useState } from "react";
-import { generateMandala } from "../lib/generateMandala";
 
-export default function Home() {
+import MandalaCanvas from "../components/MandalaCanvas";
 
-  const [text, setText] = useState("");
-  const [result, setResult] = useState<any>(null);
-  const [creating, setCreating] = useState(false);
+import {
+  saveFragment,
+  getFragments
+} from "../lib/dailyStorage";
+
+import {
+  createMandala
+} from "../lib/mandalaEngine";
 
 
-  function createMandala(){
+export default function Home(){
 
-    if(!text.trim()) return;
 
-    setCreating(true);
+  const [text,setText] =
+    useState("");
 
-    setTimeout(()=>{
+  const [design,setDesign] =
+    useState<any>(null);
 
-      const data =
-        generateMandala(text);
 
-      setResult(data);
 
-      setCreating(false);
+  function create(){
 
-    },1800);
+
+    if(!text){
+
+      return;
+
+    }
+
+
+    // 保存今天碎片
+
+    saveFragment(text);
+
+
+
+    // 获取7天数据
+
+    const fragments =
+      getFragments();
+
+
+
+    // 生成曼陀罗设计
+
+    const result =
+      createMandala(fragments);
+
+
+
+    setDesign(result);
+
+
+
+    setText("");
 
   }
+
+
+
 
 
   return (
 
     <main
+
     style={{
+
       minHeight:"100vh",
+
       background:"#F8F4EC",
+
       color:"#4A4038",
+
       display:"flex",
+
       flexDirection:"column",
+
       alignItems:"center",
-      padding:"70px 20px",
-      fontFamily:
-      "Inter, sans-serif"
+
+      padding:"60px 20px"
+
     }}
+
     >
 
 
-      <div
+
+      <h1
+
       style={{
-        textAlign:"center",
-        maxWidth:"600px"
+
+        fontFamily:"Georgia",
+
+        fontWeight:400,
+
+        fontSize:"42px"
+
       }}
+
       >
 
+        Life Mandala
 
-        <div
-        style={{
-          fontSize:"14px",
-          letterSpacing:"5px",
-          color:"#C9A96E",
-          marginBottom:"35px"
-        }}
-        >
-          LIFE MANDALA
-        </div>
-
-
-
-        <h1
-        style={{
-          fontFamily:
-          "Georgia, serif",
-          fontSize:"46px",
-          fontWeight:400,
-          margin:0
-        }}
-        >
-          每一个瞬间
-          <br/>
-          都有自己的形状
-        </h1>
-
-
-
-        <p
-        style={{
-          marginTop:"25px",
-          lineHeight:2,
-          color:"#786b61"
-        }}
-        >
-          留下一点今天的痕迹。
-          <br/>
-          不需要解释，只需要存在。
-        </p>
-
-
-      </div>
+      </h1>
 
 
 
 
-      {/* 呼吸曼陀罗 */}
+      <p>
 
-      <div
-      style={{
-        marginTop:"55px",
-        width:"180px",
-        height:"180px",
-        borderRadius:"50%",
-        border:
-        "1px solid rgba(201,169,110,0.5)",
-        display:"flex",
-        alignItems:"center",
-        justifyContent:"center",
-        animation:
-        "breath 4s ease-in-out infinite"
-      }}
-      >
+        留下一点今天的生命痕迹
 
-        <div
-        style={{
-          width:"65px",
-          height:"65px",
-          borderRadius:"50%",
-          background:
-          "rgba(201,169,110,0.25)"
-        }}
-        />
-
-      </div>
+      </p>
 
 
 
@@ -143,25 +131,28 @@ export default function Home() {
         e=>setText(e.target.value)
       }
 
-      placeholder="
-      今天的你，
-      想留下什么？
-      "
+
+      placeholder="任何东西都可以..."
 
       style={{
-        marginTop:"60px",
+
+        marginTop:"40px",
+
         width:"90%",
+
         maxWidth:"500px",
-        height:"130px",
-        padding:"25px",
+
+        height:"120px",
+
         borderRadius:"25px",
+
+        padding:"20px",
+
         border:
-        "1px solid rgba(100,80,60,0.12)",
-        background:
-        "rgba(255,255,255,0.45)",
-        resize:"none",
-        fontSize:"17px",
-        outline:"none"
+        "1px solid #ddd",
+
+        fontSize:"18px"
+
       }}
 
       />
@@ -171,32 +162,27 @@ export default function Home() {
 
       <button
 
-      onClick={createMandala}
+      onClick={create}
 
       style={{
 
-        marginTop:"30px",
-        padding:
-        "15px 55px",
+        marginTop:"25px",
+
+        padding:"15px 50px",
+
         borderRadius:"40px",
+
         border:"none",
+
         background:"#C9A96E",
-        color:"#fff",
-        fontSize:"16px",
-        cursor:"pointer"
+
+        color:"white"
 
       }}
 
       >
 
-      {
-        creating
-        ?
-        "正在形成..."
-        :
-        "展开"
-      }
-
+        展开我的曼陀罗
 
       </button>
 
@@ -205,107 +191,55 @@ export default function Home() {
 
 
       {
-      result &&
+
+      design &&
+
 
       <section
 
       style={{
 
-        marginTop:"70px",
-        maxWidth:"520px",
-        width:"90%",
-        textAlign:"center",
-        padding:"40px",
-        borderRadius:"30px",
-        background:
-        "rgba(255,255,255,0.55)"
+        marginTop:"60px",
+
+        textAlign:"center"
 
       }}
 
       >
 
 
-        <h2
-        style={{
-          fontFamily:"Georgia, serif",
-          fontWeight:400
-        }}
-        >
-          {result.title}
+        <MandalaCanvas
+
+        design={design}
+
+        />
+
+
+        <h2>
+
+          七日生命曼陀罗
+
         </h2>
 
 
-        <p
-        style={{
-          lineHeight:2
-        }}
-        >
-          {result.message}
+        <p>
+
+          每一个输入，
+          都成为图案的一部分。
+
         </p>
 
 
-
-        <div
-        style={{
-          marginTop:"30px",
-          fontSize:"14px",
-          color:"#786b61"
-        }}
-        >
-
-          <p>
-          色彩：
-          {result.colors.join("、")}
-          </p>
-
-
-          <p>
-          象征：
-          {result.element}
-          </p>
-
-
-          <p>
-          形态：
-          {result.shape}
-          </p>
-
-
-        </div>
-
-
       </section>
+
 
       }
 
 
 
-      <style jsx>{`
-
-        @keyframes breath {
-
-          0% {
-            transform:scale(1);
-            opacity:.7;
-          }
-
-          50% {
-            transform:scale(1.08);
-            opacity:1;
-          }
-
-          100% {
-            transform:scale(1);
-            opacity:.7;
-          }
-
-        }
-
-      `}</style>
-
-
-
     </main>
 
+
   );
+
 }
