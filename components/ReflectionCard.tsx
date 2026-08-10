@@ -1,43 +1,88 @@
 "use client";
 
+
+function analyzeText(text:string){
+
+  const results=[];
+
+
+  const words=[
+
+    {
+      key:"累",
+      value:"最近的记录里出现了疲惫的感觉。"
+    },
+
+    {
+      key:"等待",
+      value:"你似乎正在经历一段需要耐心的时间。"
+    },
+
+    {
+      key:"改变",
+      value:"你正在关注某些变化。"
+    },
+
+    {
+      key:"谢谢",
+      value:"你注意到了生活中的一些珍贵部分。"
+    },
+
+    {
+      key:"害怕",
+      value:"你愿意把不容易表达的部分留下。"
+    },
+
+    {
+      key:"开心",
+      value:"你记录了一些让自己停留的瞬间。"
+    }
+
+  ];
+
+
+
+  words.forEach(item=>{
+
+    if(text.includes(item.key)){
+
+      results.push(item.value);
+
+    }
+
+  });
+
+
+
+  if(results.length===0){
+
+    results.push(
+
+      "这句话被保存下来，成为你此刻经验的一部分。"
+
+    );
+
+  }
+
+
+  return results;
+
+}
+
+
+
+
+
 export default function ReflectionCard({
-  mood,
-  text,
-  onClose
+
+  text
+
 }:any){
 
 
-  const reflections:any = {
+  const reflections =
 
-
-    "开始了":
-    "万物都有自己的时节。种子并不急着成为森林，它只是先落在土里。",
-
-
-    "缓一缓":
-    "有时候，停留不是停滞，而是在听见内心更微弱的声音。",
-
-
-    "傻乐中":
-    "那些不需要理由的快乐，是生命偷偷赠予你的光。",
-
-
-    "还能忍":
-    "坚持是一种力量，也是一种提醒：记得拥抱正在坚持的自己。",
-
-
-    "想一想":
-    "思考让人回到内心，在喧闹之外寻找自己的方向。",
-
-
-    "顺其自然":
-    "河流从不催促自己抵达，它只是不断流向远方。",
-
-
-    "谢谢今天":
-    "感恩不是忘记困难，而是在经历之后依然愿意看见美好。"
-
-  };
+  analyzeText(text);
 
 
 
@@ -47,27 +92,27 @@ export default function ReflectionCard({
 
     style={{
 
-      position:"fixed",
+      margin:"35px auto",
 
-      inset:0,
+      maxWidth:420,
 
-      zIndex:100,
+      padding:30,
 
-      background:
+      borderRadius:30,
 
-      "rgba(245,240,228,.92)",
+      background:"#fffaf0",
 
+      color:"#655f52",
 
-      backdropFilter:"blur(15px)",
+      fontFamily:
 
+      "Georgia,'Noto Serif SC',serif",
 
-      display:"flex",
+      lineHeight:2,
 
-      justifyContent:"center",
+      boxShadow:
 
-      alignItems:"center",
-
-      padding:30
+      "0 20px 60px rgba(60,50,30,.08)"
 
     }}
 
@@ -78,168 +123,52 @@ export default function ReflectionCard({
 
       style={{
 
-        maxWidth:450,
+        fontSize:12,
 
-        width:"100%",
+        color:"#999",
 
+        letterSpacing:2,
 
-        background:"#fffaf0",
-
-
-        borderRadius:35,
-
-        padding:"45px 35px",
-
-        textAlign:"center",
-
-        boxShadow:
-
-        "0 40px 100px rgba(70,60,40,.18)"
+        marginBottom:20
 
       }}
 
       >
 
+        一个小小的回望
 
-
-        <div
-
-        style={{
-
-          fontFamily:
-
-          "serif",
-
-          fontSize:14,
-
-          letterSpacing:5,
-
-          color:"#999"
-
-        }}
-
-        >
-
-          今日一隅
-
-        </div>
+      </div>
 
 
 
-        <h2
+      {
 
-        style={{
+      reflections.map(
 
-          marginTop:30,
+        (item:string,index:number)=>(
 
-          fontFamily:
+          <p
 
-          "serif",
-
-          fontWeight:400,
-
-          fontSize:32
-
-        }}
-
-        >
-
-          {mood}
-
-        </h2>
-
-
-
-        <p
-
-        style={{
-
-          marginTop:25,
-
-          lineHeight:2.2,
-
-          color:"#666",
-
-          fontSize:16
-
-        }}
-
-        >
-
-          {reflections[mood] ||
-
-          "这一刻，被时间轻轻收藏。"}
-
-        </p>
-
-
-
-        {
-
-          text &&
-
-
-          <div
+          key={index}
 
           style={{
 
-            marginTop:30,
-
-            padding:25,
-
-            borderRadius:25,
-
-            background:"#f3eee1",
-
-            fontFamily:"serif",
-
-            lineHeight:2,
-
-            color:"#555"
+            margin:"12px 0"
 
           }}
 
           >
 
-            「{text}」
+            {item}
 
-          </div>
+          </p>
 
-        }
+        )
 
+      )
 
+      }
 
-        <button
-
-        onClick={onClose}
-
-        style={{
-
-          marginTop:35,
-
-          padding:"14px 45px",
-
-          borderRadius:40,
-
-          border:"none",
-
-          background:"#596451",
-
-          color:"#fff",
-
-          fontSize:15
-
-        }}
-
-        >
-
-          继续回望
-
-        </button>
-
-
-
-      </div>
 
 
     </div>
