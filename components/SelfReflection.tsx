@@ -1,8 +1,7 @@
-```tsx
 "use client";
 
 import { useState } from "react";
-
+import { saveReflection } from "../lib/dailyStorage";
 
 type SelfReflectionProps = {
   day: any;
@@ -12,7 +11,6 @@ type SelfReflectionProps = {
     createdAt: string;
   }) => void;
 };
-
 
 export default function SelfReflection({
   day,
@@ -27,12 +25,7 @@ export default function SelfReflection({
   const [saved, setSaved] = useState(false);
 
 
-  if (!day) {
-    return null;
-  }
-
-
-  function saveReflection() {
+  function save() {
 
     const value = text.trim();
 
@@ -49,6 +42,16 @@ export default function SelfReflection({
     };
 
 
+    if (day?.id) {
+
+      saveReflection(
+        day.id,
+        reflection
+      );
+
+    }
+
+
     setSaved(true);
 
     onSave?.(reflection);
@@ -56,20 +59,20 @@ export default function SelfReflection({
   }
 
 
-  function closeReflection() {
+  if (!day) {
 
-    setOpen(false);
+    return null;
 
   }
 
 
   return (
 
-    <section
+    <div
 
       style={{
 
-        marginTop:35,
+        marginTop:20,
 
         fontFamily:
           "Georgia,'Noto Serif SC',serif",
@@ -80,372 +83,348 @@ export default function SelfReflection({
 
     >
 
+      {observation && (
 
-      {/* 观察 */}
+        <div
 
-      {
+          style={{
 
-        observation && (
+            padding:"20px 22px",
+
+            borderRadius:22,
+
+            background:
+              "rgba(255,250,240,.75)",
+
+            fontSize:14,
+
+            lineHeight:2,
+
+            color:"#777164"
+
+          }}
+
+        >
+
+          {observation}
+
+        </div>
+
+      )}
+
+
+      {!saved && !open && (
+
+        <button
+
+          type="button"
+
+          onClick={() => setOpen(true)}
+
+          style={{
+
+            marginTop:16,
+
+            padding:"11px 24px",
+
+            borderRadius:30,
+
+            border:
+              "1px solid rgba(110,100,80,.18)",
+
+            background:"transparent",
+
+            color:"#716b5e",
+
+            cursor:"pointer",
+
+            fontFamily:
+              "Georgia,'Noto Serif SC',serif"
+
+          }}
+
+        >
+
+          我想回应这一天
+
+        </button>
+
+      )}
+
+
+      {open && !saved && (
+
+        <div
+
+          style={{
+
+            marginTop:18,
+
+            padding:"26px",
+
+            borderRadius:28,
+
+            background:"#fffaf4",
+
+            boxShadow:
+              "0 15px 45px rgba(70,60,40,.06)"
+
+          }}
+
+        >
 
           <div
 
             style={{
 
-              padding:"22px 24px",
+              fontSize:12,
 
-              borderRadius:24,
+              letterSpacing:3,
 
-              background:
-                "rgba(255,250,240,.72)",
+              color:"#aaa",
 
-              lineHeight:2,
-
-              fontSize:15,
-
-              color:"#756f62"
+              marginBottom:16
 
             }}
 
           >
 
-            {observation}
+            给那时候的自己
 
           </div>
 
-        )
-
-      }
-
-
-
-      {/* 进入回应 */}
-
-      {
-
-        !saved && (
-
-          <button
-
-            type="button"
-
-            onClick={() => setOpen(true)}
-
-            style={{
-
-              marginTop:18,
-
-              padding:"11px 22px",
-
-              borderRadius:30,
-
-              border:
-                "1px solid rgba(110,100,80,.18)",
-
-              background:"transparent",
-
-              color:"#716b5e",
-
-              cursor:"pointer",
-
-              fontFamily:
-                "Georgia,'Noto Serif SC',serif"
-
-            }}
-
-          >
-
-            我想回应这件事
-
-          </button>
-
-        )
-
-      }
-
-
-
-      {/* 已保存 */}
-
-      {
-
-        saved && (
 
           <div
 
             style={{
 
-              marginTop:22,
+              fontSize:14,
 
-              padding:"22px 24px",
+              lineHeight:2,
 
-              borderRadius:24,
+              color:"#898274",
 
-              background:"#f4f0e5",
+              marginBottom:18
+
+            }}
+
+          >
+
+            不需要解释。
+
+            <br />
+
+            只是告诉那时候的自己，
+
+            现在的你看见了什么。
+
+          </div>
+
+
+          <textarea
+
+            autoFocus
+
+            value={text}
+
+            onChange={(e) =>
+              setText(e.target.value)
+            }
+
+            placeholder="写一句也可以。"
+
+            style={{
+
+              width:"100%",
+
+              minHeight:130,
+
+              boxSizing:"border-box",
+
+              padding:"18px",
+
+              borderRadius:20,
+
+              border:
+                "1px solid rgba(110,100,80,.16)",
+
+              outline:"none",
+
+              resize:"vertical",
+
+              background:"#fffdf8",
+
+              color:"#5f594d",
+
+              fontFamily:
+                "Georgia,'Noto Serif SC',serif",
+
+              fontSize:15,
 
               lineHeight:2
 
             }}
 
-          >
+          />
 
-            <div
-
-              style={{
-
-                fontSize:11,
-
-                letterSpacing:2,
-
-                color:"#aaa",
-
-                marginBottom:10
-
-              }}
-
-            >
-
-              你后来写给自己的话
-
-            </div>
-
-
-            <div
-
-              style={{
-
-                fontSize:16,
-
-                color:"#625d50"
-
-              }}
-
-            >
-
-              {text}
-
-            </div>
-
-
-          </div>
-
-        )
-
-      }
-
-
-
-      {/* 回应窗口 */}
-
-      {
-
-        open && !saved && (
 
           <div
 
             style={{
 
-              marginTop:22,
+              display:"flex",
 
-              padding:"28px",
+              justifyContent:"center",
 
-              borderRadius:28,
+              gap:10,
 
-              background:"#fffaf4",
-
-              boxShadow:
-                "0 15px 45px rgba(70,60,40,.06)"
+              marginTop:18
 
             }}
 
           >
 
-            <div
+            <button
+
+              type="button"
+
+              onClick={() => {
+
+                setOpen(false);
+
+                setText("");
+
+              }}
 
               style={{
 
-                fontSize:12,
+                padding:"9px 20px",
 
-                letterSpacing:2,
+                borderRadius:25,
 
-                color:"#aaa",
+                border:"none",
 
-                marginBottom:18
+                background:"transparent",
+
+                color:"#999",
+
+                cursor:"pointer"
 
               }}
 
             >
 
-              给那时候的自己
+              先不写
 
-            </div>
+            </button>
 
 
-            <div
+            <button
+
+              type="button"
+
+              disabled={!text.trim()}
+
+              onClick={save}
 
               style={{
 
-                fontSize:14,
+                padding:"10px 24px",
 
-                lineHeight:2,
+                borderRadius:25,
 
-                color:"#8a8477",
+                border:"none",
 
-                marginBottom:20
+                background:
+                  text.trim()
+                    ? "#626b59"
+                    : "#d8d7cf",
+
+                color:"#fff",
+
+                cursor:
+                  text.trim()
+                    ? "pointer"
+                    : "default"
 
               }}
 
             >
 
-              不需要解释得很好。
+              留下这句话
 
-              <br />
-
-              想说什么，就写什么。
-
-            </div>
-
-
-
-            <textarea
-
-              value={text}
-
-              onChange={(e) =>
-                setText(e.target.value)
-              }
-
-              autoFocus
-
-              placeholder="例如：现在回头看，我才发现那时候真的很累。"
-
-              style={{
-
-                width:"100%",
-
-                minHeight:130,
-
-                boxSizing:"border-box",
-
-                padding:"18px",
-
-                borderRadius:20,
-
-                border:
-                  "1px solid rgba(110,100,80,.16)",
-
-                outline:"none",
-
-                resize:"vertical",
-
-                background:"#fffdf8",
-
-                color:"#5f594d",
-
-                fontFamily:
-                  "Georgia,'Noto Serif SC',serif",
-
-                fontSize:15,
-
-                lineHeight:2
-
-              }}
-
-            />
-
-
-
-            <div
-
-              style={{
-
-                display:"flex",
-
-                justifyContent:"center",
-
-                gap:10,
-
-                marginTop:18
-
-              }}
-
-            >
-
-              <button
-
-                type="button"
-
-                onClick={closeReflection}
-
-                style={{
-
-                  padding:"9px 20px",
-
-                  borderRadius:25,
-
-                  border:"none",
-
-                  background:"transparent",
-
-                  color:"#999",
-
-                  cursor:"pointer"
-
-                }}
-
-              >
-
-                先不写
-
-              </button>
-
-
-              <button
-
-                type="button"
-
-                onClick={saveReflection}
-
-                disabled={!text.trim()}
-
-                style={{
-
-                  padding:"10px 24px",
-
-                  borderRadius:25,
-
-                  border:"none",
-
-                  background:
-                    text.trim()
-                      ? "#626b59"
-                      : "#d8d7cf",
-
-                  color:"#fff",
-
-                  cursor:
-                    text.trim()
-                      ? "pointer"
-                      : "default"
-
-                }}
-
-              >
-
-                留下这句话
-
-              </button>
-
-            </div>
+            </button>
 
           </div>
 
-        )
+        </div>
 
-      }
+      )}
 
-    </section>
+
+      {saved && (
+
+        <div
+
+          style={{
+
+            marginTop:20,
+
+            padding:"22px 24px",
+
+            borderRadius:24,
+
+            background:"#f4f0e5",
+
+            lineHeight:2
+
+          }}
+
+        >
+
+          <div
+
+            style={{
+
+              fontSize:11,
+
+              letterSpacing:2,
+
+              color:"#aaa",
+
+              marginBottom:10
+
+            }}
+
+          >
+
+            后来，我写给自己的话
+
+          </div>
+
+
+          <div
+
+            style={{
+
+              fontSize:16,
+
+              color:"#625d50"
+
+            }}
+
+          >
+
+            {text}
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
 
   );
 
 }
-```
