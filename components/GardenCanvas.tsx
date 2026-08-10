@@ -1,35 +1,19 @@
 "use client";
 
 
-function Flower({
-x,
-y,
-size,
-color,
-rotation
+function Lotus({
+x,y,size,color
 }:any){
-
-
-const petals =
-Array.from({length:8});
-
 
 return (
 
-<g
-
-transform={`
-rotate(${rotation}
-${x}
-${y})
-`}
-
->
-
+<g>
 
 {
-
-petals.map((_,i)=>(
+Array.from({
+length:10
+})
+.map((_,i)=>(
 
 <ellipse
 
@@ -39,17 +23,17 @@ cx={x}
 
 cy={y-size/2}
 
-rx={size/5}
+rx={size/4}
 
-ry={size/2}
+ry={size}
 
 fill={color}
 
-opacity="0.75"
+opacity=".65"
 
 transform={`
 rotate(
-${i*45}
+${i*36}
 ${x}
 ${y}
 )
@@ -58,7 +42,6 @@ ${y}
 />
 
 ))
-
 }
 
 
@@ -68,12 +51,11 @@ cx={x}
 
 cy={y}
 
-r={size/6}
+r={size/5}
 
-fill="#F6D7A7"
+fill="#F4DCA8"
 
 />
-
 
 </g>
 
@@ -85,14 +67,62 @@ fill="#F6D7A7"
 
 
 
-function Leaf({
-x,
-y,
-size,
-color,
-rotation
+function Flower({
+x,y,size,color
 }:any){
 
+return (
+
+<g>
+
+{
+Array.from({
+length:6
+})
+.map((_,i)=>(
+
+<circle
+
+key={i}
+
+cx={
+x+
+Math.cos(i)
+*size
+}
+
+cy={
+y+
+Math.sin(i)
+*size
+}
+
+r={
+size/2
+}
+
+fill={color}
+
+opacity=".7"
+
+/>
+
+))
+
+}
+
+</g>
+
+)
+
+}
+
+
+
+
+function Leaf({
+x,y,size,color
+}:any){
 
 return (
 
@@ -108,13 +138,7 @@ ry={size}
 
 fill={color}
 
-opacity="0.65"
-
-transform={`
-rotate(${rotation}
-${x}
-${y})
-`}
+opacity=".6"
 
 />
 
@@ -125,11 +149,8 @@ ${y})
 
 
 
-
 export default function GardenCanvas({
-
 garden
-
 }:any){
 
 
@@ -149,8 +170,7 @@ borderRadius:40,
 overflow:"hidden",
 
 background:
-
-"linear-gradient(135deg,#192820,#415545)"
+"linear-gradient(#18251f,#526b59)"
 
 }}
 
@@ -169,8 +189,6 @@ viewBox="0 0 420 420"
 
 
 
-{/* 月光 */}
-
 <circle
 
 cx="210"
@@ -181,49 +199,58 @@ r="160"
 
 fill="none"
 
-stroke="#d8c8a8"
+stroke="#eee0c5"
 
-opacity="0.15"
+opacity=".2"
 
 />
 
 
 
 {
-
 garden.elements.map(
-
 (e:any,i:number)=>{
 
 
-const x=
+const x =
+100+
+e.position.x*3;
+
+
+const y =
 80+
-(e.position.x*2.5)
-+
-i*8;
-
-
-const y=
-80+
-(e.position.y*2.5);
-
-
-
-const size=
-e.size/2;
+e.position.y*3;
 
 
 
 if(
+e.type==="lotus"
+)
 
-e.type==="leaf"
-||
-e.type==="fern"
-||
+return (
+
+<Lotus
+
+key={i}
+
+x={x}
+
+y={y}
+
+size={e.size/2}
+
+color={e.color}
+
+/>
+
+);
+
+
+
+if(
+e.type==="fern"||
 e.type==="vine"
-
-){
-
+)
 
 return (
 
@@ -235,18 +262,13 @@ x={x}
 
 y={y}
 
-size={size}
+size={e.size/3}
 
 color={e.color}
 
-rotation={e.rotation}
-
 />
 
-)
-
-
-}
+);
 
 
 
@@ -260,15 +282,13 @@ x={x}
 
 y={y}
 
-size={size}
+size={e.size/4}
 
 color={e.color}
 
-rotation={e.rotation}
-
 />
 
-)
+);
 
 
 
@@ -278,9 +298,6 @@ rotation={e.rotation}
 
 }
 
-
-
-{/* 中心光 */}
 
 <circle
 
@@ -288,18 +305,18 @@ cx="210"
 
 cy="210"
 
-r="12"
+r="8"
 
-fill="#fff1cf"
+fill="#fff1d0"
 
 />
-
 
 
 </svg>
 
 
 </div>
+
 
 )
 
