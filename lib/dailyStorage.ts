@@ -1,120 +1,100 @@
-export type DailyFragment = {
-
-  date:string;
-
-  mood:string;
-
-  text:string;
-
-  plant:string;
-
-  reflection?:string;
-
-};
+const KEY = "life-days";
 
 
+export function getDays(){
 
-const KEY =
-"life-mandala-days";
-
-
-
-
-
-export function saveDay(
-  day:DailyFragment
-){
-
-
-  if(
-    typeof window === "undefined"
-  ){
+  if(typeof window === "undefined"){
 
     return [];
 
   }
 
 
-
-  const old =
-
-    JSON.parse(
-
-      localStorage.getItem(KEY)
-
-      ||
-
-      "[]"
-
-    );
+  const data =
+  localStorage.getItem(KEY);
 
 
-
-  const updated = [
-
-    ...old,
-
-    day
-
-  ].slice(-7);
-
-
-
-  localStorage.setItem(
-
-    KEY,
-
-    JSON.stringify(updated)
-
-  );
-
-
-
-  return updated;
-
+  return data
+  ?
+  JSON.parse(data)
+  :
+  [];
 
 }
 
 
 
 
+export function saveDay(day:any){
 
 
-export function saveReflection(
-  index:number,
-  answer:string
-){
-
-
-  if(
-    typeof window === "undefined"
-  ){
-
-    return;
-
-  }
+  const now = new Date();
 
 
 
-  const days =
-
-    JSON.parse(
-
-      localStorage.getItem(KEY)
-
-      ||
-
-      "[]"
-
-    );
+  const record = {
 
 
+    ...day,
 
-  if(days[index]){
 
-    days[index].reflection = answer;
+    // 真实时间
 
-  }
+    timestamp:
+    now.getTime(),
+
+
+    // 完整时间
+
+    date:
+    now.toISOString(),
+
+
+
+    // 用户当地时间
+
+    localTime:
+
+    now.toLocaleTimeString(
+
+      undefined,
+
+      {
+
+        hour:"2-digit",
+
+        minute:"2-digit"
+
+      }
+
+    ),
+
+
+
+    // 用户所在世界时区
+
+    timezone:
+
+    Intl.DateTimeFormat()
+
+    .resolvedOptions()
+
+    .timeZone
+
+
+  };
+
+
+
+
+  const days = [
+
+    ...getDays(),
+
+    record
+
+  ];
+
 
 
 
@@ -127,36 +107,8 @@ export function saveReflection(
   );
 
 
-}
 
-
-
-
-
-
-
-export function getDays(){
-
-
-  if(
-    typeof window === "undefined"
-  ){
-
-    return [];
-
-  }
-
-
-
-  return JSON.parse(
-
-    localStorage.getItem(KEY)
-
-    ||
-
-    "[]"
-
-  );
+  return days;
 
 
 }
