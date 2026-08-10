@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import MemoryNode from "./MemoryNode";
 
 
 export default function GardenCanvas({
@@ -9,28 +9,6 @@ export default function GardenCanvas({
 
 
   const elements = garden?.elements || [];
-
-  const [selected, setSelected] = useState<any>(null);
-
-
-
-  function moodColor(mood:string){
-
-    if(mood?.includes("开心"))
-      return "#d8b56a";
-
-    if(mood?.includes("疲惫"))
-      return "#aebbc8";
-
-    if(mood?.includes("思考"))
-      return "#9a94bb";
-
-    if(mood?.includes("说不清"))
-      return "#b9a98d";
-
-    return "#98ae86";
-
-  }
 
 
 
@@ -53,13 +31,17 @@ export default function GardenCanvas({
 
       style={{
 
-        marginBottom:30,
+        marginBottom:35,
 
         fontFamily:
 
         "Georgia,'Noto Serif SC',serif",
 
-        color:"#77705e"
+        color:"#756e5d",
+
+        letterSpacing:3,
+
+        fontSize:18
 
       }}
 
@@ -68,6 +50,8 @@ export default function GardenCanvas({
         这些日子，你留下的东西
 
       </div>
+
+
 
 
 
@@ -89,17 +73,96 @@ export default function GardenCanvas({
 
         borderRadius:"50%",
 
+        overflow:"hidden",
+
         background:
 
-        "radial-gradient(circle,#fffaf0,#e5eadf)",
+        "radial-gradient(circle,#fffaf0,#e4eadc)",
 
         boxShadow:
 
-        "0 35px 90px rgba(70,60,40,.12)"
+        "0 40px 100px rgba(70,60,40,.12)"
 
       }}
 
       >
+
+
+
+
+
+        {/* 时间连接线 */}
+
+        <svg
+
+        width="620"
+
+        height="620"
+
+        style={{
+
+          position:"absolute",
+
+          inset:0,
+
+          opacity:.25
+
+        }}
+
+        >
+
+        {
+
+        elements.map(
+
+          (e:any,i:number)=>{
+
+
+            const next =
+
+            elements[i+1];
+
+
+
+            if(!next)
+
+            return null;
+
+
+
+            return (
+
+              <line
+
+              key={i}
+
+              x1={e.x + e.size/2}
+
+              y1={e.y + e.size/2}
+
+              x2={next.x + next.size/2}
+
+              y2={next.y + next.size/2}
+
+              stroke="#9c987f"
+
+              strokeWidth="1"
+
+              />
+
+            )
+
+          }
+
+        )
+
+        }
+
+        </svg>
+
+
+
+
 
 
 
@@ -121,23 +184,27 @@ export default function GardenCanvas({
 
           flexDirection:"column",
 
-          color:"#756e5d",
+          pointerEvents:"none",
 
           fontFamily:
 
-          "Georgia,'Noto Serif SC',serif"
+          "Georgia,'Noto Serif SC',serif",
+
+          color:"#716b5c"
 
         }}
 
         >
 
+
+
           <div
 
           style={{
 
-            fontSize:26,
+            fontSize:30,
 
-            letterSpacing:5
+            letterSpacing:6
 
           }}
 
@@ -148,21 +215,26 @@ export default function GardenCanvas({
           </div>
 
 
+
           <div
 
           style={{
 
-            marginTop:12,
+            marginTop:15,
 
             fontSize:12,
 
-            opacity:.6
+            color:"#aaa"
 
           }}
 
           >
 
-            {new Date().toLocaleString()}
+            {elements.length}
+
+            {" "}
+
+            个留下的瞬间
 
           </div>
 
@@ -173,6 +245,10 @@ export default function GardenCanvas({
 
 
 
+
+
+        {/* 记忆节点 */}
+
         {
 
         elements.map(
@@ -180,62 +256,15 @@ export default function GardenCanvas({
           (e:any,i:number)=>(
 
 
-          <button
+            <MemoryNode
 
-          key={i}
+            key={i}
 
-          onClick={()=>setSelected(e)}
+            item={e}
 
-          style={{
+            index={i}
 
-            position:"absolute",
-
-            left:e.x,
-
-            top:e.y,
-
-            width:e.size || 80,
-
-            height:e.size || 80,
-
-            borderRadius:"50%",
-
-            border:"none",
-
-            cursor:"pointer",
-
-            background:moodColor(e.mood),
-
-            opacity:.75,
-
-            boxShadow:
-
-            "0 12px 30px rgba(50,40,30,.15)",
-
-            transition:"transform .4s"
-
-          }}
-
-          >
-
-            <span
-
-            style={{
-
-              color:"#fff",
-
-              fontSize:12
-
-            }}
-
-            >
-
-              {i+1}
-
-            </span>
-
-
-          </button>
+            />
 
 
           )
@@ -246,117 +275,9 @@ export default function GardenCanvas({
 
 
 
-
-        {
-
-        selected &&
-
-
-        <div
-
-        onClick={()=>setSelected(null)}
-
-        style={{
-
-          position:"absolute",
-
-          inset:0,
-
-          background:
-
-          "rgba(250,247,238,.96)",
-
-          borderRadius:"50%",
-
-          display:"flex",
-
-          justifyContent:"center",
-
-          alignItems:"center",
-
-          flexDirection:"column",
-
-          padding:50,
-
-          zIndex:5,
-
-          color:"#5d584c",
-
-          fontFamily:
-
-          "Georgia,'Noto Serif SC',serif"
-
-        }}
-
-        >
-
-
-          <div
-
-          style={{
-
-            fontSize:12,
-
-            letterSpacing:2,
-
-            color:"#999"
-
-          }}
-
-          >
-
-            {selected.localTime || ""}
-
-          </div>
-
-
-
-          <p
-
-          style={{
-
-            marginTop:35,
-
-            lineHeight:2.2,
-
-            fontSize:17
-
-          }}
-
-          >
-
-            {selected.text}
-
-          </p>
-
-
-
-          <div
-
-          style={{
-
-            marginTop:30,
-
-            fontSize:12,
-
-            color:"#aaa"
-
-          }}
-
-          >
-
-            那天的你，曾这样想过。
-
-          </div>
-
-
-        </div>
-
-
-        }
-
-
       </div>
+
+
 
 
 
