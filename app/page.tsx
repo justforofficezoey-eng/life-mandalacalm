@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 import {
-  saveDay
+  saveDay,
+  getDays
 } from "../lib/dailyStorage";
 
 import GardenCanvas
@@ -56,15 +57,19 @@ export default function Home(){
 
 
     const plant =
+
       moods.find(
         m=>m[1]===mood
       )?.[2]
+
       ||
+
       "seed";
 
 
 
     const days =
+
       saveDay({
 
         date:
@@ -80,7 +85,7 @@ export default function Home(){
 
 
 
-    if(days.length===7){
+    if(days.length >= 1){
 
       setGarden(
         composeGarden(days)
@@ -89,14 +94,20 @@ export default function Home(){
     }
 
 
+    setMood("");
+
     setText("");
 
   }
 
 
 
-  return (
+  const currentDays =
+    getDays();
 
+
+
+  return (
 
     <main
 
@@ -105,7 +116,9 @@ export default function Home(){
         minHeight:"100vh",
 
         background:
+
         "linear-gradient(180deg,#faf5ea,#e7ede0)",
+
 
         padding:"60px 20px",
 
@@ -116,19 +129,20 @@ export default function Home(){
     >
 
 
+
       <h1
 
-        style={{
+      style={{
 
-          fontSize:42,
+        fontSize:42,
 
-          fontWeight:400,
+        fontWeight:400,
 
-          letterSpacing:4,
+        letterSpacing:5,
 
-          color:"#3f4438"
+        color:"#3f4438"
 
-        }}
+      }}
 
       >
 
@@ -138,15 +152,18 @@ export default function Home(){
 
 
 
+
       <p
 
-        style={{
+      style={{
 
-          color:"#777",
+        color:"#777",
 
-          marginBottom:40
+        marginTop:10,
 
-        }}
+        marginBottom:45
+
+      }}
 
       >
 
@@ -157,20 +174,18 @@ export default function Home(){
 
 
 
-      <div
+      <section>
+
+
+        <h3
 
         style={{
 
-          maxWidth:600,
-
-          margin:"0 auto"
+          fontWeight:400
 
         }}
 
-      >
-
-
-        <h3>
+        >
 
           今天的一个瞬间
 
@@ -188,50 +203,51 @@ export default function Home(){
 
             <button
 
-              key={m[1]}
+            key={m[1]}
 
-              onClick={()=>setMood(m[1])}
-
-
-              style={{
-
-                margin:8,
-
-                padding:"14px 20px",
-
-                borderRadius:30,
-
-                border:
-
-                mood===m[1]
-
-                ?
-
-                "2px solid #7c806d"
-
-                :
-
-                "1px solid #ddd",
+            onClick={()=>setMood(m[1])}
 
 
-                background:
+            style={{
 
-                mood===m[1]
+              margin:8,
 
-                ?
+              padding:"14px 22px",
 
-                "#e5eadb"
-
-                :
-
-                "rgba(255,255,255,.5)",
+              borderRadius:30,
 
 
-                fontSize:16,
+              border:
 
-                cursor:"pointer"
+              mood===m[1]
 
-              }}
+              ?
+
+              "2px solid #69735d"
+
+              :
+
+              "1px solid #ddd",
+
+
+              background:
+
+              mood===m[1]
+
+              ?
+
+              "#e2e8d7"
+
+              :
+
+              "rgba(255,255,255,.55)",
+
+
+              cursor:"pointer",
+
+              fontSize:15
+
+            }}
 
             >
 
@@ -249,39 +265,49 @@ export default function Home(){
 
 
 
+
         <textarea
 
-          value={text}
 
-          onChange={
-            e=>setText(e.target.value)
-          }
+        value={text}
 
 
-          placeholder="写下一句话，也可以什么都不写"
+        onChange={
+
+          e=>setText(e.target.value)
+
+        }
 
 
-          style={{
+        placeholder="写下一句话，也可以什么都不写"
 
-            marginTop:35,
 
-            width:"90%",
+        style={{
 
-            height:120,
+          marginTop:30,
 
-            borderRadius:20,
+          width:"90%",
 
-            border:"1px solid #ddd",
+          maxWidth:450,
 
-            padding:20,
+          height:120,
 
-            fontSize:16,
+          padding:20,
 
-            background:"rgba(255,255,255,.7)"
+          borderRadius:22,
 
-          }}
+          border:"1px solid #ddd",
+
+          background:"rgba(255,255,255,.75)",
+
+          fontSize:16,
+
+          outline:"none"
+
+        }}
 
         />
+
 
 
 
@@ -289,30 +315,31 @@ export default function Home(){
 
 
 
+
         <button
 
-          onClick={save}
+        onClick={save}
 
 
-          style={{
+        style={{
 
-            marginTop:25,
+          marginTop:25,
 
-            padding:"14px 45px",
+          padding:"15px 50px",
 
-            borderRadius:40,
+          borderRadius:40,
 
-            border:"none",
+          border:"none",
 
-            background:"#66705b",
+          background:"#66705b",
 
-            color:"#fff",
+          color:"#fff",
 
-            fontSize:16,
+          fontSize:16,
 
-            cursor:"pointer"
+          cursor:"pointer"
 
-          }}
+        }}
 
         >
 
@@ -322,24 +349,128 @@ export default function Home(){
 
 
 
-      </div>
+      </section>
 
+
+
+
+
+      <section
+
+      style={{
+
+        marginTop:80
+
+      }}
+
+      >
 
 
 
       {
 
-        garden &&
+        currentDays.length < 7
 
-        <div
+        ?
+
+
+        <div>
+
+
+          <h2
 
           style={{
 
-            marginTop:70
+            fontWeight:400,
+
+            color:"#555"
 
           }}
 
-        >
+          >
+
+            曼陀罗正在形成中
+
+          </h2>
+
+
+
+          <p
+
+          style={{
+
+            color:"#888",
+
+            lineHeight:1.8
+
+          }}
+
+          >
+
+            已留下
+
+            {" "}
+
+            {currentDays.length}
+
+            {" "}
+
+            / 7 个生命碎片
+
+            <br/>
+
+            每一天都会留下一个位置
+
+          </p>
+
+
+
+          <div
+
+          style={{
+
+            margin:"40px auto",
+
+            width:230,
+
+            height:230,
+
+            borderRadius:"50%",
+
+
+            background:
+
+            "radial-gradient(circle,#fff1c9,#dce5d6)",
+
+
+            display:"flex",
+
+            justifyContent:"center",
+
+            alignItems:"center",
+
+            fontSize:50
+
+          }}
+
+          >
+
+            🌱
+
+          </div>
+
+
+
+        </div>
+
+
+
+        :
+
+
+
+        <div>
+
 
           <h2
 
@@ -356,20 +487,33 @@ export default function Home(){
           </h2>
 
 
+
           <GardenCanvas
-            garden={garden}
+
+          garden={
+
+            garden ||
+
+            composeGarden(currentDays)
+
+          }
+
           />
 
 
         </div>
 
+
       }
+
+
+
+      </section>
 
 
 
     </main>
 
   );
-
 
 }
