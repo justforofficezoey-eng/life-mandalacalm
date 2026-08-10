@@ -1,259 +1,216 @@
 "use client";
 
-import { useMemo } from "react";
-
 
 export default function GardenCanvas({
-  garden
+garden
 }:any){
 
 
-  const elements =
-  garden?.elements || [];
 
+const elements =
+garden?.elements || [];
 
 
-  const arranged =
-  useMemo(()=>{
 
+return (
 
-    const radius = 175;
 
+<div
 
-    return elements.map(
+style={{
 
-      (e:any,i:number)=>{
+width:620,
 
+height:620,
 
-        const angle =
+margin:"50px auto",
 
-        (Math.PI * 2 * i)
+position:"relative",
 
-        /
+borderRadius:"50%",
 
-        elements.length;
 
+background:
 
+"radial-gradient(circle,#fff8df,#dfe7d7)",
 
-        return {
 
-          ...e,
+boxShadow:
 
-          x:
+"0 40px 100px rgba(60,50,30,.2)"
 
-          260 +
+}}
 
-          Math.cos(angle)
+>
 
-          *
 
-          radius
 
-          -
+<div
 
-          (e.size || 100)/2,
+style={{
 
+position:"absolute",
 
-          y:
+inset:0,
 
-          260 +
+display:"flex",
 
-          Math.sin(angle)
+justifyContent:"center",
 
-          *
+alignItems:"center",
 
-          radius
+flexDirection:"column",
 
-          -
+fontFamily:"serif",
 
-          (e.size || 100)/2,
+color:"#716954"
 
+}}
 
-          rotate:
+>
 
-          angle * 180 / Math.PI
 
-        };
+<div
 
+style={{
 
-      }
+fontSize:24,
 
-    );
+letterSpacing:8
 
+}}
 
-  },[elements]);
+>
 
+此刻
 
+</div>
 
 
 
+<div
 
-  return (
+style={{
 
-    <div
+marginTop:15,
 
+fontSize:14
 
-    style={{
+}}
 
-      width:620,
+>
 
-      height:620,
+{
 
-      margin:"60px auto",
+new Date()
 
-      position:"relative",
+.toLocaleString()
 
-      borderRadius:"50%",
+}
 
+</div>
 
-      background:
 
-      "radial-gradient(circle,#fff9e8 0%,#e6eadc 60%,#d8ddce 100%)",
+</div>
 
 
 
-      boxShadow:
 
-      "0 50px 120px rgba(70,60,40,.18), inset 0 0 100px rgba(255,255,255,.8)",
 
+{
 
-      overflow:"hidden"
+elements.map(
 
-    }}
+(e:any,i:number)=>(
 
-    >
 
+<div
 
+key={i}
 
+style={{
 
-      <div
+position:"absolute",
 
-      style={{
+left:
 
-        position:"absolute",
+e.x,
 
-        inset:160,
+top:
 
-        borderRadius:"50%",
+e.y,
 
+textAlign:"center"
 
-        background:
+}}
 
-        "radial-gradient(circle,rgba(255,236,170,.9),transparent 70%)",
+>
 
 
-        animation:
+<img
 
-        "softGlow 8s infinite ease-in-out"
+src={e.image}
 
-      }}
+style={{
 
-      />
+width:e.size || 100,
 
 
+filter:
 
+"drop-shadow(0 20px 25px rgba(60,50,30,.18))"
 
 
-      <div
+}}
 
-      style={{
+/>
 
-        position:"absolute",
 
-        inset:0,
 
-        display:"flex",
+<div
 
-        alignItems:"center",
+style={{
 
-        justifyContent:"center",
+marginTop:8,
 
-        fontFamily:"serif",
+fontSize:12,
 
-        color:"#766f58",
+fontFamily:"serif",
 
-        letterSpacing:5,
+color:"#777"
 
-        fontSize:20
+}}
 
-      }}
+>
 
-      >
+{
 
-        七日之印
+e.localTime ||
 
-      </div>
+""
 
+}
 
+</div>
 
 
+</div>
 
 
-      {
 
-        arranged.map(
+)
 
-          (e:any,i:number)=>(
+)
 
 
-          <img
+}
 
-          key={i}
 
-          src={e.image}
 
+</div>
 
-          alt="life mandala"
 
+);
 
-          style={{
-
-            position:"absolute",
-
-            left:e.x,
-
-            top:e.y,
-
-
-            width:e.size || 100,
-
-
-            opacity:e.opacity || .9,
-
-
-            transform:
-
-            `rotate(${e.rotate}deg)`,
-
-
-
-            filter:
-
-            "drop-shadow(0 25px 30px rgba(60,50,30,.2))",
-
-
-
-            animation:
-
-            `mandalaFloat ${8+i}s ease-in-out infinite`
-
-
-          }}
-
-
-          />
-
-
-          )
-
-        )
-
-      }
-
-
-
-    </div>
-
-  );
 
 }
