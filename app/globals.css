@@ -208,3 +208,45 @@ transform:translateY(0) rotate(0deg);
 }
 
 }
+@keyframes mandalaBreath {
+  0% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.45;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.45;
+  }
+}
+
+@keyframes memoryAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes memoryFloat {
+  0% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(1deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+}
