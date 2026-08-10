@@ -199,6 +199,11 @@ export default function MemoryNode({
           >
 
             {item.mood}
+            <SelfReflection
+
+day={item}
+
+/>
 
           </div>
 
