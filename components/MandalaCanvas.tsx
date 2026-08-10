@@ -1,4 +1,3 @@
-
 "use client";
 
 import { MandalaDesign } from "../lib/mandalaEngine";
@@ -14,146 +13,254 @@ export default function MandalaCanvas({
 }: Props) {
 
 
+  const petals = design.petals;
+
+
+
   return (
 
     <div
       style={{
-        width:"320px",
-        height:"320px",
+        width:"360px",
+        height:"360px",
         display:"flex",
         justifyContent:"center",
         alignItems:"center"
       }}
     >
 
+
       <svg
-        width="300"
-        height="300"
-        viewBox="0 0 300 300"
+        width="360"
+        height="360"
+        viewBox="0 0 360 360"
       >
 
 
-        {/* 中心 */}
+        <defs>
+
+          <radialGradient id="seed">
+
+            <stop
+              offset="0%"
+              stopColor="#E8D8B0"
+            />
+
+            <stop
+              offset="100%"
+              stopColor="#C9A96E"
+              stopOpacity="0.2"
+            />
+
+          </radialGradient>
+
+
+        </defs>
+
+
+
+
+        {/* 外层水纹 */}
 
         <circle
-          cx="150"
-          cy="150"
-          r={design.center.size}
-          fill={design.center.color}
-          opacity="0.8"
+
+          cx="180"
+          cy="180"
+          r="145"
+
+          fill="none"
+
+          stroke="#9FB7B0"
+
+          strokeOpacity="0.25"
+
+          strokeWidth="1"
+
+        />
+
+
+        <circle
+
+          cx="180"
+          cy="180"
+          r="125"
+
+          fill="none"
+
+          stroke="#C9A96E"
+
+          strokeOpacity="0.2"
+
+          strokeWidth="1"
+
         />
 
 
 
-        {/* 七日花瓣 */}
+
+
+        {/* 植物生长线 */}
 
         {
-        design.petals.map(
-          (petal,index)=>{
+          petals.map(
+            (petal,index)=>{
 
 
-            const x =
-            150 +
-            Math.cos(
-              petal.angle *
-              Math.PI /
-              180
-            )
-            *
-            90;
+              const angle =
+                petal.angle *
+                Math.PI /
+                180;
 
 
 
-            const y =
-            150 +
-            Math.sin(
-              petal.angle *
-              Math.PI /
-              180
-            )
-            *
-            90;
+              const length =
+                45 +
+                petal.size;
 
 
 
-            return (
-
-              <g
-              key={index}
-              >
-
-
-                <circle
-
-                cx={x}
-
-                cy={y}
-
-                r={
-                  petal.size / 3
-                }
-
-                fill={
-                  petal.color
-                }
-
-                opacity="0.75"
-
-                />
+              const x =
+                180 +
+                Math.cos(angle)
+                *
+                length;
 
 
 
-                <circle
-
-                cx={x}
-
-                cy={y}
-
-                r={
-                  petal.size / 6
-                }
-
-                fill="#ffffff"
-
-                opacity="0.35"
-
-                />
+              const y =
+                180 +
+                Math.sin(angle)
+                *
+                length;
 
 
-              </g>
-
-            );
 
 
-          })
+              return (
+
+                <g
+                key={index}
+                >
+
+
+                  {/* 花瓣 */}
+
+                  <ellipse
+
+                    cx={x}
+
+                    cy={y}
+
+                    rx="18"
+
+                    ry={
+                      35 +
+                      petal.size/2
+                    }
+
+
+                    fill={
+                      petal.color
+                    }
+
+
+                    opacity="0.45"
+
+
+                    transform={
+
+                    `
+                    rotate(
+                    ${petal.angle}
+                    ${x}
+                    ${y}
+                    )
+                    `
+
+                    }
+
+                  />
+
+
+
+                  {/* 生长线 */}
+
+                  <path
+
+                    d={`
+                    M180 180
+                    Q
+                    ${(180+x)/2}
+                    ${(180+y)/2-20}
+                    ${x}
+                    ${y}
+                    `}
+
+                    fill="none"
+
+                    stroke={
+                      petal.color
+                    }
+
+                    strokeOpacity="0.5"
+
+                  />
+
+
+                </g>
+
+              );
+
+
+            }
+          )
 
         }
 
 
 
-        {/* 外环 */}
+
+        {/* 生命种子 */}
 
         <circle
 
-        cx="150"
+          cx="180"
 
-        cy="150"
+          cy="180"
 
-        r="125"
+          r={
+            design.center.size
+          }
 
-        fill="none"
-
-        stroke="#C9A96E"
-
-        strokeOpacity="0.3"
+          fill="url(#seed)"
 
         />
+
+
+
+
+        {/* 中心留白 */}
+
+        <circle
+
+          cx="180"
+
+          cy="180"
+
+          r="8"
+
+          fill="#F8F4EC"
+
+        />
+
 
 
       </svg>
 
 
+
     </div>
 
   );
+
 }
