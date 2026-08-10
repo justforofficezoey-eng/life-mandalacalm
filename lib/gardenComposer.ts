@@ -4,79 +4,127 @@ import { plantLibrary } from "./plantLibrary";
 export function composeGarden(days:any[]) {
 
 
-const positions = [
+  const seed =
+    days
+      .map((d:any)=>d.text || "")
+      .join("")
+      .length;
 
-{x:180,y:30},
 
-{x:310,y:110},
-
-{x:310,y:270},
-
-{x:180,y:350},
-
-{x:50,y:270},
-
-{x:50,y:110},
-
-{x:180,y:180}
-
-];
+  const offset =
+    seed % 25;
 
 
 
-const elements = days.map(
+  const positions = [
 
-(day:any,index:number)=>{
+    {
+      x:210 + offset,
+      y:40
+    },
 
+    {
+      x:350,
+      y:130 + offset
+    },
 
-const plant =
-plantLibrary[day.plant || "seed"];
+    {
+      x:330 - offset,
+      y:300
+    },
 
+    {
+      x:210,
+      y:390 - offset
+    },
 
+    {
+      x:70 + offset,
+      y:300
+    },
 
-return {
+    {
+      x:50,
+      y:130
+    },
 
+    {
+      x:210,
+      y:210
+    }
 
-...plant,
-
-
-x:positions[index]?.x || 180,
-
-y:positions[index]?.y || 180,
-
-
-size:
-index===6 ? 190 : 130,
-
-
-day:index+1,
-
-
-mood:day.mood,
-
-
-text:day.text,
-
-
-opacity:.9
-
-
-};
-
-
-}
-
-);
+  ];
 
 
 
-return {
+  const elements = days.map(
 
-title:"我的七日生命曼陀罗",
+    (day:any,index:number)=>{
 
-elements
 
-};
+      const plant =
+        plantLibrary[
+          day.plant || "seed"
+        ];
+
+
+
+      return {
+
+        ...plant,
+
+
+        x:
+        positions[index]?.x || 210,
+
+
+        y:
+        positions[index]?.y || 210,
+
+
+        size:
+        index===6
+        ? 210
+        : 120 + (index % 3) * 10,
+
+
+        rotate:
+        (seed + index * 37) % 360,
+
+
+        opacity:.92,
+
+
+        day:index + 1,
+
+
+        mood:day.mood,
+
+
+        text:day.text
+
+
+      };
+
+
+    }
+
+  );
+
+
+
+  return {
+
+
+    title:
+
+    "我的七日生命曼陀罗",
+
+
+    elements
+
+
+  };
 
 
 }
