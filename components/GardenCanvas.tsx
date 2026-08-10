@@ -5,31 +5,30 @@ import { useState } from "react";
 
 export default function GardenCanvas({
   garden
-}:any){
+}: any) {
 
 
   const elements = garden?.elements || [];
 
-  const [selected,setSelected] =
-  useState<any>(null);
+  const [selected, setSelected] = useState<any>(null);
 
 
 
   function moodColor(mood:string){
 
     if(mood?.includes("开心"))
-      return "#e8c56d";
+      return "#d8b56a";
 
     if(mood?.includes("疲惫"))
-      return "#a9b7c6";
+      return "#aebbc8";
 
     if(mood?.includes("思考"))
-      return "#8d89b8";
+      return "#9a94bb";
 
     if(mood?.includes("说不清"))
-      return "#b8a58a";
+      return "#b9a98d";
 
-    return "#91aa7b";
+    return "#98ae86";
 
   }
 
@@ -37,115 +36,148 @@ export default function GardenCanvas({
 
   return (
 
-    <div
+    <section
 
     style={{
 
-      width:620,
+      margin:"70px auto",
 
-      height:620,
-
-      maxWidth:"90vw",
-
-      maxHeight:"90vw",
-
-      margin:"60px auto",
-
-      position:"relative",
-
-      borderRadius:"50%",
-
-      background:
-
-      "radial-gradient(circle,#fff8e8,#e1e7d8)",
-
-      boxShadow:
-
-      "0 40px 100px rgba(60,50,30,.15)",
-
-      overflow:"hidden"
+      textAlign:"center"
 
     }}
 
     >
 
 
-
-      {/* 中心 */}
-
       <div
 
       style={{
 
-        position:"absolute",
+        marginBottom:30,
 
-        inset:0,
+        fontFamily:
 
-        display:"flex",
+        "Georgia,'Noto Serif SC',serif",
 
-        justifyContent:"center",
-
-        alignItems:"center",
-
-        flexDirection:"column",
-
-        fontFamily:"Georgia,serif",
-
-        color:"#716957"
+        color:"#77705e"
 
       }}
 
       >
 
-        <div
-
-        style={{
-
-          fontSize:28,
-
-          letterSpacing:8
-
-        }}
-
-        >
-
-          此刻
-
-        </div>
-
-
-        <div
-
-        style={{
-
-          marginTop:15,
-
-          fontSize:12,
-
-          opacity:.7
-
-        }}
-
-        >
-
-          {new Date().toLocaleString()}
-
-        </div>
-
+        这些日子，你留下的东西
 
       </div>
 
 
 
+      <div
+
+      style={{
+
+        width:620,
+
+        height:620,
+
+        maxWidth:"90vw",
+
+        maxHeight:"90vw",
+
+        margin:"0 auto",
+
+        position:"relative",
+
+        borderRadius:"50%",
+
+        background:
+
+        "radial-gradient(circle,#fffaf0,#e5eadf)",
+
+        boxShadow:
+
+        "0 35px 90px rgba(70,60,40,.12)"
+
+      }}
+
+      >
 
 
-      {/* 时间节点 */}
 
-      {
+        {/* 中心 */}
 
-      elements.map(
+        <div
 
-        (e:any,i:number)=>(
+        style={{
+
+          position:"absolute",
+
+          inset:0,
+
+          display:"flex",
+
+          justifyContent:"center",
+
+          alignItems:"center",
+
+          flexDirection:"column",
+
+          color:"#756e5d",
+
+          fontFamily:
+
+          "Georgia,'Noto Serif SC',serif"
+
+        }}
+
+        >
+
+          <div
+
+          style={{
+
+            fontSize:26,
+
+            letterSpacing:5
+
+          }}
+
+          >
+
+            我在这里
+
+          </div>
+
+
+          <div
+
+          style={{
+
+            marginTop:12,
+
+            fontSize:12,
+
+            opacity:.6
+
+          }}
+
+          >
+
+            {new Date().toLocaleString()}
+
+          </div>
+
+
+        </div>
+
+
+
+
+
+        {
+
+        elements.map(
+
+          (e:any,i:number)=>(
 
 
           <button
@@ -162,9 +194,9 @@ export default function GardenCanvas({
 
             top:e.y,
 
-            width:e.size,
+            width:e.size || 80,
 
-            height:e.size,
+            height:e.size || 80,
 
             borderRadius:"50%",
 
@@ -172,162 +204,163 @@ export default function GardenCanvas({
 
             cursor:"pointer",
 
-            background:
-
-            moodColor(e.mood),
+            background:moodColor(e.mood),
 
             opacity:.75,
 
             boxShadow:
 
-            "0 15px 35px rgba(50,40,30,.15)",
+            "0 12px 30px rgba(50,40,30,.15)",
 
-            transition:"all .5s"
-
-          }}
-
-          >
-
-
-          <span
-
-          style={{
-
-            fontSize:11,
-
-            color:"#fff",
-
-            fontFamily:"serif"
+            transition:"transform .4s"
 
           }}
 
           >
 
-          {i+1}
+            <span
 
-          </span>
+            style={{
+
+              color:"#fff",
+
+              fontSize:12
+
+            }}
+
+            >
+
+              {i+1}
+
+            </span>
 
 
           </button>
 
 
+          )
+
         )
 
-      )
-
-      }
+        }
 
 
 
 
+        {
 
-      {/* 回忆 */}
-
-      {
-
-      selected &&
-
-
-      <div
-
-      onClick={()=>setSelected(null)}
-
-      style={{
-
-        position:"absolute",
-
-        inset:0,
-
-        background:
-
-        "rgba(250,246,235,.94)",
-
-        zIndex:10,
-
-        display:"flex",
-
-        justifyContent:"center",
-
-        alignItems:"center",
-
-        flexDirection:"column",
-
-        padding:40,
-
-        textAlign:"center",
-
-        fontFamily:"Georgia,serif",
-
-        color:"#575143"
-
-      }}
-
-      >
+        selected &&
 
 
         <div
 
+        onClick={()=>setSelected(null)}
+
         style={{
 
-          fontSize:12,
+          position:"absolute",
 
-          letterSpacing:3
+          inset:0,
+
+          background:
+
+          "rgba(250,247,238,.96)",
+
+          borderRadius:"50%",
+
+          display:"flex",
+
+          justifyContent:"center",
+
+          alignItems:"center",
+
+          flexDirection:"column",
+
+          padding:50,
+
+          zIndex:5,
+
+          color:"#5d584c",
+
+          fontFamily:
+
+          "Georgia,'Noto Serif SC',serif"
 
         }}
 
         >
 
-          {selected.localTime}
+
+          <div
+
+          style={{
+
+            fontSize:12,
+
+            letterSpacing:2,
+
+            color:"#999"
+
+          }}
+
+          >
+
+            {selected.localTime || ""}
+
+          </div>
+
+
+
+          <p
+
+          style={{
+
+            marginTop:35,
+
+            lineHeight:2.2,
+
+            fontSize:17
+
+          }}
+
+          >
+
+            {selected.text}
+
+          </p>
+
+
+
+          <div
+
+          style={{
+
+            marginTop:30,
+
+            fontSize:12,
+
+            color:"#aaa"
+
+          }}
+
+          >
+
+            那天的你，曾这样想过。
+
+          </div>
+
 
         </div>
 
 
-
-        <p
-
-        style={{
-
-          marginTop:35,
-
-          lineHeight:2.3,
-
-          fontSize:18
-
-        }}
-
-        >
-
-          「{selected.text}」
-
-        </p>
-
-
-
-        <small
-
-        style={{
-
-          marginTop:30,
-
-          color:"#999"
-
-        }}
-
-        >
-
-          再次经过这一刻
-
-        </small>
+        }
 
 
       </div>
 
 
-      }
 
-
-    </div>
-
+    </section>
 
   );
 
