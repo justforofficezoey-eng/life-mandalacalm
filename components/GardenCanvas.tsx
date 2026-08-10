@@ -1,48 +1,181 @@
 "use client";
 
 
-function Flower({
+function Glow({
 x,
 y,
-size,
-color,
-delay
+size
 }:any){
-
 
 return (
 
-<g
+<circle
 
-style={{
+cx={x}
+cy={y}
+r={size}
 
-animation:
-`bloom 5s ease-in-out infinite`,
+fill="url(#glow)"
 
-animationDelay:
-`${delay}s`,
+opacity="0.45"
 
-transformOrigin:
-`${x}px ${y}px`
+/>
 
-}}
+)
 
->
+}
+
+
+
+
+
+function CherryFlower({
+x,
+y,
+size,
+color
+}:any){
+
+return (
+
+<g>
 
 
 {
+[0,1,2,3,4].map(i=>(
 
-Array.from({
-length:6
-})
-.map((_,i)=>(
-
-
-<ellipse
+<path
 
 key={i}
 
+d={`
+M ${x} ${y}
+
+C
+${x-size}
+${y-size}
+${x-size/2}
+${y-size*1.8}
+${x}
+${y-size*1.3}
+
+C
+${x+size/2}
+${y-size*1.8}
+${x+size}
+${y-size}
+${x}
+${y}
+
+`
+
+}
+
+fill={color}
+
+opacity="0.7"
+
+transform={`
+rotate(${i*72} ${x} ${y})
+`}
+
+/>
+
+))
+
+}
+
+
+<circle
+
 cx={x}
+
+cy={y}
+
+r={size/5}
+
+fill="#e8c98b"
+
+/>
+
+
+</g>
+
+)
+
+}
+
+
+
+
+
+function Branch({
+x,
+y,
+size,
+color
+}:any){
+
+return (
+
+<g>
+
+
+<path
+
+d={`
+M${x} ${y}
+
+C
+${x-size}
+${y-size}
+${x+size}
+${y-size*2}
+${x}
+${y-size*3}
+
+`}
+
+stroke={color}
+
+strokeWidth="3"
+
+fill="none"
+
+opacity=".6"
+
+/>
+
+
+</g>
+
+)
+
+}
+
+
+
+
+
+function LeafCluster({
+x,
+y,
+size,
+color
+}:any){
+
+return (
+
+<g>
+
+{
+[-1,0,1].map((v)=>(
+
+<ellipse
+
+key={v}
+
+cx={x+v*size/2}
 
 cy={y-size}
 
@@ -52,119 +185,21 @@ ry={size}
 
 fill={color}
 
-opacity=".65"
+opacity=".5"
 
 transform={`
-rotate(
-${i*60}
+rotate(${v*20}
 ${x}
-${y}
-)
+${y})
 `}
 
 />
-
 
 ))
 
 }
 
-
-
-<circle
-
-cx={x}
-
-cy={y}
-
-r={size/4}
-
-fill="#e8cfa0"
-
-/>
-
-
 </g>
-
-
-)
-
-}
-
-
-
-
-function Leaf({
-x,
-y,
-size,
-color,
-delay
-}:any){
-
-
-return (
-
-<ellipse
-
-cx={x}
-
-cy={y}
-
-rx={size/3}
-
-ry={size}
-
-fill={color}
-
-opacity=".55"
-
-style={{
-
-animation:
-"wind 6s ease-in-out infinite",
-
-animationDelay:
-`${delay}s`,
-
-transformOrigin:
-`${x}px ${y}px`
-
-}}
-
-
-/>
-
-)
-
-}
-
-
-
-
-function Glow(){
-
-
-return (
-
-<circle
-
-cx="215"
-
-cy="215"
-
-r="100"
-
-fill="#fff3cf"
-
-style={{
-
-animation:
-"softGlow 5s infinite"
-
-}}
-
-/>
 
 )
 
@@ -180,6 +215,10 @@ garden
 }:any){
 
 
+const elements =
+garden?.elements || [];
+
+
 
 return (
 
@@ -187,22 +226,22 @@ return (
 
 style={{
 
-width:430,
+width:440,
 
-height:430,
+height:440,
 
-borderRadius:50,
+borderRadius:60,
 
 overflow:"hidden",
 
 background:
 
-"linear-gradient(135deg,#f8f2e8,#e7eee2)",
+"linear-gradient(135deg,#faf4e9,#edf1e7)",
 
 
 boxShadow:
 
-"0 20px 60px rgba(80,70,50,.12)"
+"0 30px 80px rgba(80,70,50,.15)"
 
 }}
 
@@ -211,31 +250,72 @@ boxShadow:
 
 <svg
 
-width="430"
+width="440"
 
-height="430"
+height="440"
 
-viewBox="0 0 430 430"
+viewBox="0 0 440 440"
 
 >
 
 
+<defs>
 
-<Glow />
+
+<radialGradient id="glow">
+
+<stop
+
+offset="0"
+
+stopColor="#fff4cf"
+
+/>
+
+<stop
+
+offset="1"
+
+stopColor="#fff4cf"
+
+stopOpacity="0"
+
+/>
+
+</radialGradient>
 
 
+</defs>
+
+
+
+{/* 月光 */}
+
+<Glow
+
+x={220}
+
+y={210}
+
+size={120}
+
+/>
+
+
+
+{/* 外圈生命轮廓 */}
 
 <circle
 
-cx="215"
+cx="220"
 
-cy="215"
+cy="220"
 
-r="160"
+r="170"
 
 fill="none"
 
-stroke="#cbbf9f"
+stroke="#d8cbb0"
 
 opacity=".25"
 
@@ -243,98 +323,140 @@ opacity=".25"
 
 
 
+
 {
 
-garden.elements.map(
+elements.map(
 
 (e:any,i:number)=>{
 
 
-const angle =
-(i /
-garden.elements.length)
-*
-Math.PI
-*
-2;
+const positions=[
+
+
+{
+x:220,
+y:210
+},
+
+
+{
+x:130,
+y:130
+},
+
+
+{
+x:320,
+y:140
+},
+
+
+{
+x:120,
+y:300
+},
+
+
+{
+x:320,
+y:310
+},
+
+
+{
+x:220,
+y:340
+}
+
+
+];
 
 
 
-const radius =
-70+i*18;
-
-
-
-const x =
-215+
-Math.cos(angle)
-*
-radius;
-
-
-
-const y =
-215+
-Math.sin(angle)
-*
-radius;
+const p =
+positions[i%positions.length];
 
 
 
 const size =
-e.size/4;
+45+
+e.size/5;
 
 
 
 if(
+i===0
+){
 
-e.type==="fern"
-||
+return (
+
+<CherryFlower
+
+key={i}
+
+x={p.x}
+
+y={p.y}
+
+size={size}
+
+color={e.color}
+
+/>
+
+)
+
+}
+
+
+
+if(
 e.type==="vine"
+||
+e.type==="fern"
+
+){
+
+return (
+
+<LeafCluster
+
+key={i}
+
+x={p.x}
+
+y={p.y}
+
+size={size/2}
+
+color={e.color}
+
+/>
 
 )
 
-return (
-
-<Leaf
-
-key={i}
-
-x={x}
-
-y={y}
-
-size={size}
-
-color={e.color}
-
-delay={i}
-
-/>
-
-);
+}
 
 
 
 return (
 
-<Flower
+<Branch
 
 key={i}
 
-x={x}
+x={p.x}
 
-y={y}
+y={p.y}
 
 size={size}
 
 color={e.color}
 
-delay={i}
-
 />
 
-);
+)
 
 
 }
@@ -344,19 +466,21 @@ delay={i}
 }
 
 
+
+
+{/* 中心种子 */}
 
 <circle
 
-cx="215"
+cx="220"
 
-cy="215"
+cy="220"
 
 r="8"
 
 fill="#d6b77a"
 
 />
-
 
 
 </svg>
