@@ -1,11 +1,7 @@
 "use client";
 
 
-import {
-useState
-}
-from "react";
-
+import {useState} from "react";
 
 import {
 saveDay,
@@ -14,10 +10,8 @@ getDays
 from "../lib/dailyStorage";
 
 
-import {
-createDailyArtwork
-}
-from "../lib/dailyArtworkEngine";
+import GardenCanvas
+from "../components/GardenCanvas";
 
 
 import {
@@ -26,126 +20,92 @@ composeGarden
 from "../lib/gardenComposer";
 
 
-import GardenCanvas
-from "../components/GardenCanvas";
-
-
-
 
 export default function Home(){
 
 
-const [text,setText]=
-useState("");
+const [mood,setMood]=useState("");
+
+const [text,setText]=useState("");
+
+const [garden,setGarden]=useState<any>(null);
 
 
 
-const [garden,setGarden]=
-useState<any>(null);
+const moods=[
 
+["🌱","新的开始","seed"],
 
+["🌿","安静恢复","leaf"],
 
+["🌸","喜悦绽放","flower"],
 
-function preview(){
+["🔥","坚持前行","branch"],
 
+["🌙","深度思考","root"],
 
-const fake=[];
+["🌊","情绪流动","vine"],
 
+["☀️","感恩连接","light"]
 
-
-for(
-let i=1;
-i<=7;
-i++
-){
-
-
-fake.push({
-
-artwork:
-createDailyArtwork(
-text+i,
-i
-)
-
-});
-
-
-}
-
-
-
-setGarden(
-composeGarden(fake)
-);
-
-
-}
-
-
+];
 
 
 
 function save(){
 
 
-
-const day =
-getDays().length+1;
-
-
-
-const artwork =
-createDailyArtwork(
-text,
-day
-);
+const plant =
+moods.find(
+m=>m[1]===mood
+)?.[2]
+||
+"seed";
 
 
 
 const days =
 saveDay({
 
-date:
-new Date()
-.toISOString(),
+date:new Date().toISOString(),
+
+mood,
 
 text,
 
-artwork
+plant
 
 });
 
 
 
-if(days.length===7)
+if(days.length===7){
 
 setGarden(
 composeGarden(days)
 );
 
+}
+
 
 
 setText("");
-
-
 
 }
 
 
 
-
 return (
 
-<main
+<div
 
 style={{
 
 minHeight:"100vh",
 
-background:"#f5efe3",
+background:"#f7f1e7",
 
-padding:60,
+padding:40,
 
 textAlign:"center"
 
@@ -159,12 +119,51 @@ Life Mandala
 </h1>
 
 
-<p>
-留下今天的一笔
-</p>
+<h2>
+今天的生命碎片
+</h2>
+
+
+
+<div>
+
+{
+
+moods.map(m=>(
+
+<button
+
+key={m[1]}
+
+onClick={()=>setMood(m[1])}
+
+style={{
+
+margin:8,
+
+padding:12,
+
+borderRadius:20
+
+}}
+
+>
+
+{m[0]} {m[1]}
+
+</button>
+
+))
+
+}
+
+</div>
+
 
 
 <textarea
+
+placeholder="留下今天的一句话"
 
 value={text}
 
@@ -172,35 +171,17 @@ onChange={
 e=>setText(e.target.value)
 }
 
-
-placeholder="任何东西都可以"
-
-
 style={{
 
-width:350,
+marginTop:30,
 
-height:120,
+width:300,
 
-padding:20,
-
-borderRadius:20
+height:100
 
 }}
 
 />
-
-
-
-<br/>
-
-
-<button onClick={save}>
-
-保存今天
-
-</button>
-
 
 
 <br/>
@@ -208,48 +189,41 @@ borderRadius:20
 
 <button
 
-onClick={preview}
+onClick={save}
 
 style={{
 
-marginTop:20
+marginTop:20,
+
+padding:"12px 30px"
 
 }}
 
 >
 
-预览七日花园
+保存今日印记
 
 </button>
 
 
 
-
 {
-garden&&
 
-<>
+garden &&
 
-<h2>
-{garden.title}
-</h2>
+<div style={{marginTop:50}}>
 
+<GardenCanvas garden={garden}/>
 
-<GardenCanvas
-
-garden={garden}
-
-/>
-
-
-</>
+</div>
 
 }
 
 
 
-</main>
+</div>
 
 )
+
 
 }
