@@ -34,19 +34,19 @@ const [garden,setGarden]=useState<any>(null);
 
 const moods=[
 
-["🌱","新的开始","seed"],
+["🌱","开始了","seed"],
 
-["🌿","安静恢复","leaf"],
+["🌿","缓一缓","leaf"],
 
-["🌸","喜悦绽放","flower"],
+["🌸","傻乐中","flower"],
 
-["🔥","坚持前行","branch"],
+["🔥","还能忍","branch"],
 
 ["🌙","深度思考","root"],
 
-["🌊","情绪流动","vine"],
+["🌊","顺其自然","vine"],
 
-["☀️","感恩连接","light"]
+["☀️","谢谢今天","light"]
 
 ];
 
