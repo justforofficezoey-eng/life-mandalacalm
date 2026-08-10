@@ -1,144 +1,118 @@
 "use client";
 
-
 export default function GardenCanvas({
-garden
-}:any){
+  garden
+}: any) {
 
+  const elements = garden?.elements || [];
 
-const elements =
-garden?.elements || [];
 
+  return (
 
+    <div
 
-return (
+      style={{
 
-<div
+        width: 460,
 
-style={{
+        height: 460,
 
-width:460,
+        borderRadius: 80,
 
-height:460,
+        overflow: "hidden",
 
-borderRadius:60,
+        position: "relative",
 
-overflow:"hidden",
+        background:
+          "linear-gradient(145deg,#faf4ea,#e6eadf)",
 
-position:"relative",
+        boxShadow:
+          "0 30px 90px rgba(80,70,50,.15)"
 
-background:
+      }}
 
-"linear-gradient(145deg,#faf4ea,#e9eee5)",
+    >
 
 
-boxShadow:
+      {/* 禅意中心光 */}
 
-"0 30px 90px rgba(80,70,50,.15)"
+      <div
 
-}}
+        style={{
 
->
+          position:"absolute",
 
+          width:260,
 
+          height:260,
 
-{/* 柔光 */}
+          left:100,
 
-<div
+          top:90,
 
-style={{
+          background:
+            "radial-gradient(circle,rgba(255,245,210,.8),transparent)",
 
-position:"absolute",
+          opacity:.8
 
-width:220,
+        }}
 
-height:220,
+      />
 
-left:120,
 
-top:100,
+      {/* 植物层 */}
 
-background:
+      {
 
-"radial-gradient(circle,#fff4cf,transparent)",
+        elements.map(
 
-opacity:.7
+          (e:any,i:number)=>(
 
-}}
+            <img
 
-/>
+              key={i}
 
+              src={e.image}
 
+              alt="plant"
 
+              style={{
 
-{
+                position:"absolute",
 
-elements.map(
+                width:e.size || 180,
 
-(e:any,i:number)=>(
+                left:e.x || 140,
 
+                top:e.y || 140,
 
-<img
+                opacity:e.opacity || 0.95,
 
-key={i}
 
-src={e.image}
+                transform:
+                  `rotate(${e.rotate || 0}deg)`,
 
-style={{
 
-position:"absolute",
+                filter:
+                  "drop-shadow(0 20px 30px rgba(60,50,30,.18))",
 
-width:
 
-e.size || 180,
+                animation:
+                  `floatPlant ${7+i}s ease-in-out infinite`
 
+              }}
 
-left:
+            />
 
-e.x || 140,
+          )
 
+        )
 
-top:
+      }
 
-e.y || 140,
 
+    </div>
 
-transform:
-
-`rotate(${e.rotate || 0}deg)`,
-
-
-opacity:
-
-e.opacity || .9,
-
-
-filter:
-
-"drop-shadow(0 20px 25px rgba(80,70,50,.15))",
-
-
-animation:
-
-"floatPlant 8s ease-in-out infinite"
-
-}}
-
-/>
-
-
-)
-
-)
-
-}
-
-
-
-
-</div>
-
-
-)
+  );
 
 }
