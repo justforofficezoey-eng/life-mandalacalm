@@ -1,21 +1,28 @@
 "use client";
 
 import { useState } from "react";
+
 import { saveDay } from "../lib/dailyStorage";
+
+import ReflectionCard from "./ReflectionCard";
 
 
 export default function DailyEntry({
   onSave
-}:any){
+}: any) {
 
 
-  const [text,setText]=useState("");
+  const [text, setText] = useState("");
 
-  const [mood,setMood]=useState("平静");
+  const [mood, setMood] = useState("平静");
+
+  const [savedText, setSavedText] = useState("");
+
+  const [saved, setSaved] = useState(false);
 
 
 
-  const moods=[
+  const moods = [
 
     "平静",
 
@@ -31,27 +38,45 @@ export default function DailyEntry({
 
 
 
-  function submit(){
+  function submit() {
+
+    const value = text.trim();
 
 
-    if(!text.trim()) return;
+    if (!value) return;
+
 
 
     const days = saveDay({
 
-      text,
+      text: value,
 
       mood,
 
-      date:new Date().toISOString()
+      date: new Date().toISOString()
 
     });
 
 
-    onSave?.(days);
 
+    setSavedText(value);
+
+    setSaved(true);
 
     setText("");
+
+
+    onSave?.(days);
+
+  }
+
+
+
+  function writeAgain() {
+
+    setSaved(false);
+
+    setSavedText("");
 
   }
 
@@ -59,216 +84,471 @@ export default function DailyEntry({
 
   return (
 
-    <div
+    <section
 
-    style={{
+      style={{
 
-      maxWidth:600,
+        maxWidth:620,
 
-      margin:"50px auto",
+        margin:"50px auto",
 
-      padding:30,
+        padding:"20px",
 
-      textAlign:"center"
+        color:"#625d50",
 
-    }}
+      }}
 
     >
 
 
 
-      <h1
-
-      style={{
-
-        fontFamily:
-
-        "Georgia,'Noto Serif SC',serif",
-
-        fontWeight:400,
-
-        letterSpacing:6,
-
-        color:"#5f594c"
-
-      }}
-
-      >
-
-        此刻
-
-      </h1>
-
-
-
-
-      <p
-
-      style={{
-
-        marginTop:25,
-
-        lineHeight:2,
-
-        color:"#888",
-
-        fontFamily:"serif"
-
-      }}
-
-      >
-
-        写下一些东西。
-
-        <br/>
-
-        不必完整。
-
-        <br/>
-
-        它会留在这里。
-
-      </p>
-
-
-
-
-      <textarea
-
-      value={text}
-
-      onChange={e=>setText(e.target.value)}
-
-      placeholder="想到什么，就写什么"
-
-      style={{
-
-        marginTop:35,
-
-        width:"100%",
-
-        height:170,
-
-        padding:22,
-
-        borderRadius:25,
-
-        border:"1px solid #ddd",
-
-        fontFamily:
-
-        "Georgia,'Noto Serif SC',serif",
-
-        fontSize:16,
-
-        lineHeight:2,
-
-        resize:"none",
-
-        background:"#fffdf7"
-
-      }}
-
-      />
-
-
-
-
+      {/* 标题 */}
 
       <div
 
-      style={{
-
-        marginTop:25
-
-      }}
-
-      >
-
-      {
-
-      moods.map(item=>(
-
-
-        <button
-
-        key={item}
-
-        onClick={()=>setMood(item)}
-
         style={{
 
-          margin:5,
+          textAlign:"center",
 
-          padding:"10px 20px",
+          fontFamily:
 
-          borderRadius:30,
-
-          border:"1px solid #ddd",
-
-          background:
-
-          mood===item
-
-          ?
-
-          "#e7eadc"
-
-          :
-
-          "#fff",
-
-          color:"#666"
+            "Georgia,'Noto Serif SC',serif",
 
         }}
 
+      >
+
+        <h1
+
+          style={{
+
+            margin:0,
+
+            fontSize:30,
+
+            fontWeight:400,
+
+            letterSpacing:6,
+
+          }}
+
         >
 
-          {item}
+          此刻
 
-        </button>
+        </h1>
 
 
-      ))
 
-      }
+        <p
+
+          style={{
+
+            marginTop:24,
+
+            color:"#888",
+
+            fontSize:14,
+
+            lineHeight:2.1,
+
+          }}
+
+        >
+
+          写下现在的你。
+
+          <br />
+
+          不必完整，也不必解释。
+
+        </p>
 
       </div>
 
 
 
 
-      <button
 
-      onClick={submit}
+      {/* 输入区域 */}
 
-      style={{
+      {
 
-        marginTop:35,
+        !saved && (
 
-        padding:"14px 55px",
+          <div
 
-        borderRadius:40,
+            style={{
 
-        border:"none",
+              marginTop:40,
 
-        background:"#5e6756",
+            }}
 
-        color:"#fff",
-
-        letterSpacing:2
-
-      }}
-
-      >
-
-        保存
-
-      </button>
+          >
 
 
 
-    </div>
+            <textarea
+
+              value={text}
+
+              onChange={(e) =>
+
+                setText(e.target.value)
+
+              }
+
+              placeholder="想到什么，就写什么。"
+
+              aria-label="记录此刻"
+
+              style={{
+
+                display:"block",
+
+                width:"100%",
+
+                minHeight:190,
+
+                boxSizing:"border-box",
+
+                padding:"24px",
+
+                borderRadius:28,
+
+                border:
+
+                  "1px solid rgba(120,110,90,.18)",
+
+                outline:"none",
+
+                resize:"vertical",
+
+                background:"#fffdf7",
+
+                color:"#575246",
+
+                fontFamily:
+
+                  "Georgia,'Noto Serif SC',serif",
+
+                fontSize:17,
+
+                lineHeight:2,
+
+                boxShadow:
+
+                  "0 15px 45px rgba(70,60,40,.05)",
+
+              }}
+
+            />
+
+
+
+
+
+            {/* 情绪 */}
+
+            <div
+
+              style={{
+
+                marginTop:22,
+
+                display:"flex",
+
+                justifyContent:"center",
+
+                flexWrap:"wrap",
+
+                gap:8,
+
+              }}
+
+            >
+
+              {
+
+                moods.map((item) => (
+
+                  <button
+
+                    key={item}
+
+                    type="button"
+
+                    onClick={() =>
+
+                      setMood(item)
+
+                    }
+
+                    style={{
+
+                      padding:
+
+                        "9px 17px",
+
+                      borderRadius:30,
+
+                      border:
+
+                        "1px solid rgba(120,110,90,.18)",
+
+                      background:
+
+                        mood === item
+
+                          ? "#e7eadc"
+
+                          : "#fffdf7",
+
+                      color:"#686255",
+
+                      cursor:"pointer",
+
+                      fontSize:13,
+
+                      transition:
+
+                        "all .25s ease",
+
+                    }}
+
+                  >
+
+                    {item}
+
+                  </button>
+
+                ))
+
+              }
+
+            </div>
+
+
+
+
+
+            {/* 保存 */}
+
+            <div
+
+              style={{
+
+                textAlign:"center",
+
+                marginTop:32,
+
+              }}
+
+            >
+
+              <button
+
+                type="button"
+
+                onClick={submit}
+
+                disabled={!text.trim()}
+
+                style={{
+
+                  padding:
+
+                    "14px 52px",
+
+                  borderRadius:40,
+
+                  border:"none",
+
+                  background:
+
+                    text.trim()
+
+                      ? "#626b59"
+
+                      : "#d6d5cd",
+
+                  color:"#fff",
+
+                  cursor:
+
+                    text.trim()
+
+                      ? "pointer"
+
+                      : "default",
+
+                  letterSpacing:2,
+
+                  transition:
+
+                    "all .3s ease",
+
+                }}
+
+              >
+
+                保存
+
+              </button>
+
+            </div>
+
+
+
+          </div>
+
+        )
+
+      }
+
+
+
+
+
+      {/* 保存后的心理镜映 */}
+
+      {
+
+        saved && savedText && (
+
+          <div
+
+            style={{
+
+              marginTop:45,
+
+              textAlign:"center",
+
+              animation:
+
+                "reflectionAppear .7s ease",
+
+            }}
+
+          >
+
+
+
+            <div
+
+              style={{
+
+                fontFamily:
+
+                  "Georgia,'Noto Serif SC',serif",
+
+                fontSize:14,
+
+                color:"#999",
+
+                letterSpacing:2,
+
+                marginBottom:18,
+
+              }}
+
+            >
+
+              已经留下了
+
+            </div>
+
+
+
+            <div
+
+              style={{
+
+                maxWidth:480,
+
+                margin:"0 auto",
+
+                padding:"25px 28px",
+
+                borderRadius:25,
+
+                background:
+
+                  "rgba(255,253,247,.8)",
+
+                color:"#5d584d",
+
+                fontFamily:
+
+                  "Georgia,'Noto Serif SC',serif",
+
+                fontSize:17,
+
+                lineHeight:2.1,
+
+              }}
+
+            >
+
+              「{savedText}」
+
+            </div>
+
+
+
+            <ReflectionCard
+
+              text={savedText}
+
+            />
+
+
+
+            <button
+
+              type="button"
+
+              onClick={writeAgain}
+
+              style={{
+
+                marginTop:8,
+
+                padding:
+
+                  "10px 28px",
+
+                borderRadius:30,
+
+                border:
+
+                  "1px solid rgba(120,110,90,.18)",
+
+                background:"transparent",
+
+                color:"#777164",
+
+                cursor:"pointer",
+
+              }}
+
+            >
+
+              再写一些
+
+            </button>
+
+
+
+          </div>
+
+        )
+
+      }
+
+
+
+    </section>
 
   );
 
