@@ -1,19 +1,23 @@
 "use client";
 
 
-function Lotus({
-x,y,size,color
+function PetalFlower({
+x,
+y,
+size,
+color
 }:any){
+
 
 return (
 
 <g>
 
+
 {
 Array.from({
-length:10
-})
-.map((_,i)=>(
+length:5
+}).map((_,i)=>(
 
 <ellipse
 
@@ -21,19 +25,19 @@ key={i}
 
 cx={x}
 
-cy={y-size/2}
+cy={y-size/1.8}
 
-rx={size/4}
+rx={size/3}
 
-ry={size}
+ry={size/1.15}
 
 fill={color}
 
-opacity=".65"
+opacity="0.65"
 
 transform={`
 rotate(
-${i*36}
+${i*72}
 ${x}
 ${y}
 )
@@ -42,7 +46,9 @@ ${y}
 />
 
 ))
+
 }
+
 
 
 <circle
@@ -53,9 +59,10 @@ cy={y}
 
 r={size/5}
 
-fill="#F4DCA8"
+fill="#E8CFA0"
 
 />
+
 
 </g>
 
@@ -67,39 +74,50 @@ fill="#F4DCA8"
 
 
 
-function Flower({
-x,y,size,color
+function Orchid({
+x,
+y,
+size,
+color
 }:any){
+
 
 return (
 
 <g>
 
-{
-Array.from({
-length:6
-})
-.map((_,i)=>(
+
+<path
+
+d={`
+M${x} ${y}
+
+C
+${x-30} ${y-size}
+${x+30} ${y-size*2}
+${x} ${y-size*3}
+
+`}
+
+stroke={color}
+
+strokeWidth="3"
+
+fill="none"
+
+opacity="0.8"
+
+/>
+
+
 
 <circle
 
-key={i}
+cx={x}
 
-cx={
-x+
-Math.cos(i)
-*size
-}
+cy={y-size*3}
 
-cy={
-y+
-Math.sin(i)
-*size
-}
-
-r={
-size/2
-}
+r={size/2}
 
 fill={color}
 
@@ -107,9 +125,6 @@ opacity=".7"
 
 />
 
-))
-
-}
 
 </g>
 
@@ -120,9 +135,15 @@ opacity=".7"
 
 
 
+
 function Leaf({
-x,y,size,color
+x,
+y,
+size,
+color,
+rotation
 }:any){
+
 
 return (
 
@@ -132,13 +153,21 @@ cx={x}
 
 cy={y}
 
-rx={size/2}
+rx={size/3}
 
 ry={size}
 
 fill={color}
 
-opacity=".6"
+opacity=".55"
+
+transform={`
+rotate(
+${rotation}
+${x}
+${y}
+)
+`}
 
 />
 
@@ -149,8 +178,37 @@ opacity=".6"
 
 
 
+
+function Glow(){
+
+return (
+
+<circle
+
+cx="210"
+
+cy="210"
+
+r="90"
+
+fill="#fff7df"
+
+opacity=".35"
+
+/>
+
+)
+
+}
+
+
+
+
+
 export default function GardenCanvas({
+
 garden
+
 }:any){
 
 
@@ -161,16 +219,18 @@ return (
 
 style={{
 
-width:420,
+width:430,
 
-height:420,
+height:430,
 
-borderRadius:40,
+borderRadius:50,
 
-overflow:"hidden",
+background:"#F7F1E7",
 
-background:
-"linear-gradient(#18251f,#526b59)"
+boxShadow:
+"0 20px 60px rgba(80,70,50,.12)",
+
+overflow:"hidden"
 
 }}
 
@@ -179,57 +239,89 @@ background:
 
 <svg
 
-width="420"
+width="430"
 
-height="420"
+height="430"
 
-viewBox="0 0 420 420"
+viewBox="0 0 430 430"
 
 >
 
 
+<Glow />
+
+
+
+{/* 生命环纹 */}
 
 <circle
 
-cx="210"
+cx="215"
 
-cy="210"
+cy="215"
 
 r="160"
 
 fill="none"
 
-stroke="#eee0c5"
+stroke="#CFC4AA"
 
-opacity=".2"
+opacity=".25"
 
 />
 
 
 
 {
+
 garden.elements.map(
+
 (e:any,i:number)=>{
 
 
+const angle =
+(i/ garden.elements.length)
+*
+Math.PI
+*
+2;
+
+
+
+const radius =
+80+
+i*12;
+
+
+
 const x =
-100+
-e.position.x*3;
+215+
+Math.cos(angle)
+*
+radius;
+
 
 
 const y =
-80+
-e.position.y*3;
+215+
+Math.sin(angle)
+*
+radius;
+
+
+
+const size =
+e.size/3;
 
 
 
 if(
-e.type==="lotus"
+e.type==="orchid"
 )
 
 return (
 
-<Lotus
+<Orchid
 
 key={i}
 
@@ -237,7 +329,7 @@ x={x}
 
 y={y}
 
-size={e.size/2}
+size={size}
 
 color={e.color}
 
@@ -248,7 +340,8 @@ color={e.color}
 
 
 if(
-e.type==="fern"||
+e.type==="fern"
+||
 e.type==="vine"
 )
 
@@ -262,9 +355,13 @@ x={x}
 
 y={y}
 
-size={e.size/3}
+size={size}
 
 color={e.color}
+
+rotation={
+e.rotation
+}
 
 />
 
@@ -274,7 +371,7 @@ color={e.color}
 
 return (
 
-<Flower
+<PetalFlower
 
 key={i}
 
@@ -282,14 +379,13 @@ x={x}
 
 y={y}
 
-size={e.size/4}
+size={size}
 
 color={e.color}
 
 />
 
 );
-
 
 
 }
@@ -299,15 +395,18 @@ color={e.color}
 }
 
 
+
+{/* 中心生命点 */}
+
 <circle
 
-cx="210"
+cx="215"
 
-cy="210"
+cy="215"
 
-r="8"
+r="7"
 
-fill="#fff1d0"
+fill="#D6B77A"
 
 />
 
@@ -316,7 +415,6 @@ fill="#fff1d0"
 
 
 </div>
-
 
 )
 
