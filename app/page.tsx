@@ -1,21 +1,16 @@
 "use client";
 
-
-import {useState} from "react";
+import { useState } from "react";
 
 import {
-saveDay,
-getDays
-}
-from "../lib/dailyStorage";
-
+  saveDay
+} from "../lib/dailyStorage";
 
 import GardenCanvas
 from "../components/GardenCanvas";
 
-
 import {
-composeGarden
+  composeGarden
 }
 from "../lib/gardenComposer";
 
@@ -24,206 +19,357 @@ from "../lib/gardenComposer";
 export default function Home(){
 
 
-const [mood,setMood]=useState("");
+  const [mood,setMood] =
+    useState("");
 
-const [text,setText]=useState("");
 
-const [garden,setGarden]=useState<any>(null);
+  const [text,setText] =
+    useState("");
 
 
+  const [garden,setGarden] =
+    useState<any>(null);
 
-const moods=[
 
-["🌱","开始了","seed"],
 
-["🌿","缓一缓","leaf"],
+  const moods = [
 
-["🌸","傻乐中","flower"],
+    ["🌱","开始了","seed"],
 
-["🔥","还能忍","branch"],
+    ["🌿","缓一缓","leaf"],
 
-["🌙","深度思考","root"],
+    ["🌸","傻乐中","flower"],
 
-["🌊","顺其自然","vine"],
+    ["🔥","还能忍","branch"],
 
-["☀️","谢谢今天","light"]
+    ["🌙","想一想","root"],
 
-];
+    ["🌊","顺其自然","vine"],
 
+    ["☀️","谢谢今天","light"]
 
+  ];
 
-function save(){
 
 
-const plant =
-moods.find(
-m=>m[1]===mood
-)?.[2]
-||
-"seed";
+  function save(){
 
 
+    const plant =
+      moods.find(
+        m=>m[1]===mood
+      )?.[2]
+      ||
+      "seed";
 
-const days =
-saveDay({
 
-date:new Date().toISOString(),
 
-mood,
+    const days =
+      saveDay({
 
-text,
+        date:
+        new Date().toISOString(),
 
-plant
+        mood,
 
-});
+        text,
 
+        plant
 
+      });
 
-if(days.length===7){
 
-setGarden(
-composeGarden(days)
-);
 
-}
+    if(days.length===7){
 
+      setGarden(
+        composeGarden(days)
+      );
 
+    }
 
-setText("");
 
-}
+    setText("");
 
+  }
 
 
-return (
 
-<div
+  return (
 
-style={{
 
-minHeight:"100vh",
+    <main
 
-background:"#f7f1e7",
+      style={{
 
-padding:40,
+        minHeight:"100vh",
 
-textAlign:"center"
+        background:
+        "linear-gradient(180deg,#faf5ea,#e7ede0)",
 
-}}
+        padding:"60px 20px",
 
->
+        textAlign:"center"
 
+      }}
 
-<h1>
-Life Mandala
-</h1>
+    >
 
 
-<h2>
-今天的生命碎片
-</h2>
+      <h1
 
+        style={{
 
+          fontSize:42,
 
-<div>
+          fontWeight:400,
 
-{
+          letterSpacing:4,
 
-moods.map(m=>(
+          color:"#3f4438"
 
-<button
+        }}
 
-key={m[1]}
+      >
 
-onClick={()=>setMood(m[1])}
+        Life Mandala
 
-style={{
+      </h1>
 
-margin:8,
 
-padding:12,
 
-borderRadius:20
+      <p
 
-}}
+        style={{
 
->
+          color:"#777",
 
-{m[0]} {m[1]}
+          marginBottom:40
 
-</button>
+        }}
 
-))
+      >
 
-}
+        每一天，留下一点属于自己的痕迹
 
-</div>
+      </p>
 
 
 
-<textarea
 
-placeholder="留下今天的一句话"
+      <div
 
-value={text}
+        style={{
 
-onChange={
-e=>setText(e.target.value)
-}
+          maxWidth:600,
 
-style={{
+          margin:"0 auto"
 
-marginTop:30,
+        }}
 
-width:300,
+      >
 
-height:100
 
-}}
+        <h3>
 
-/>
+          今天的一个瞬间
 
+        </h3>
 
-<br/>
 
 
-<button
+        <div>
 
-onClick={save}
 
-style={{
+        {
 
-marginTop:20,
+          moods.map(m=>(
 
-padding:"12px 30px"
 
-}}
+            <button
 
->
+              key={m[1]}
 
-保存今日印记
+              onClick={()=>setMood(m[1])}
 
-</button>
 
+              style={{
 
+                margin:8,
 
-{
+                padding:"14px 20px",
 
-garden &&
+                borderRadius:30,
 
-<div style={{marginTop:50}}>
+                border:
 
-<GardenCanvas garden={garden}/>
+                mood===m[1]
 
-</div>
+                ?
 
-}
+                "2px solid #7c806d"
 
+                :
 
+                "1px solid #ddd",
 
-</div>
 
-)
+                background:
+
+                mood===m[1]
+
+                ?
+
+                "#e5eadb"
+
+                :
+
+                "rgba(255,255,255,.5)",
+
+
+                fontSize:16,
+
+                cursor:"pointer"
+
+              }}
+
+            >
+
+              {m[0]} {m[1]}
+
+            </button>
+
+
+          ))
+
+        }
+
+
+        </div>
+
+
+
+        <textarea
+
+          value={text}
+
+          onChange={
+            e=>setText(e.target.value)
+          }
+
+
+          placeholder="写下一句话，也可以什么都不写"
+
+
+          style={{
+
+            marginTop:35,
+
+            width:"90%",
+
+            height:120,
+
+            borderRadius:20,
+
+            border:"1px solid #ddd",
+
+            padding:20,
+
+            fontSize:16,
+
+            background:"rgba(255,255,255,.7)"
+
+          }}
+
+        />
+
+
+
+        <br/>
+
+
+
+        <button
+
+          onClick={save}
+
+
+          style={{
+
+            marginTop:25,
+
+            padding:"14px 45px",
+
+            borderRadius:40,
+
+            border:"none",
+
+            background:"#66705b",
+
+            color:"#fff",
+
+            fontSize:16,
+
+            cursor:"pointer"
+
+          }}
+
+        >
+
+          收下今天
+
+        </button>
+
+
+
+      </div>
+
+
+
+
+      {
+
+        garden &&
+
+        <div
+
+          style={{
+
+            marginTop:70
+
+          }}
+
+        >
+
+          <h2
+
+          style={{
+
+            fontWeight:400
+
+          }}
+
+          >
+
+            你的七日生命曼陀罗
+
+          </h2>
+
+
+          <GardenCanvas
+            garden={garden}
+          />
+
+
+        </div>
+
+      }
+
+
+
+    </main>
+
+  );
 
 
 }
