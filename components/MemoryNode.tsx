@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+
 import SelfReflection from "./SelfReflection";
+import LiteraryEcho from "./LiteraryEcho";
 
 
 export default function MemoryNode({
@@ -18,7 +20,7 @@ export default function MemoryNode({
 
     <>
 
-      {/* 记忆节点 */}
+      {/* 曼陀罗上的节点 */}
 
       <button
 
@@ -28,9 +30,9 @@ export default function MemoryNode({
 
           position:"absolute",
 
-          left:item.x,
+          left:item.x || 0,
 
-          top:item.y,
+          top:item.y || 0,
 
           width:item.size || 60,
 
@@ -44,15 +46,33 @@ export default function MemoryNode({
 
           background:
 
-            "rgba(150,170,130,.75)",
+            item.mood === "开心"
+
+            ?
+
+            "rgba(214,170,90,.8)"
+
+            :
+
+            item.mood === "疲惫"
+
+            ?
+
+            "rgba(130,145,125,.8)"
+
+            :
+
+            "rgba(150,165,135,.8)",
+
 
           boxShadow:
 
-            "0 12px 35px rgba(60,50,30,.18)",
+            "0 15px 40px rgba(60,50,30,.18)",
+
 
           animation:
 
-            `memoryPulse ${5 + index}s ease-in-out infinite`
+            `memoryPulse ${5 + index}s ease-in-out infinite`,
 
         }}
 
@@ -64,7 +84,9 @@ export default function MemoryNode({
 
             color:"#fff",
 
-            fontSize:12
+            fontSize:12,
+
+            opacity:.9
 
           }}
 
@@ -95,11 +117,11 @@ export default function MemoryNode({
 
               inset:0,
 
-              zIndex:100,
+              zIndex:200,
 
               background:
 
-                "rgba(248,244,233,.94)",
+                "rgba(245,241,230,.94)",
 
               display:"flex",
 
@@ -127,9 +149,9 @@ export default function MemoryNode({
 
                 width:"100%",
 
-                maxWidth:480,
+                maxWidth:500,
 
-                maxHeight:"85vh",
+                maxHeight:"88vh",
 
                 overflowY:"auto",
 
@@ -141,7 +163,7 @@ export default function MemoryNode({
 
                 boxShadow:
 
-                  "0 30px 80px rgba(60,50,30,.12)",
+                  "0 35px 100px rgba(50,40,30,.15)",
 
                 fontFamily:
 
@@ -155,7 +177,7 @@ export default function MemoryNode({
 
 
 
-              {/* 时间 */}
+              {/* 日期 */}
 
               <div
 
@@ -171,11 +193,15 @@ export default function MemoryNode({
 
               >
 
-                {item.localTime ||
+                {
 
-                 item.date ||
+                  item.localTime ||
 
-                 ""}
+                  item.date ||
+
+                  "某一天"
+
+                }
 
               </div>
 
@@ -183,7 +209,7 @@ export default function MemoryNode({
 
 
 
-              {/* 原始记录 */}
+              {/* 用户原话 */}
 
               <div
 
@@ -191,9 +217,11 @@ export default function MemoryNode({
 
                   marginTop:30,
 
-                  fontSize:18,
+                  fontSize:20,
 
                   lineHeight:2,
+
+                  color:"#514c42"
 
                 }}
 
@@ -217,11 +245,13 @@ export default function MemoryNode({
 
                     style={{
 
-                      marginTop:20,
+                      marginTop:18,
 
                       color:"#999",
 
-                      fontSize:13
+                      fontSize:13,
+
+                      letterSpacing:2
 
                     }}
 
@@ -239,32 +269,27 @@ export default function MemoryNode({
 
 
 
-              {/* 分隔 */}
+
+
+              {/* 自我回应 */}
 
               <div
 
                 style={{
 
-                  height:1,
-
-                  background:"#eee5d8",
-
-                  margin:"35px 0"
+                  marginTop:35
 
                 }}
 
-              />
-
-
-
-
-
-              {/* 用户回应 */}
+              >
 
               {
 
-                item.reflection ? (
+                item.reflection
 
+                ?
+
+                (
 
                   <div
 
@@ -274,9 +299,9 @@ export default function MemoryNode({
 
                       borderRadius:25,
 
-                      background:"#f5f0e5",
+                      background:"#f4efe3",
 
-                      lineHeight:2
+                      lineHeight:2,
 
                     }}
 
@@ -286,22 +311,21 @@ export default function MemoryNode({
 
                       style={{
 
-                        fontSize:12,
+                        fontSize:11,
+
+                        letterSpacing:3,
 
                         color:"#aaa",
 
-                        letterSpacing:2,
-
-                        marginBottom:15
+                        marginBottom:12
 
                       }}
 
                     >
 
-                      后来，我这样回应自己
+                      后来，我写给自己的话
 
                     </div>
-
 
 
                     {item.reflection.text}
@@ -309,8 +333,8 @@ export default function MemoryNode({
 
                   </div>
 
-
                 )
+
 
                 :
 
@@ -327,30 +351,57 @@ export default function MemoryNode({
               }
 
 
+              </div>
 
 
+
+
+
+
+
+              {/* 文学回响 */}
+
+              <LiteraryEcho
+
+                mood={item.mood}
+
+              />
+
+
+
+
+
+
+
+              {/* 返回 */}
 
               <button
+
+                type="button"
 
                 onClick={() => setOpen(false)}
 
                 style={{
 
-                  marginTop:30,
+                  marginTop:35,
 
-                  padding:"10px 30px",
+                  padding:"12px 35px",
 
                   borderRadius:30,
 
                   border:
 
-                    "1px solid rgba(100,90,70,.15)",
+                    "1px solid rgba(100,90,70,.18)",
 
                   background:"transparent",
 
-                  color:"#777",
+                  color:"#716b5e",
 
-                  cursor:"pointer"
+                  cursor:"pointer",
+
+                  fontFamily:
+
+                    "Georgia,'Noto Serif SC',serif"
 
                 }}
 
@@ -363,7 +414,6 @@ export default function MemoryNode({
 
 
             </div>
-
 
 
           </div>
