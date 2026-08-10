@@ -1,133 +1,305 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function Home() {
-  const [emotion, setEmotion] = useState("");
-  const [diary, setDiary] = useState("");
-  const [started, setStarted] = useState(false);
+export default function CreateMandala() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
 
-  const colors = [
-    { name: "海洋蓝 🌊", value: "#4da6ff" },
-    { name: "火焰红 🔥", value: "#ff6666" },
-    { name: "森林绿 🌱", value: "#66cc99" },
-    { name: "星夜紫 🌙", value: "#9966ff" },
-    { name: "黄金光 ☀️", value: "#d4af37" },
-  ];
+  const [listening, setListening] = useState(false);
+  const [energy, setEnergy] = useState(20);
+  const [message, setMessage] = useState(
+    "欢迎回来，让你的声音创造属于你的生命曼陀罗。"
+  );
+
+  // 女性声音引导
+  function speak(text: string) {
+    const speech = new SpeechSynthesisUtterance(text);
+
+    speech.lang = "zh-CN";
+    speech.rate = 0.85;
+    speech.pitch = 1.25;
+
+    const voices = window.speechSynthesis.getVoices();
+
+    const female =
+      voices.find(v =>
+        v.name.includes("Female")
+      ) || voices.find(v =>
+        v.lang.includes("zh")
+      );
+
+    if (female) {
+      speech.voice = female;
+    }
+
+    window.speechSynthesis.speak(speech);
+  }
+
+
+  async function startListening() {
+
+    speak(
+      "欢迎回来。请慢慢呼吸。当你准备好，让你的声音创造属于你的曼陀罗。"
+    );
+
+
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio:true
+      });
+
+
+    const context =
+      new AudioContext();
+
+
+    const source =
+      context.createMediaStreamSource(stream);
+
+
+    const analyser =
+      context.createAnalyser();
+
+
+    analyser.fftSize = 256;
+
+
+    source.connect(analyser);
+
+
+    analyserRef.current = analyser;
+
+
+    setListening(true);
+
+    setMessage(
+      "正在感受你的声音频率..."
+    );
+  }
+
+
+
+  useEffect(()=>{
+
+    const canvas =
+      canvasRef.current;
+
+    if(!canvas)return;
+
+
+    const ctx =
+      canvas.getContext("2d");
+
+    if(!ctx)return;
+
+
+    canvas.width=600;
+    canvas.height=600;
+
+
+    let animation:number;
+
+
+    function draw(){
+
+      ctx.clearRect(
+        0,
+        0,
+        600,
+        600
+      );
+
+
+      ctx.save();
+
+      ctx.translate(
+        300,
+        300
+      );
+
+
+      const size =
+        90 + energy * 1.5;
+
+
+      for(let i=0;i<36;i++){
+
+        ctx.rotate(
+          Math.PI / 18
+        );
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+          0,
+          0,
+          size,
+          0,
+          Math.PI*2
+        );
+
+
+        ctx.strokeStyle =
+        `hsla(
+          ${40+i*5},
+          70%,
+          70%,
+          0.35
+        )`;
+
+
+        ctx.lineWidth =
+          2;
+
+
+        ctx.stroke();
+
+      }
+
+
+      ctx.restore();
+
+
+
+      if(analyserRef.current){
+
+        const data =
+          new Uint8Array(
+            analyserRef.current.frequencyBinCount
+          );
+
+
+        analyserRef.current
+        .getByteFrequencyData(data);
+
+
+        let total=0;
+
+        data.forEach(
+          n=>total+=n
+        );
+
+
+        const value =
+          total/data.length;
+
+
+        setEnergy(
+          Math.min(value,100)
+        );
+
+      }
+
+
+      animation =
+        requestAnimationFrame(draw);
+
+    }
+
+
+    draw();
+
+
+    return()=>{
+      cancelAnimationFrame(animation);
+    }
+
+
+  },[energy]);
+
+
 
   return (
+
     <main
-      style={{
-        minHeight: "100vh",
-        background:
-          "radial-gradient(circle,#3b2a5a,#120b22)",
-        color: "white",
-        padding: "40px",
-        textAlign: "center",
-        fontFamily: "serif",
-      }}
+    style={{
+      minHeight:"100vh",
+      padding:"40px",
+      textAlign:"center",
+      color:"#5b4566",
+      background:
+      "linear-gradient(#fff8f0,#eadcf5)"
+    }}
     >
-      <h1
-        style={{
-          fontSize: "48px",
-          letterSpacing: "4px",
-        }}
-      >
-        ✨ Life Mandala ✨
+
+
+      <h1>
+        🌸 Voice Mandala
       </h1>
 
-      <p style={{ fontSize: "20px" }}>
-        每一次呼吸，都是生命创造的艺术。
+
+      <p>
+        你的声音，是生命创造的第一道光。
       </p>
 
-      <section style={{ marginTop: "50px" }}>
-        <h2>你的灵魂今天是什么颜色？</h2>
 
-        <div>
-          {colors.map((c) => (
-            <button
-              key={c.name}
-              onClick={() => setEmotion(c.value)}
-              style={{
-                margin: "8px",
-                padding: "12px 20px",
-                borderRadius: "30px",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              {c.name}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section style={{ marginTop: "50px" }}>
-        <h2>🌬 呼吸仪式</h2>
-
-        <div
-          onClick={() => setStarted(!started)}
-          style={{
-            width: "180px",
-            height: "180px",
-            margin: "30px auto",
-            borderRadius: "50%",
-            background: emotion || "#d4af37",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "22px",
-            cursor: "pointer",
-            transition: "2s",
-            transform: started
-              ? "scale(1.3)"
-              : "scale(1)",
-          }}
-        >
-          {started ? "呼吸中..." : "开始呼吸"}
-        </div>
-      </section>
+      <p
+      style={{
+        fontSize:"14px",
+        opacity:.7
+      }}
+      >
+        🔒 声音只用于实时生成，不会保存或上传。
+      </p>
 
 
-      <section style={{ marginTop: "50px" }}>
-        <h2>📖 今日生命日记</h2>
 
-        <textarea
-          value={diary}
-          onChange={(e)=>setDiary(e.target.value)}
-          placeholder="写下今天的感受..."
-          style={{
-            width:"80%",
-            height:"120px",
-            borderRadius:"15px",
-            padding:"15px",
-            fontSize:"16px"
-          }}
-        />
-      </section>
+      <canvas
+      ref={canvasRef}
+      style={{
+        borderRadius:"50%",
+        margin:"30px auto",
+        background:
+        "rgba(255,255,255,.25)"
+      }}
+      />
 
+
+
+      <h3>
+        {message}
+      </h3>
+
+
+
+      {!listening &&
 
       <button
-        style={{
-          marginTop:"40px",
-          padding:"18px 40px",
-          borderRadius:"40px",
-          background:"#d4af37",
-          border:"none",
-          fontSize:"20px",
-          cursor:"pointer"
-        }}
-        onClick={()=>{
-          alert(
-            "你的生命曼陀罗正在生成 ✨\n\n今日情绪："+emotion+
-            "\n\n记录："+diary
-          )
-        }}
+      onClick={startListening}
+      style={{
+        padding:"16px 40px",
+        borderRadius:"40px",
+        border:"none",
+        background:"#d8b56a",
+        color:"white",
+        fontSize:"18px"
+      }}
       >
-        生成我的生命曼陀罗
+        🎤 开始聆听
       </button>
 
+      }
+
+
+      {listening &&
+      <div>
+
+        <h2>
+          🌬 请跟随呼吸
+        </h2>
+
+        <p>
+          吸气 4 秒 · 停留 4 秒 · 呼气 6 秒
+        </p>
+
+      </div>
+      }
+
+
     </main>
+
   );
 }
