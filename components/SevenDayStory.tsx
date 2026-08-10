@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import GardenCanvas from "./GardenCanvas";
 
 
@@ -9,64 +11,102 @@ export default function SevenDayStory({
 }:any){
 
 
-  const icons:any={
-
-    seed:"🌱",
-
-    leaf:"🌿",
-
-    flower:"🌸",
-
-    branch:"🔥",
-
-    root:"🌙",
-
-    vine:"🌊",
-
-    light:"☀️"
-
-  };
+  const [answers,setAnswers] =
+    useState<any>({});
 
 
 
-  const words:any={
+  const [active,setActive] =
+    useState<number | null>(null);
 
 
-    "开始了":
 
-    "一个念头被留下，新的旅程从这里开始。",
+  const themes = [
 
-
-    "缓一缓":
-
-    "你给自己留出了空间，也听见了自己的需要。",
-
-
-    "傻乐中":
-
-    "一些简单的快乐，也值得被认真保存。",
-
-
-    "还能忍":
-
-    "有些力量，不喧哗，只是在默默支撑。",
+    {
+      title:"开始",
+      idea:"存在",
+      question:"如果今天只是属于你的时间，你想留下什么？",
+      options:[
+        "一个新的尝试",
+        "一个小小愿望",
+        "一个想保护的东西"
+      ]
+    },
 
 
-    "想一想":
+    {
+      title:"感受",
+      idea:"接纳",
+      question:"这个感受想告诉你什么？",
+      options:[
+        "我需要休息",
+        "我需要被理解",
+        "我需要改变"
+      ]
+    },
 
-    "停下来观察，本身就是一种成长。",
+
+    {
+      title:"连接",
+      idea:"关系",
+      question:"今天什么让你感觉和世界产生联系？",
+      options:[
+        "一个人",
+        "一件小事",
+        "一个瞬间"
+      ]
+    },
 
 
-    "顺其自然":
+    {
+      title:"力量",
+      idea:"选择",
+      question:"你坚持的东西，值得继续吗？",
+      options:[
+        "值得",
+        "需要调整",
+        "我要重新选择"
+      ]
+    },
 
-    "有些答案，不需要马上出现。",
+
+    {
+      title:"变化",
+      idea:"流动",
+      question:"如果允许自己改变，你想放下什么？",
+      options:[
+        "压力",
+        "过去",
+        "别人的期待"
+      ]
+    },
 
 
-    "谢谢今天":
+    {
+      title:"理解",
+      idea:"回望",
+      question:"你想对这几天的自己说什么？",
+      options:[
+        "谢谢你坚持",
+        "慢一点也可以",
+        "继续相信自己"
+      ]
+    },
 
-    "在经历之后，依然能够看见拥有。"
 
-  };
+    {
+      title:"成为",
+      idea:"整合",
+      question:"这七天，你看见了自己的哪一部分？",
+      options:[
+        "勇气",
+        "柔软",
+        "新的方向"
+      ]
+    }
+
+  ];
 
 
 
@@ -77,11 +117,11 @@ export default function SevenDayStory({
 
     style={{
 
-      maxWidth:600,
+      maxWidth:650,
 
       margin:"80px auto",
 
-      padding:"0 20px",
+      padding:20,
 
       color:"#3f4438"
 
@@ -95,19 +135,20 @@ export default function SevenDayStory({
 
       style={{
 
+        textAlign:"center",
+
         fontWeight:400,
 
-        letterSpacing:4,
-
-        textAlign:"center"
+        letterSpacing:5
 
       }}
 
       >
 
-        七日生命叙事
+        七日生命旅程
 
       </h1>
+
 
 
 
@@ -119,19 +160,17 @@ export default function SevenDayStory({
 
         color:"#777",
 
-        lineHeight:2,
-
-        marginBottom:60
+        lineHeight:2
 
       }}
 
       >
 
-        这七天，不是一次记录。
+        不是寻找答案。
 
         <br/>
 
-        而是七个与你相遇的瞬间。
+        而是在七天里，更了解自己。
 
       </p>
 
@@ -143,123 +182,188 @@ export default function SevenDayStory({
 
         days.map(
 
-          (day:any,index:number)=>(
+          (day:any,index:number)=>{
 
 
-          <div
-
-          key={index}
-
-          style={{
-
-            marginBottom:45,
-
-            padding:30,
-
-            borderRadius:30,
-
-            background:
-
-            "rgba(255,252,243,.75)",
+            const theme =
+            themes[index];
 
 
-            boxShadow:
 
-            "0 20px 50px rgba(70,60,40,.08)"
-
-          }}
-
-          >
-
-
+            return (
 
             <div
 
+            key={index}
+
             style={{
 
-              color:"#999",
+              marginTop:40,
 
-              fontSize:13,
+              padding:30,
 
-              letterSpacing:3
+              borderRadius:30,
+
+              background:
+
+              "rgba(255,252,243,.8)",
+
+              boxShadow:
+
+              "0 20px 60px rgba(70,60,40,.08)"
 
             }}
 
             >
 
-              DAY {index+1}
+
+
+              <small
+
+              style={{
+
+                color:"#999",
+
+                letterSpacing:3
+
+              }}
+
+              >
+
+                DAY {index+1}
+
+              </small>
+
+
+
+
+              <h2
+
+              style={{
+
+                fontWeight:400
+
+              }}
+
+              >
+
+                {day.mood}
+
+              </h2>
+
+
+
+              <h3
+
+              style={{
+
+                color:"#78806c",
+
+                fontWeight:400
+
+              }}
+
+              >
+
+                {theme.idea}
+
+              </h3>
+
+
+
+
+              <p
+
+              style={{
+
+                lineHeight:2
+
+              }}
+
+              >
+
+                {theme.question}
+
+              </p>
+
+
+
+
+
+              <div>
+
+              {
+
+                theme.options.map(
+
+                  (option:string)=>(
+
+
+                    <button
+
+                    key={option}
+
+                    onClick={()=>{
+
+                      setAnswers({
+
+                        ...answers,
+
+                        [index]:option
+
+                      });
+
+                      setActive(index);
+
+                    }}
+
+
+                    style={{
+
+                      margin:6,
+
+                      padding:"10px 18px",
+
+                      borderRadius:25,
+
+                      border:"1px solid #ddd",
+
+                      background:
+
+                      answers[index]===option
+
+                      ?
+
+                      "#dfe8d5"
+
+                      :
+
+                      "white"
+
+                    }}
+
+                    >
+
+                      {option}
+
+                    </button>
+
+
+                  )
+
+                )
+
+              }
+
+              </div>
+
+
 
             </div>
 
+            )
 
-
-            <h2
-
-            style={{
-
-              fontWeight:400,
-
-              marginTop:15
-
-            }}
-
-            >
-
-              {icons[day.plant]}
-
-              {" "}
-
-              {day.mood}
-
-            </h2>
-
-
-
-            <p
-
-            style={{
-
-              lineHeight:2,
-
-              color:"#666"
-
-            }}
-
-            >
-
-              {day.text ||
-
-              "这一刻，没有语言，也被轻轻留下。"}
-
-            </p>
-
-
-
-
-            <div
-
-            style={{
-
-              marginTop:20,
-
-              color:"#7b806e",
-
-              lineHeight:1.8
-
-            }}
-
-            >
-
-              {words[day.mood]}
-
-            </div>
-
-
-
-          </div>
-
-
-          )
+          }
 
         )
 
@@ -268,71 +372,81 @@ export default function SevenDayStory({
 
 
 
-      <div
 
-      style={{
+      {
 
-        marginTop:80,
+        days.length===7 &&
 
-        textAlign:"center"
 
-      }}
-
-      >
-
-        <h2
+        <div
 
         style={{
 
-          fontWeight:400
+          marginTop:80,
+
+          textAlign:"center"
 
         }}
 
         >
 
-          你的七日生命曼陀罗
 
-        </h2>
+          <h2
 
+          style={{
 
+            fontWeight:400
 
-        <p
+          }}
 
-        style={{
+          >
 
-          color:"#888",
+            你的七日生命曼陀罗
 
-          lineHeight:2
-
-        }}
-
-        >
-
-          这些不是七张图片。
-
-          <br/>
-
-          它们是你经过的七个瞬间。
-
-        </p>
+          </h2>
 
 
 
+          <p
 
-        {
+          style={{
 
-          garden &&
+            lineHeight:2,
 
-          <GardenCanvas
+            color:"#777"
 
-          garden={garden}
+          }}
 
-          />
+          >
 
-        }
+            七个瞬间，
+
+            <br/>
+
+            七次与你自己的相遇。
+
+          </p>
 
 
-      </div>
+
+
+          {
+
+            garden &&
+
+            <GardenCanvas
+
+            garden={garden}
+
+            />
+
+          }
+
+
+        </div>
+
+
+      }
 
 
 
