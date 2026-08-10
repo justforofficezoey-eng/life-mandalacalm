@@ -1,174 +1,195 @@
 :root {
-  --background: #f7f1e7;
-  --foreground: #3f4438;
+
+  --background:#f7f1e7;
+
+  --foreground:#3f4438;
+
 }
 
 
 * {
-  box-sizing: border-box;
+
+  box-sizing:border-box;
+
 }
 
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+
+  margin:0;
+
+  padding:0;
+
 }
 
 
 body {
 
-  background: var(--background);
+  background:
 
-  color: var(--foreground);
+  var(--background);
+
+
+  color:
+
+  var(--foreground);
+
 
   font-family:
-    "Inter",
-    "PingFang SC",
-    "Microsoft YaHei",
-    sans-serif;
+
+  "Inter",
+  "PingFang SC",
+  "Microsoft YaHei",
+  sans-serif;
 
 }
 
 
 
-/* 花朵呼吸 */
 
-@keyframes bloom {
-
-  0% {
-
-    transform: scale(.96);
-
-    opacity: .65;
-
-  }
-
-
-  50% {
-
-    transform: scale(1.06);
-
-    opacity: 1;
-
-  }
-
-
-  100% {
-
-    transform: scale(.96);
-
-    opacity: .65;
-
-  }
-
-}
-
-
-
-/* 叶子微风 */
-
-@keyframes wind {
-
-  0% {
-
-    transform: rotate(-4deg);
-
-  }
-
-
-  50% {
-
-    transform: rotate(4deg);
-
-  }
-
-
-  100% {
-
-    transform: rotate(-4deg);
-
-  }
-
-}
-
-
-
-/* 光晕 */
+/* 中心光晕呼吸 */
 
 @keyframes softGlow {
 
+
   0% {
 
-    opacity: .25;
+    opacity:.25;
+
+    transform:scale(.95);
 
   }
 
 
   50% {
 
-    opacity: .6;
+    opacity:.7;
+
+    transform:scale(1.08);
 
   }
 
 
   100% {
 
-    opacity: .25;
+    opacity:.25;
+
+    transform:scale(.95);
 
   }
+
 
 }
 
 
 
-/* 生长出现 */
+
+
+/* 植物漂浮 */
+
+@keyframes floatPlant {
+
+
+  0% {
+
+    transform:
+
+    translateY(0px)
+    rotate(0deg);
+
+  }
+
+
+  50% {
+
+    transform:
+
+    translateY(-12px)
+    rotate(2deg);
+
+  }
+
+
+  100% {
+
+    transform:
+
+    translateY(0px)
+    rotate(0deg);
+
+  }
+
+
+}
+
+
+
+
+
+/* 植物出现 */
 
 @keyframes grow {
 
+
   from {
 
-    transform: scale(0);
+    opacity:0;
 
-    opacity: 0;
+    transform:
+
+    scale(.7);
 
   }
 
 
   to {
 
-    transform: scale(1);
+    opacity:1;
 
-    opacity: 1;
+    transform:
+
+    scale(1);
 
   }
+
 
 }
 
 
 
-/* 植物轻轻呼吸 */
 
-@keyframes floatPlant {
+
+/* 轻微旋转 */
+
+@keyframes breathe {
+
 
   0% {
 
-    transform: translateY(0);
+    transform:
+
+    scale(1);
 
   }
 
 
   50% {
 
-    transform: translateY(-8px);
+    transform:
+
+    scale(1.03);
 
   }
 
 
   100% {
 
-    transform: translateY(0);
+    transform:
+
+    scale(1);
 
   }
+
 
 }
