@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { generateMandala } from "@/lib/generateMandala";
+import { generateMandala } from "../lib/generateMandala";
 
 
 export default function Home() {
