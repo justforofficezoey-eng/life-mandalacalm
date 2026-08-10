@@ -4,172 +4,83 @@ import { plantLibrary } from "./plantLibrary";
 export function composeGarden(days:any[]) {
 
 
-  const count = days.length;
+const positions = [
 
+  {x:180,y:20,rotate:0},       // Day1 上
 
-  // 用文字数量制造不同组合
-  const seed =
-    days
-      .map((d:any)=>d.text || "")
-      .join("")
-      .length;
+  {x:300,y:100,rotate:45},     // Day2 右上
 
+  {x:300,y:260,rotate:90},     // Day3 右下
 
-  const rotate =
-    seed % 360;
+  {x:180,y:340,rotate:135},    // Day4 下
 
+  {x:60,y:260,rotate:180},     // Day5 左下
 
-  const elements = [];
+  {x:60,y:100,rotate:225},     // Day6 左上
 
+  {x:180,y:180,rotate:0}       // Day7 中心
 
-  // 外圈藤蔓
+];
 
-  elements.push({
 
-    ...plantLibrary.vine,
 
-    x:10,
+const elements =
+days.map(
 
-    y:10,
+(day:any,index:number)=>{
 
-    size:440,
 
-    rotate:rotate
+const plant =
+plantLibrary[
+  day.plant || "seed"
+];
 
-  });
 
 
+return {
 
-  // 森林底层
 
-  elements.push({
+...plant,
 
-    ...plantLibrary.forest,
 
-    x:120,
+x:
+positions[index]?.x || 180,
 
-    y:250,
 
-    size:220,
+y:
+positions[index]?.y || 180,
 
-    opacity:.8
 
-  });
+size:
+index===6 ? 180 : 130,
 
 
+rotate:
+positions[index]?.rotate || 0,
 
-  // 根
 
-  elements.push({
+opacity:.9
 
-    ...plantLibrary.root,
 
-    x:130,
+};
 
-    y:250,
 
-    size:190
+}
 
-  });
+);
 
 
 
-  // 叶片环绕
+return {
 
-  elements.push({
 
-    ...plantLibrary.leaf,
+title:"我的七日生命曼陀罗",
 
-    x:40,
 
-    y:90,
+elements
 
-    size:180,
 
-    rotate:45
-
-  });
-
-
-  elements.push({
-
-    ...plantLibrary.leaf,
-
-    x:250,
-
-    y:90,
-
-    size:180,
-
-    rotate:-45
-
-  });
-
-
-
-  // 中心主花
-
-  elements.push({
-
-    ...plantLibrary.flower,
-
-    x:100,
-
-    y:90,
-
-    size:280
-
-  });
-
-
-
-  // 枝条
-
-  elements.push({
-
-    ...plantLibrary.branch,
-
-    x:130,
-
-    y:180,
-
-    size:240
-
-  });
-
-
-
-  // 最终光
-
-  if(count>=7){
-
-    elements.push({
-
-      ...plantLibrary.light,
-
-      x:150,
-
-      y:110,
-
-      size:160
-
-    });
-
-  }
-
-
-
-  return {
-
-
-    title:
-
-    "我的七日生命曼陀罗",
-
-
-    elements
-
-  };
+};
 
 
 }
