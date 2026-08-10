@@ -1,221 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-export default function CreateMandala() {
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-
-  const [listening, setListening] = useState(false);
-  const [energy, setEnergy] = useState(20);
-  const [text, setText] = useState("");
-
-  const messages = [
-    "欢迎回来。",
-    "给自己一点安静的时间。",
-    "感受你的呼吸。",
-    "你的声音正在创造属于你的生命曼陀罗。"
-  ];
+import { useState } from "react";
+import { generateMandala } from "@/lib/generateMandala";
 
 
-  // 打字效果
-  useEffect(()=>{
+export default function Home() {
 
-    let index = 0;
-    let word = "";
-
-    const timer =
-      setInterval(()=>{
-
-        if(index < messages.length){
-
-          word += messages[index] + "\n\n";
-          setText(word);
-          index++;
-
-        }
-
-      },1500);
+  const [text,setText] = useState("");
+  const [result,setResult] = useState<any>(null);
 
 
-    return()=>clearInterval(timer);
+  function create(){
 
-  },[]);
+    const data =
+      generateMandala(text);
 
-
-
-  async function startListening(){
-
-    const stream =
-      await navigator.mediaDevices.getUserMedia({
-        audio:true
-      });
-
-
-    const context =
-      new AudioContext();
-
-
-    const source =
-      context.createMediaStreamSource(stream);
-
-
-    const analyser =
-      context.createAnalyser();
-
-
-    analyser.fftSize = 256;
-
-
-    source.connect(analyser);
-
-    analyserRef.current = analyser;
-
-
-    setListening(true);
+    setResult(data);
 
   }
-
-
-
-  function stopListening(){
-
-    setListening(false);
-
-    setText(
-      "今天先到这里。\n\n你的声音已经留下了一道生命轨迹。"
-    );
-
-  }
-
-
-
-  useEffect(()=>{
-
-    const canvas =
-      canvasRef.current;
-
-    if(!canvas)return;
-
-
-    const ctx =
-      canvas.getContext("2d");
-
-    if(!ctx)return;
-
-
-    canvas.width=600;
-    canvas.height=600;
-
-
-    let animation:number;
-
-
-    function draw(){
-
-
-      ctx.clearRect(
-        0,
-        0,
-        600,
-        600
-      );
-
-
-      ctx.save();
-
-      ctx.translate(300,300);
-
-
-      const radius =
-        100 + energy;
-
-
-      for(let i=0;i<48;i++){
-
-        ctx.rotate(
-          Math.PI/24
-        );
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-          0,
-          0,
-          radius,
-          0,
-          Math.PI*2
-        );
-
-
-        ctx.strokeStyle =
-        `rgba(
-          210,
-          170,
-          100,
-          0.25
-        )`;
-
-
-        ctx.lineWidth=2;
-
-        ctx.stroke();
-
-      }
-
-
-      ctx.restore();
-
-
-
-      if(analyserRef.current){
-
-        const data =
-          new Uint8Array(
-            analyserRef.current.frequencyBinCount
-          );
-
-
-        analyserRef.current
-        .getByteFrequencyData(data);
-
-
-        let total=0;
-
-        data.forEach(
-          x=>total+=x
-        );
-
-
-        setEnergy(
-          Math.min(
-            total/data.length,
-            100
-          )
-        );
-
-      }
-
-
-      animation =
-      requestAnimationFrame(draw);
-
-    }
-
-
-    draw();
-
-
-    return()=>{
-      cancelAnimationFrame(animation);
-    }
-
-
-  },[energy]);
-
 
 
 
@@ -227,73 +29,123 @@ export default function CreateMandala() {
       padding:"40px",
       textAlign:"center",
       background:
-      "linear-gradient(#fff9f0,#eee0f5)",
-      color:"#5d4865"
+      "linear-gradient(#fff8f0,#eee2f7)",
+      color:"#59445f"
     }}
     >
 
 
       <h1>
-        ✨ Life Mandala
+        🌸 Life Mandala
       </h1>
 
 
-      <p
-      style={{
-        whiteSpace:"pre-line",
-        fontSize:"20px"
-      }}
-      >
-        {text}
+      <p>
+        每个人的生命，
+        都有自己的图案。
       </p>
 
 
-      <canvas
-      ref={canvasRef}
+      <textarea
+
+      value={text}
+
+      onChange={
+        e=>setText(e.target.value)
+      }
+
+      placeholder="
+      留下一点今天的痕迹...
+      一句话也可以。
+      "
+
       style={{
-        borderRadius:"50%",
-        margin:"30px auto"
+
+        width:"80%",
+        height:"150px",
+        padding:"20px",
+        borderRadius:"20px",
+        border:"none",
+        fontSize:"18px"
+
       }}
+
       />
 
 
+      <br/>
+
+
+      <button
+
+      onClick={create}
+
+      style={{
+
+        marginTop:"25px",
+        padding:"16px 45px",
+        borderRadius:"40px",
+        border:"none",
+        background:"#d5b36a",
+        color:"white",
+        fontSize:"18px"
+
+      }}
+
+      >
+
+      ✨ 创造我的曼陀罗
+
+      </button>
+
+
+
+      {
+      result &&
+
+      <section
+      style={{
+        marginTop:"50px",
+        maxWidth:"700px",
+        marginLeft:"auto",
+        marginRight:"auto"
+      }}
+      >
+
+      <h2>
+        {result.title}
+      </h2>
+
+
       <p>
-        🔒 声音只用于实时创造，不会保存。
+        {result.message}
       </p>
 
 
+      <h3>
+        🌸 曼陀罗元素
+      </h3>
 
-      {!listening ?
 
-      <button
-      onClick={startListening}
-      style={{
-        padding:"16px 40px",
-        borderRadius:"40px",
-        background:"#d8b56a",
-        color:"white",
-        border:"none",
-        fontSize:"18px"
-      }}
-      >
-        🎤 开始创造
-      </button>
+      <p>
+        颜色：
+        {result.colors.join("、")}
+      </p>
 
-      :
 
-      <button
-      onClick={stopListening}
-      style={{
-        padding:"16px 40px",
-        borderRadius:"40px",
-        background:"#9b7aa8",
-        color:"white",
-        border:"none",
-        fontSize:"18px"
-      }}
-      >
-        🌙 停止创造
-      </button>
+      <p>
+        象征：
+        {result.element}
+      </p>
+
+
+      <p>
+        形态：
+        {result.shape}
+      </p>
+
+
+      </section>
 
       }
 
@@ -301,5 +153,4 @@ export default function CreateMandala() {
     </main>
 
   );
-
 }
