@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function GardenCanvas({
   garden
-}: any) {
+}:any){
 
 
   const elements =
@@ -31,44 +31,25 @@ export default function GardenCanvas({
 
         position:"relative",
 
-        borderRadius:"50%",
-
-
         overflow:"hidden",
+
+        borderRadius:"50%",
 
 
         background:
 
-        `
-        radial-gradient(
-          circle at center,
-          #fff8df 0%,
-          #f2ead8 45%,
-          #dce4d5 100%
-        )
-        `,
+        "radial-gradient(circle,#fff8df,#e1e7d9)",
 
 
         boxShadow:
 
-        `
-        0 50px 120px rgba(70,60,40,.18),
-        inset 0 0 80px rgba(255,255,255,.5)
-        `,
-
-
-        border:
-
-        "1px solid rgba(120,100,70,.15)"
-
+        "0 50px 120px rgba(60,50,30,.18), inset 0 0 80px rgba(255,255,255,.6)"
 
       }}
 
     >
 
 
-
-      {/* 中心柔光 */}
 
       <div
 
@@ -83,13 +64,7 @@ export default function GardenCanvas({
 
           background:
 
-          `
-          radial-gradient(
-          circle,
-          rgba(255,245,200,.8),
-          transparent 70%
-          )
-          `,
+          "radial-gradient(circle,rgba(255,240,180,.8),transparent)",
 
 
           animation:
@@ -101,9 +76,6 @@ export default function GardenCanvas({
       />
 
 
-
-
-      {/* 植物层 */}
 
       {
         elements.map(
@@ -117,7 +89,7 @@ export default function GardenCanvas({
 
               src={e.image}
 
-              alt="life fragment"
+              alt="life mandala"
 
 
               onClick={()=>setSelected(e)}
@@ -125,50 +97,34 @@ export default function GardenCanvas({
 
               style={{
 
-
                 position:"absolute",
-
 
                 left:e.x,
 
-
                 top:e.y,
 
-
                 width:e.size,
+
+
+                opacity:e.opacity,
 
 
                 cursor:"pointer",
 
 
-                opacity:e.opacity || .95,
-
-
                 transform:
 
-                `
-                rotate(${e.rotate || 0}deg)
-                `,
+                `rotate(${e.rotate}deg)`,
 
 
                 filter:
 
-                `
-                drop-shadow(
-                0 25px 35px
-                rgba(60,50,30,.18)
-                )
-                `,
+                "drop-shadow(0 25px 35px rgba(60,50,30,.18))",
 
 
-                transition:
-
-                "all .6s ease"
-
-
+                transition:"all .8s ease"
 
               }}
-
 
             />
 
@@ -180,8 +136,6 @@ export default function GardenCanvas({
 
 
 
-      {/* 点击记录 */}
-
       {
         selected &&
 
@@ -191,20 +145,18 @@ export default function GardenCanvas({
 
           style={{
 
-
             position:"absolute",
 
             inset:0,
 
 
-            background:
-
-            "rgba(250,245,230,.88)",
+            background:"rgba(250,245,230,.9)",
 
 
-            backdropFilter:
+            backdropFilter:"blur(12px)",
 
-            "blur(10px)",
+
+            zIndex:20,
 
 
             display:"flex",
@@ -215,56 +167,33 @@ export default function GardenCanvas({
 
             alignItems:"center",
 
-
-            padding:40,
-
-
             textAlign:"center",
 
-
-            zIndex:10
-
+            padding:40
 
           }}
 
         >
 
-
           <h2>
-
-          Day {selected.day}
-
+            Day {selected.day}
           </h2>
+
+
+          <h3>
+            {selected.mood}
+          </h3>
 
 
           <p>
 
-          {selected.mood}
-
-          </p>
-
-
-          <p
-
-          style={{
-
-            maxWidth:280,
-
-            lineHeight:1.8
-
-          }}
-
-          >
-
-          {selected.text}
+            {selected.text}
 
           </p>
 
 
           <small>
-
-          点击关闭
-
+            点击关闭
           </small>
 
 
@@ -277,6 +206,5 @@ export default function GardenCanvas({
     </div>
 
   );
-
 
 }
