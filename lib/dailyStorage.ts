@@ -14,24 +14,49 @@ export type DailyFragment = {
 const KEY = "life-mandala-days";
 
 
-export function saveDay(day:DailyFragment){
+
+export function saveDay(
+  day:DailyFragment
+){
+
+  if(
+    typeof window === "undefined"
+  ){
+
+    return [];
+
+  }
+
 
   const old =
+
     JSON.parse(
-      localStorage.getItem(KEY) || "[]"
+
+      localStorage.getItem(KEY)
+      ||
+      "[]"
+
     );
 
 
   const updated = [
+
     ...old,
+
     day
+
   ].slice(-7);
 
 
+
   localStorage.setItem(
+
     KEY,
+
     JSON.stringify(updated)
+
   );
+
 
 
   return updated;
@@ -40,10 +65,28 @@ export function saveDay(day:DailyFragment){
 
 
 
+
+
 export function getDays(){
 
+
+  if(
+    typeof window === "undefined"
+  ){
+
+    return [];
+
+  }
+
+
+
   return JSON.parse(
-    localStorage.getItem(KEY) || "[]"
+
+    localStorage.getItem(KEY)
+    ||
+    "[]"
+
   );
+
 
 }
