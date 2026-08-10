@@ -1,213 +1,196 @@
 "use client";
 
+import { useState } from "react";
 
 import {
-useState
-} from "react";
-
-
-import {
-saveDay,
-getDays
-}
-from "../lib/dailyStorage";
-
+  saveDay,
+  getDays
+} from "../lib/dailyStorage";
 
 import {
-createDailyArtwork
-}
-from "../lib/dailyArtworkEngine";
-
+  createDailyArtwork
+} from "../lib/dailyArtworkEngine";
 
 import {
-composeGarden
-}
-from "../lib/gardenComposer";
-
+  composeGarden
+} from "../lib/gardenComposer";
 
 import GardenCanvas
 from "../components/GardenCanvas";
 
 
-
 export default function Home(){
 
 
-const [text,setText]
-=
-useState("");
+  const [text,setText] =
+    useState("");
 
 
+  const [garden,setGarden] =
+    useState<any>(null);
 
-const [garden,setGarden]
-=
-useState<any>(null);
 
 
+  function create(){
 
-function create(){
 
+    if(!text){
 
-const day=
-getDays().length+1;
+      return;
 
+    }
 
 
-const artwork=
-createDailyArtwork(
-text,
-day
-);
+    const day =
+      getDays().length + 1;
 
 
 
-const days=
-saveDay({
+    const artwork =
+      createDailyArtwork(
+        text,
+        day
+      );
 
-date:
-new Date()
-.toISOString(),
 
 
-text,
+    const days =
+      saveDay({
 
+        date:
+        new Date()
+        .toISOString(),
 
-artwork
+        text,
 
-});
+        artwork
 
+      });
 
 
-if(days.length===7){
 
-setGarden(
-composeGarden(days)
-);
+    if(days.length === 7){
 
-}
+      setGarden(
+        composeGarden(days)
+      );
 
+    }
 
 
-setText("");
+    setText("");
 
-}
+  }
 
 
 
-return (
 
-<main
+  return (
 
-style={{
+    <main
 
-minHeight:"100vh",
+    style={{
 
-background:"#f4efe5",
+      minHeight:"100vh",
 
-padding:60,
+      background:"#f4efe5",
 
-textAlign:"center"
+      padding:"60px",
 
-}}
+      textAlign:"center"
 
->
+    }}
 
+    >
 
-<h1>
 
-Life Mandala
+      <h1>
+        Life Mandala
+      </h1>
 
-</h1>
 
+      <p>
+        留下今天的一笔
+      </p>
 
-<p>
 
-留下今天的一笔
 
-</p>
+      <textarea
 
+      value={text}
 
+      onChange={
+        e=>setText(e.target.value)
+      }
 
-<textarea
 
-value={text}
+      placeholder="任何东西都可以..."
 
-onChange={
-e=>setText(e.target.value)
-}
 
-placeholder="任何东西都可以..."
+      style={{
 
-style={{
+        width:"350px",
 
-width:350,
+        height:"120px",
 
-height:120,
+        padding:"20px",
 
-borderRadius:20,
+        borderRadius:"20px"
 
-padding:20
+      }}
 
-}}
 
+      />
 
-/>
 
 
+      <br />
 
-<br/>
 
+      <button
 
-<button
+      onClick={create}
 
-onClick={create}
 
-style={{
+      style={{
 
-marginTop:20,
+        marginTop:"20px",
 
-padding:"15px 40px",
+        padding:"15px 40px",
 
-borderRadius:40
+        borderRadius:"40px"
 
-}}
+      }}
 
->
+      >
 
-保存今天
+        保存今天
 
-</button>
+      </button>
 
 
 
+      {
+        garden &&
 
-{
+        <>
 
-garden &&
+        <h2>
+          {garden.title}
+        </h2>
 
-<>
 
-<h2>
+        <GardenCanvas
+          garden={garden}
+        />
 
-{garden.title}
+        </>
 
-</h2>
+      }
 
 
-<GardenCanvas
+    </main>
 
-garden={garden}
-
-/>
-
-</>
-
-}
-
-
-</main>
-
-
-)
+  );
 
 }
