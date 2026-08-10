@@ -1,23 +1,42 @@
 "use client";
 
 
-function PetalFlower({
+function Flower({
 x,
 y,
 size,
-color
+color,
+delay
 }:any){
 
 
 return (
 
-<g>
+<g
+
+style={{
+
+animation:
+`bloom 5s ease-in-out infinite`,
+
+animationDelay:
+`${delay}s`,
+
+transformOrigin:
+`${x}px ${y}px`
+
+}}
+
+>
 
 
 {
+
 Array.from({
-length:5
-}).map((_,i)=>(
+length:6
+})
+.map((_,i)=>(
+
 
 <ellipse
 
@@ -25,25 +44,26 @@ key={i}
 
 cx={x}
 
-cy={y-size/1.8}
+cy={y-size}
 
 rx={size/3}
 
-ry={size/1.15}
+ry={size}
 
 fill={color}
 
-opacity="0.65"
+opacity=".65"
 
 transform={`
 rotate(
-${i*72}
+${i*60}
 ${x}
 ${y}
 )
 `}
 
 />
+
 
 ))
 
@@ -57,81 +77,19 @@ cx={x}
 
 cy={y}
 
-r={size/5}
+r={size/4}
 
-fill="#E8CFA0"
-
-/>
-
-
-</g>
-
-)
-
-}
-
-
-
-
-
-function Orchid({
-x,
-y,
-size,
-color
-}:any){
-
-
-return (
-
-<g>
-
-
-<path
-
-d={`
-M${x} ${y}
-
-C
-${x-30} ${y-size}
-${x+30} ${y-size*2}
-${x} ${y-size*3}
-
-`}
-
-stroke={color}
-
-strokeWidth="3"
-
-fill="none"
-
-opacity="0.8"
-
-/>
-
-
-
-<circle
-
-cx={x}
-
-cy={y-size*3}
-
-r={size/2}
-
-fill={color}
-
-opacity=".7"
+fill="#e8cfa0"
 
 />
 
 
 </g>
 
+
 )
 
 }
-
 
 
 
@@ -141,7 +99,7 @@ x,
 y,
 size,
 color,
-rotation
+delay
 }:any){
 
 
@@ -161,46 +119,56 @@ fill={color}
 
 opacity=".55"
 
-transform={`
-rotate(
-${rotation}
-${x}
-${y}
-)
-`}
+style={{
+
+animation:
+"wind 6s ease-in-out infinite",
+
+animationDelay:
+`${delay}s`,
+
+transformOrigin:
+`${x}px ${y}px`
+
+}}
+
 
 />
 
 )
 
 }
-
 
 
 
 
 function Glow(){
 
+
 return (
 
 <circle
 
-cx="210"
+cx="215"
 
-cy="210"
+cy="215"
 
-r="90"
+r="100"
 
-fill="#fff7df"
+fill="#fff3cf"
 
-opacity=".35"
+style={{
+
+animation:
+"softGlow 5s infinite"
+
+}}
 
 />
 
 )
 
 }
-
 
 
 
@@ -225,12 +193,16 @@ height:430,
 
 borderRadius:50,
 
-background:"#F7F1E7",
+overflow:"hidden",
+
+background:
+
+"linear-gradient(135deg,#f8f2e8,#e7eee2)",
+
 
 boxShadow:
-"0 20px 60px rgba(80,70,50,.12)",
 
-overflow:"hidden"
+"0 20px 60px rgba(80,70,50,.12)"
 
 }}
 
@@ -248,11 +220,10 @@ viewBox="0 0 430 430"
 >
 
 
+
 <Glow />
 
 
-
-{/* 生命环纹 */}
 
 <circle
 
@@ -264,7 +235,7 @@ r="160"
 
 fill="none"
 
-stroke="#CFC4AA"
+stroke="#cbbf9f"
 
 opacity=".25"
 
@@ -280,7 +251,8 @@ garden.elements.map(
 
 
 const angle =
-(i/ garden.elements.length)
+(i /
+garden.elements.length)
 *
 Math.PI
 *
@@ -289,8 +261,7 @@ Math.PI
 
 
 const radius =
-80+
-i*12;
+70+i*18;
 
 
 
@@ -311,38 +282,16 @@ radius;
 
 
 const size =
-e.size/3;
+e.size/4;
 
 
 
 if(
-e.type==="orchid"
-)
 
-return (
-
-<Orchid
-
-key={i}
-
-x={x}
-
-y={y}
-
-size={size}
-
-color={e.color}
-
-/>
-
-);
-
-
-
-if(
 e.type==="fern"
 ||
 e.type==="vine"
+
 )
 
 return (
@@ -359,9 +308,7 @@ size={size}
 
 color={e.color}
 
-rotation={
-e.rotation
-}
+delay={i}
 
 />
 
@@ -371,7 +318,7 @@ e.rotation
 
 return (
 
-<PetalFlower
+<Flower
 
 key={i}
 
@@ -382,6 +329,8 @@ y={y}
 size={size}
 
 color={e.color}
+
+delay={i}
 
 />
 
@@ -396,25 +345,25 @@ color={e.color}
 
 
 
-{/* 中心生命点 */}
-
 <circle
 
 cx="215"
 
 cy="215"
 
-r="7"
+r="8"
 
-fill="#D6B77A"
+fill="#d6b77a"
 
 />
+
 
 
 </svg>
 
 
 </div>
+
 
 )
 
