@@ -1,11 +1,10 @@
-import MandalaSignature from "./MandalaSignature";
 "use client";
 
 import { useState } from "react";
 
 import GardenCanvas from "./GardenCanvas";
-
 import MandalaSignature from "./MandalaSignature";
+
 
 export default function SevenDayStory({
   days,
@@ -13,150 +12,138 @@ export default function SevenDayStory({
 }:any){
 
 
-  const [active,setActive]=useState(0);
+  const [active,setActive] = useState(0);
 
-  const [answers,setAnswers]=useState<any>({});
+  const [answers,setAnswers] = useState<any>({});
+
+  const [showSignature,setShowSignature] = useState(false);
 
 
-  const chapters=[
+
+  const chapters = [
 
     {
       title:"一 · 种子",
       theme:"开始",
-      question:
-      "今天，你愿意为自己留下什么？",
+      question:"今天，你愿意留下什么？",
       options:[
         "一个新的念头",
-        "一个真实的感受",
+        "一个真实感受",
         "一个未完成的愿望",
-        "只是安静存在"
+        "一段安静时间"
       ],
-      quote:
-      "每一个开始，都曾经只是一个微小的念头。"
+      quote:"每一种生命，都从一个微小的开始出现。"
     },
 
 
     {
       title:"二 · 风",
       theme:"感受",
-      question:
-      "此刻的情绪，想告诉你什么？",
+      question:"今天的情绪，想告诉你什么？",
       options:[
-        "我需要休息",
-        "我需要表达",
-        "我需要改变",
-        "我需要被理解"
+        "需要休息",
+        "需要表达",
+        "需要改变",
+        "需要被理解"
       ],
-      quote:
-      "风不会留下形状，却改变了树的方向。"
+      quote:"风没有形状，却改变了树的方向。"
     },
 
 
     {
       title:"三 · 河流",
       theme:"连接",
-      question:
-      "今天，什么与你产生了联系？",
+      question:"今天，你与什么相遇？",
       options:[
         "一个人",
         "一个地方",
         "一件小事",
         "自己的内心"
       ],
-      quote:
-      "没有生命是一座孤岛。"
+      quote:"每一次相遇，都留下看不见的痕迹。"
     },
 
 
     {
       title:"四 · 根",
       theme:"力量",
-      question:
-      "你正在坚持的事情，是否仍然值得？",
+      question:"你正在守护什么？",
       options:[
-        "值得继续",
-        "需要调整",
-        "我还在寻找",
-        "我想放下"
+        "一个梦想",
+        "一种关系",
+        "自己的平静",
+        "未来的方向"
       ],
-      quote:
-      "根向下生长，并不是因为失败，而是在寻找力量。"
+      quote:"根扎向黑暗，是为了靠近更深的光。"
     },
 
 
     {
       title:"五 · 秋叶",
       theme:"变化",
-      question:
-      "如果允许自己改变，你想放下什么？",
+      question:"你愿意放下什么？",
       options:[
         "压力",
         "恐惧",
         "过去",
-        "别人眼中的自己"
+        "别人的期待"
       ],
-      quote:
-      "离开旧的形状，生命才有新的空间。"
+      quote:"离开旧的形状，生命才有新的空间。"
     },
 
 
     {
       title:"六 · 月光",
       theme:"回望",
-      question:
-      "你想对七天前的自己说什么？",
+      question:"你想对过去的自己说什么？",
       options:[
-        "谢谢你坚持",
-        "慢一点也可以",
+        "谢谢坚持",
+        "慢一点",
         "你已经很好",
         "继续探索"
       ],
-      quote:
-      "温柔地回望，也是成长的一部分。"
+      quote:"温柔地回望，也是向前。"
     },
 
 
     {
       title:"七 · 圆",
-      theme:"成为",
-      question:
-      "这一周，你看见了自己的哪一部分？",
+      theme:"此刻",
+      question:"这一段时间，让你看见了什么？",
       options:[
         "力量",
         "温柔",
         "勇气",
         "新的方向"
       ],
-      quote:
-      "圆不是结束，而是一种回到自己的方式。"
+      quote:"圆不是结束，而是回到自己的方式。"
     }
 
   ];
 
 
 
-  const chapter=chapters[active];
+  const chapter = chapters[active];
 
 
 
   return (
 
-    <div
+    <main
 
     style={{
 
-      maxWidth:680,
+      maxWidth:700,
 
-      margin:"80px auto",
+      margin:"60px auto",
 
-      padding:20,
+      padding:25,
 
-      color:"#3d4037"
+      color:"#444"
 
     }}
 
     >
-
 
 
       <h1
@@ -165,13 +152,11 @@ export default function SevenDayStory({
 
         textAlign:"center",
 
-        fontFamily:"serif",
+        fontFamily:"Georgia,serif",
 
         fontWeight:400,
 
-        letterSpacing:6,
-
-        fontSize:38
+        letterSpacing:6
 
       }}
 
@@ -189,44 +174,44 @@ export default function SevenDayStory({
 
         textAlign:"center",
 
+        lineHeight:2,
+
         color:"#777",
 
-        lineHeight:2
+        fontFamily:"serif"
 
       }}
 
       >
 
-        七天，
+        七天不是为了改变自己。
 
         <br/>
 
-        不是为了改变自己。
-
-        <br/>
-
-        是为了重新遇见自己。
+        是为了重新遇见经过自己的时间。
 
       </p>
 
 
 
 
-      <div
+
+      {
+
+      !showSignature &&
+
+
+      <section
 
       style={{
 
-        marginTop:60,
+        marginTop:50,
 
         padding:40,
 
-        borderRadius:40,
+        borderRadius:35,
 
-        background:"#fffaf0",
-
-        boxShadow:
-
-        "0 30px 80px rgba(70,60,40,.1)"
+        background:"#fffaf0"
 
       }}
 
@@ -242,7 +227,7 @@ export default function SevenDayStory({
 
           color:"#999",
 
-          letterSpacing:4
+          letterSpacing:3
 
         }}
 
@@ -260,9 +245,7 @@ export default function SevenDayStory({
 
           fontFamily:"serif",
 
-          fontWeight:400,
-
-          marginTop:25
+          fontWeight:400
 
         }}
 
@@ -278,9 +261,9 @@ export default function SevenDayStory({
 
         style={{
 
-          lineHeight:2,
+          fontSize:18,
 
-          fontSize:18
+          lineHeight:2
 
         }}
 
@@ -294,75 +277,64 @@ export default function SevenDayStory({
 
         {
 
-          chapter.options.map(
+        chapter.options.map(
 
-            (o:string)=>(
-
-
-            <button
-
-            key={o}
-
-            onClick={()=>{
-
-              setAnswers({
-
-                ...answers,
-
-                [active]:o
-
-              })
-
-            }}
-
-            style={{
-
-              display:"block",
-
-              width:"100%",
-
-              margin:"14px 0",
-
-              padding:16,
-
-              borderRadius:30,
-
-              border:
-
-              answers[active]===o
-
-              ?
-
-              "2px solid #596451"
-
-              :
-
-              "1px solid #ddd",
-
-              background:
-
-              answers[active]===o
-
-              ?
-
-              "#e5eadc"
-
-              :
-
-              "#fff"
-
-            }}
-
-            >
-
-              {o}
-
-            </button>
+          (item:string)=>(
 
 
-            )
+          <button
+
+          key={item}
+
+          onClick={()=>{
+
+            setAnswers({
+
+              ...answers,
+
+              [active]:item
+
+            })
+
+          }}
+
+
+          style={{
+
+            width:"100%",
+
+            margin:"10px 0",
+
+            padding:16,
+
+            borderRadius:30,
+
+            background:
+
+            answers[active]===item
+
+            ?
+
+            "#e4eadc"
+
+            :
+
+            "#fff",
+
+            border:"1px solid #ddd"
+
+          }}
+
+          >
+
+            {item}
+
+          </button>
+
 
           )
+
+        )
 
         }
 
@@ -391,19 +363,21 @@ export default function SevenDayStory({
 
 
 
+
         <div
 
         style={{
 
-          marginTop:40,
-
           display:"flex",
 
-          justifyContent:"space-between"
+          justifyContent:"space-between",
+
+          marginTop:40
 
         }}
 
         >
+
 
           <button
 
@@ -418,9 +392,14 @@ export default function SevenDayStory({
           </button>
 
 
-          <button
 
-          disabled={active===6}
+
+          {
+
+          active < 6 ?
+
+
+          <button
 
           onClick={()=>setActive(active+1)}
 
@@ -431,127 +410,138 @@ export default function SevenDayStory({
           </button>
 
 
+          :
+
+
+          <button
+
+          onClick={()=>setShowSignature(true)}
+
+          >
+
+            打开时间留下的形状
+
+          </button>
+
+
+          }
+
+
+
         </div>
 
 
-      </div>
+      </section>
+
+      }
 
 
 
 
 
       {
-{
-active===6 &&
 
-<div
-
-style={{
-
-marginTop:80,
-
-textAlign:"center"
-
-}}
-
->
+      showSignature &&
 
 
-<h2
+      <section
 
-style={{
+      style={{
 
-fontFamily:"Georgia,'Noto Serif SC',serif",
+        marginTop:60,
 
-fontWeight:400,
+        textAlign:"center"
 
-letterSpacing:5
+      }}
 
-}}
-
->
-
-时间留下的形状
-
-</h2>
+      >
 
 
 
-<p
+        <h2
 
-style={{
+        style={{
 
-lineHeight:2.2,
+          fontFamily:"serif",
 
-color:"#777",
+          fontWeight:400
 
-fontFamily:"serif"
+        }}
 
-}}
+        >
 
->
+          时间留下的形状
 
-七个瞬间，
-
-<br/>
-
-慢慢形成了一种属于你的形状。
-
-<br/>
-
-它不是生成的结果，
-
-<br/>
-
-而是你经过这里的证明。
-
-</p>
+        </h2>
 
 
 
-{
+        <p
 
-garden &&
+        style={{
 
-<GardenCanvas
+          lineHeight:2,
 
-garden={garden}
+          color:"#777"
 
-/>
+        }}
 
-}
+        >
 
+          七个瞬间，
 
+          <br/>
 
-<MandalaSignature
+          慢慢形成了一种属于你的形状。
 
-days={days}
-
-onSave={(work:any)=>{
-
-
-localStorage.setItem(
-
-"mandala-work",
-
-JSON.stringify(work)
-
-);
-
-
-}}
-
-/>
+        </p>
 
 
 
-</div>
+        {
 
-}
+        garden &&
+
+        <GardenCanvas
+
+        garden={garden}
+
+        />
+
+        }
 
 
 
-    </div>
+
+
+        <MandalaSignature
+
+        days={days}
+
+        onSave={(work:any)=>{
+
+
+          localStorage.setItem(
+
+            "mandala-work",
+
+            JSON.stringify(work)
+
+          );
+
+
+        }}
+
+        />
+
+
+      </section>
+
+
+      }
+
+
+    </main>
 
   );
 
