@@ -1,32 +1,32 @@
-
 :root {
-
-  --background:#f7f1e7;
-
-  --foreground:#3f4438;
-
+  --background: #f7f1e7;
+  --foreground: #3f4438;
 }
 
 
 * {
+  box-sizing: border-box;
+}
 
-  box-sizing:border-box;
 
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 
 body {
 
-  margin:0;
+  background: var(--background);
 
-  background:var(--background);
-
-  color:var(--foreground);
+  color: var(--foreground);
 
   font-family:
-  "Inter",
-  "PingFang SC",
-  sans-serif;
+    "Inter",
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
 
 }
 
@@ -36,33 +36,31 @@ body {
 
 @keyframes bloom {
 
+  0% {
 
-0%{
+    transform: scale(.96);
 
-transform:scale(.96);
+    opacity: .65;
 
-opacity:.65;
-
-}
-
-
-50%{
-
-transform:scale(1.06);
-
-opacity:1;
-
-}
+  }
 
 
-100%{
+  50% {
 
-transform:scale(.96);
+    transform: scale(1.06);
 
-opacity:.65;
+    opacity: 1;
 
-}
+  }
 
+
+  100% {
+
+    transform: scale(.96);
+
+    opacity: .65;
+
+  }
 
 }
 
@@ -72,27 +70,25 @@ opacity:.65;
 
 @keyframes wind {
 
+  0% {
 
-0%{
+    transform: rotate(-4deg);
 
-transform:rotate(-4deg);
-
-}
-
-
-50%{
-
-transform:rotate(4deg);
-
-}
+  }
 
 
-100%{
+  50% {
 
-transform:rotate(-4deg);
+    transform: rotate(4deg);
 
-}
+  }
 
+
+  100% {
+
+    transform: rotate(-4deg);
+
+  }
 
 }
 
@@ -102,27 +98,25 @@ transform:rotate(-4deg);
 
 @keyframes softGlow {
 
+  0% {
 
-0%{
+    opacity: .25;
 
-opacity:.25;
-
-}
-
-
-50%{
-
-opacity:.6;
-
-}
+  }
 
 
-100%{
+  50% {
 
-opacity:.25;
+    opacity: .6;
 
-}
+  }
 
+
+  100% {
+
+    opacity: .25;
+
+  }
 
 }
 
@@ -132,62 +126,49 @@ opacity:.25;
 
 @keyframes grow {
 
+  from {
 
-from{
+    transform: scale(0);
 
-transform:
-scale(0);
+    opacity: 0;
 
-opacity:0;
-
-}
+  }
 
 
-to{
+  to {
 
-transform:
-scale(1);
+    transform: scale(1);
 
-opacity:1;
+    opacity: 1;
 
-}
-
-
-}
-@keyframes floatPlant{
-
-0%{
-
-transform:
-translateY(0px);
+  }
 
 }
 
-50%{
 
-transform:
-translateY(-8px);
 
-}
+/* 植物轻轻呼吸 */
 
-100%{
-
-transform:
-translateY(0px);
-
-}
 @keyframes floatPlant {
 
-0% {
-transform: translateY(0);
-}
+  0% {
 
-50% {
-transform: translateY(-10px);
-}
+    transform: translateY(0);
 
-100% {
-transform: translateY(0);
-}
+  }
+
+
+  50% {
+
+    transform: translateY(-8px);
+
+  }
+
+
+  100% {
+
+    transform: translateY(0);
+
+  }
 
 }
