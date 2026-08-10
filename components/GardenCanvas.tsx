@@ -1,217 +1,8 @@
 "use client";
 
 
-function Glow({
-x,
-y,
-size
-}:any){
-
-return (
-
-<circle
-
-cx={x}
-cy={y}
-r={size}
-
-fill="url(#glow)"
-
-opacity="0.45"
-
-/>
-
-)
-
-}
-
-
-
-
-
-function CherryFlower({
-x,
-y,
-size,
-color
-}:any){
-
-return (
-
-<g>
-
-
-{
-[0,1,2,3,4].map(i=>(
-
-<path
-
-key={i}
-
-d={`
-M ${x} ${y}
-
-C
-${x-size}
-${y-size}
-${x-size/2}
-${y-size*1.8}
-${x}
-${y-size*1.3}
-
-C
-${x+size/2}
-${y-size*1.8}
-${x+size}
-${y-size}
-${x}
-${y}
-
-`
-
-}
-
-fill={color}
-
-opacity="0.7"
-
-transform={`
-rotate(${i*72} ${x} ${y})
-`}
-
-/>
-
-))
-
-}
-
-
-<circle
-
-cx={x}
-
-cy={y}
-
-r={size/5}
-
-fill="#e8c98b"
-
-/>
-
-
-</g>
-
-)
-
-}
-
-
-
-
-
-function Branch({
-x,
-y,
-size,
-color
-}:any){
-
-return (
-
-<g>
-
-
-<path
-
-d={`
-M${x} ${y}
-
-C
-${x-size}
-${y-size}
-${x+size}
-${y-size*2}
-${x}
-${y-size*3}
-
-`}
-
-stroke={color}
-
-strokeWidth="3"
-
-fill="none"
-
-opacity=".6"
-
-/>
-
-
-</g>
-
-)
-
-}
-
-
-
-
-
-function LeafCluster({
-x,
-y,
-size,
-color
-}:any){
-
-return (
-
-<g>
-
-{
-[-1,0,1].map((v)=>(
-
-<ellipse
-
-key={v}
-
-cx={x+v*size/2}
-
-cy={y-size}
-
-rx={size/3}
-
-ry={size}
-
-fill={color}
-
-opacity=".5"
-
-transform={`
-rotate(${v*20}
-${x}
-${y})
-`}
-
-/>
-
-))
-
-}
-
-</g>
-
-)
-
-}
-
-
-
-
 export default function GardenCanvas({
-
 garden
-
 }:any){
 
 
@@ -226,98 +17,54 @@ return (
 
 style={{
 
-width:440,
+width:460,
 
-height:440,
+height:460,
 
 borderRadius:60,
 
 overflow:"hidden",
 
+position:"relative",
+
 background:
 
-"linear-gradient(135deg,#faf4e9,#edf1e7)",
+"linear-gradient(145deg,#faf4ea,#e9eee5)",
 
 
 boxShadow:
 
-"0 30px 80px rgba(80,70,50,.15)"
+"0 30px 90px rgba(80,70,50,.15)"
 
 }}
 
 >
 
 
-<svg
 
-width="440"
+{/* 柔光 */}
 
-height="440"
+<div
 
-viewBox="0 0 440 440"
+style={{
 
->
+position:"absolute",
 
+width:220,
 
-<defs>
+height:220,
 
+left:120,
 
-<radialGradient id="glow">
+top:100,
 
-<stop
+background:
 
-offset="0"
+"radial-gradient(circle,#fff4cf,transparent)",
 
-stopColor="#fff4cf"
+opacity:.7
 
-/>
-
-<stop
-
-offset="1"
-
-stopColor="#fff4cf"
-
-stopOpacity="0"
-
-/>
-
-</radialGradient>
-
-
-</defs>
-
-
-
-{/* 月光 */}
-
-<Glow
-
-x={220}
-
-y={210}
-
-size={120}
-
-/>
-
-
-
-{/* 外圈生命轮廓 */}
-
-<circle
-
-cx="220"
-
-cy="220"
-
-r="170"
-
-fill="none"
-
-stroke="#d8cbb0"
-
-opacity=".25"
+}}
 
 />
 
@@ -328,162 +75,65 @@ opacity=".25"
 
 elements.map(
 
-(e:any,i:number)=>{
+(e:any,i:number)=>(
 
 
-const positions=[
-
-
-{
-x:220,
-y:210
-},
-
-
-{
-x:130,
-y:130
-},
-
-
-{
-x:320,
-y:140
-},
-
-
-{
-x:120,
-y:300
-},
-
-
-{
-x:320,
-y:310
-},
-
-
-{
-x:220,
-y:340
-}
-
-
-];
-
-
-
-const p =
-positions[i%positions.length];
-
-
-
-const size =
-45+
-e.size/5;
-
-
-
-if(
-i===0
-){
-
-return (
-
-<CherryFlower
+<img
 
 key={i}
 
-x={p.x}
+src={e.image}
 
-y={p.y}
+style={{
 
-size={size}
+position:"absolute",
 
-color={e.color}
+width:
+
+e.size || 180,
+
+
+left:
+
+e.x || 140,
+
+
+top:
+
+e.y || 140,
+
+
+transform:
+
+`rotate(${e.rotate || 0}deg)`,
+
+
+opacity:
+
+e.opacity || .9,
+
+
+filter:
+
+"drop-shadow(0 20px 25px rgba(80,70,50,.15))",
+
+
+animation:
+
+"floatPlant 8s ease-in-out infinite"
+
+}}
 
 />
+
+
+)
 
 )
 
 }
 
 
-
-if(
-e.type==="vine"
-||
-e.type==="fern"
-
-){
-
-return (
-
-<LeafCluster
-
-key={i}
-
-x={p.x}
-
-y={p.y}
-
-size={size/2}
-
-color={e.color}
-
-/>
-
-)
-
-}
-
-
-
-return (
-
-<Branch
-
-key={i}
-
-x={p.x}
-
-y={p.y}
-
-size={size}
-
-color={e.color}
-
-/>
-
-)
-
-
-}
-
-)
-
-}
-
-
-
-
-{/* 中心种子 */}
-
-<circle
-
-cx="220"
-
-cy="220"
-
-r="8"
-
-fill="#d6b77a"
-
-/>
-
-
-</svg>
 
 
 </div>
